@@ -16,6 +16,10 @@
 //  Exported Subprograms:       get_precedence
 //                              insert_right
 //                              is_expr_op
+//                              is_literal
+//                              is_assignment_op
+//                              is_right_assoc
+//                              is_left_assoc
 //                              
 /******************************************************************************/
 
@@ -90,9 +94,21 @@ inline bool is_literal(TOKEN_TYPE __type) noexcept {
            (__type == TOKEN_LIT_STRING);
 }
 
+// This function determines if a token type is an assignment operator.
 inline bool is_assignment_op(const std::string& op) noexcept {
     return op == "=";
 }
+
+// This function determines if an operator is left associative.
+inline bool is_left_assoc(const std::string& op) noexcept {
+    return (op == "+") || (op == "*");
+}
+
+// This function determines if an operator is right associative.
+inline bool is_right_assoc(const std::string& op) noexcept {
+    return (op == "=");
+}
+
 
 /******************************************************************************/
 
