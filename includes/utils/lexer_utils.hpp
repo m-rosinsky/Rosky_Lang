@@ -15,8 +15,10 @@
 //
 //  Exported Subprograms:       is_alpha
 //                              is_num
+//                              is_alphanum
 //                              is_whitespace
 //                              is_op
+//                              is_delimiter
 //                              
 /******************************************************************************/
 
@@ -36,9 +38,13 @@ enum TOKEN_TYPE {
 
     // Generic
     TOKEN_SYMBOL,
-    TOKEN_OP,
-    TOKEN_LITERAL,
+    TOKEN_OP_DLR,       // double left-right-associatve
     TOKEN_DELIM,        // delimiter
+
+    // Literals
+    TOKEN_LIT_INT,
+    TOKEN_LIT_FLOAT,
+    TOKEN_LIT_STRING,
 
     // Keywords
     TOKEN_KW,
@@ -53,8 +59,12 @@ static std::vector<std::string> TOKEN_STRINGS = {
     // Generic
     "SYMB",
     "OP",
-    "LITER",
     "DELIM",
+
+    // Literals
+    "INT",
+    "FLOAT",
+    "STRING",
 
     // Keywords
     "KEYW",
@@ -105,6 +115,10 @@ inline bool is_alpha(char c) noexcept {
 
 inline bool is_num(char c) noexcept {
     return (c >= '0' && c <= '9');
+}
+
+inline bool is_alphanum(char c) noexcept {
+    return is_alpha(c) || is_num(c);
 }
 
 inline bool is_whitespace(char c) noexcept {
