@@ -103,7 +103,7 @@ void status_response(CMD_LINE_STATUS __status, char* argv[]) {
 
     // Respond to status accordingly.
     if (__status == BAD_ARGS) {
-        fprintf(stderr, "Impromper arguments\n");
+        fprintf(stderr, "Bad arguments\n");
     } else if (__status == FILE_NOT_FOUND) {
         fprintf(stderr, "File not found: '%s'\n", argv[1]);
     } else if (__status == INVALID_FILE_TYPE) {
@@ -111,7 +111,7 @@ void status_response(CMD_LINE_STATUS __status, char* argv[]) {
     }
 
     fprintf(stderr, "Format: $ ");
-    fprintf(stderr, "rosky.exe [filepath].rosky");
+    fprintf(stderr, "rosky.exe [filepath].rosky\n");
 
     exit(1);
 
