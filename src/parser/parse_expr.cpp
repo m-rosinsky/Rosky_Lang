@@ -10,9 +10,8 @@
 // 
 //                              Upon failure, an error will be thrown.
 // 
-//                              Upon success, a nullptr object will be
-//                              returned and the parse tree will be
-//                              evaluated by the evaluator.
+//                              Upon success, it will call the evaluator
+//                              to evaluate the parse tree.
 //
 //  Dependencies:               lexer_utils.hpp
 //                              parser_utils.hpp
