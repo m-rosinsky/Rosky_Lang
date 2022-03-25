@@ -18,8 +18,9 @@
 //                              fed into the parser.
 //
 //  Dependencies:               source_handler.hpp
+//                              error_handler.hpp
+//                              parser.hpp
 //                              lexer_utils.hpp
-//                              <parser>
 //
 //  Classes:                    None
 //

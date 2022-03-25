@@ -14,13 +14,17 @@
 //                              syntactical errors.
 //
 //  Dependencies:               lexer_utils.hpp
+//                              parser_utils.hpp
 //                              error_handler.hpp
+//                              evaluator.hpp
+//                              rosky_interface.hpp
 //
 //  Classes:                    None
 //
 //  Inherited Subprograms:      None
 //
 //  Exported Subprograms:       parse
+//                              parse_expr
 //                              
 /******************************************************************************/
 

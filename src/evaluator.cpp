@@ -10,6 +10,7 @@
 //  Dependencies:               parser_utils.hpp
 //                              lexer_utils.hpp
 //                              error_handler.hpp
+//                              variable_handler.hpp
 //                              rosky_interface.hpp
 //                              rosky_int.hpp
 //
@@ -25,9 +26,11 @@
 
 /******************************************************************************/
 
-std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __root) {
+std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __root, bool __top) {
 
-    // Create the object based off the token type.
+    /***********************************************/
+    /* Create the object based off the token type. */
+    /***********************************************/
 
     // Literals
     if (__root->_value->_type == TOKEN_LIT_INT) {
@@ -36,10 +39,19 @@ std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __roo
 
     // Symbols
     if (__root->_value->_type == TOKEN_SYMBOL) {
-        return get_entry(__root->_value->_token);
+        auto ret = get_entry(__root->_value->_token);
+
+        // If this is the top level evaluation and the entry was nullptr,
+        // this is an error for unrecognized symbol.
+        if (__top && ret == nullptr) {
+            throw_error(ERR_UNREC_SYM, __root->_value->_token, __root->_value->_colnum, __root->_value->_linenum);
+        }
+        return ret;
     }
 
-    // Evaluate the operators.
+    /********************************************/
+    /*          Evaluate the operators.         */
+    /********************************************/
 
     // Double left-right associative operators.
     if (__root->_value->_type == TOKEN_OP_DLR) {
@@ -47,8 +59,8 @@ std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __roo
         // Create a temp storage for the return value and the left and right operands.
         std::shared_ptr<RoskyInterface> ret_obj = nullptr;
 
-        std::shared_ptr<RoskyInterface> left = evaluate(__root->_left);
-        std::shared_ptr<RoskyInterface> right = evaluate(__root->_right);
+        std::shared_ptr<RoskyInterface> left = evaluate(__root->_left, false);
+        std::shared_ptr<RoskyInterface> right = evaluate(__root->_right, false);
 
         // The right side of an op is never allowed to be nullptr. This means
         // a symbol was unrecognized. Throw an error.
@@ -69,8 +81,8 @@ std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __roo
             std::cout << __root->_left->_value->_token << " = " << right->to_string() << std::endl;
             // ***DEBUG***
 
-            // Set the return object to the right side.
-            ret_obj = right;
+            // Return the right-side object.
+            return right;
 
         }
 
