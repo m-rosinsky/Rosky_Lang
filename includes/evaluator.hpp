@@ -43,7 +43,9 @@
 // This function evaluates a parse tree and returns the resulting object.
 // The parse tree is expected to be correctly formatted, so any errors in
 // evaluation fall on the parser.
-std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __root);
+// The __top indicates if this is the top level evaluation in the
+// recursion stack. Recursive calls will set this to false.
+std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __root, bool __top = true);
 
 /******************************************************************************/
 
