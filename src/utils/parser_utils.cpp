@@ -16,6 +16,8 @@
 //  Exported Subprograms:       get_precedence
 //                              insert_right
 //                              is_expr_op
+//                              is_literal
+//                              is_assignment_op
 //                              
 /******************************************************************************/
 
@@ -67,7 +69,11 @@ void insert_op(std::shared_ptr<ParseNode>& __root,
 
         // If the current node's operator precedence is less than the
         // new operators precedence, move right.
-        if (get_precedence(cur->_value->_token) < get_precedence(__token->_token)) {
+        // Or if the operator's precedence is equal and the operator
+        // is right-left associative.
+        if ((get_precedence(cur->_value->_token) < get_precedence(__token->_token)) ||
+            (get_precedence(cur->_value->_token) == get_precedence(__token->_token) &&
+             is_right_assoc(__token->_token))) {
             cur = cur->_right;
             continue;
         }
