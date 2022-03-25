@@ -18,8 +18,10 @@
 //                              to_int
 //                              to_string
 //                              add_op
+//                              mul_op
 //
-//  Exported Subprograms:       None
+//  Exported Subprograms:       ctor
+//                              ctor(long)
 //                              
 /******************************************************************************/
 
