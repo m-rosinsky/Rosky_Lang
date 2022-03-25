@@ -1,7 +1,7 @@
 
 /******************************************************************************/
 //
-//  Source Name:                rosky_int.hpp
+//  Source Name:                rosky_int.cpp
 //
 //  Description:                This file contains the class definition for
 //                              the built in integer type.
@@ -18,8 +18,10 @@
 //                              to_int
 //                              to_string
 //                              add_op
+//                              mul_op
 //
-//  Exported Subprograms:       None
+//  Exported Subprograms:       ctor
+//                              ctor(long)
 //                              
 /******************************************************************************/
 
