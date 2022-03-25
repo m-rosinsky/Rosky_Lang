@@ -49,6 +49,13 @@ struct Src_T {
         // Read in the contents of the file line by line.
         for (std::string line; std::getline(in_file, line); ) {
 
+            // Some text editors insert carriage returns '13' at the end
+            // of lines, while others don't. Filter out carriage returns
+            // so the line endings are standardized.
+            if (int(line[line.size() - 1]) == 13) {
+                line = line.substr(0, line.size()-1);
+            }
+
             _data += line;
 
             // Insert a new line character at the end of the line

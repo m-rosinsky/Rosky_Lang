@@ -36,6 +36,15 @@ enum ERROR_TYPE {
     // Lexer errors.
     ERR_UNEXP_TOKEN,
 
+    // Parser errors.
+    ERR_SYNTAX,
+    ERR_UNEXP_EOF,
+
+    // Evaluator errors.
+    ERR_UNREC_SYM,
+    ERR_OP_INCOMPAT,
+    ERR_UNEXP_OP,
+
 };
 
 /******************************************************************************/
@@ -45,7 +54,16 @@ enum ERROR_TYPE {
 static std::vector<std::string> ERROR_STRINGS {
     
     // Lexer errors.
-    "Unexpected token\0",
+    "Unexpected token",
+
+    // Parser errors.
+    "Syntax error",
+    "Unexpected EOF while parsing (possible missing semicolon)",
+
+    // Evaluator errors.
+    "Unrecognized symbol",
+    "Operator incompatible",
+    "Unexpected operator",
 
 };
 

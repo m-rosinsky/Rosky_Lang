@@ -18,9 +18,9 @@
 //                              fed into the parser.
 //
 //  Dependencies:               source_handler.hpp
-//                              lexer_utils.hpp
 //                              error_handler.hpp
-//                              <parser>
+//                              parser.hpp
+//                              lexer_utils.hpp
 //
 //  Classes:                    None
 //
@@ -37,10 +37,12 @@
 
 #include <string>                   // std::string
 #include <deque>                    // std::deque
-#include <memory>                   // std::unique_ptr, std::make_unique
+#include <memory>                   // std::shared_ptr, std::shared_ptr
 
 #include "source_handler.hpp"
 #include "error_handler.hpp"
+#include "parser.hpp"
+
 #include "utils/lexer_utils.hpp"
 
 /******************************************************************************/
