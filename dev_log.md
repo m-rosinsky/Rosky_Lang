@@ -18,3 +18,9 @@ I took the first week before putting my hands on keyboard prototyping different 
 
 ## March 22, 2022
 
+* Created the repo!
+* Started off writing a bare-bones lexer that I knew could be expanded upon as I added more complexity.
+* Added parsing of command line arguments borrowed from my last repo.
+* Created a source handler to read in the provided source file.
+
+Here's the current dependency diagram:
