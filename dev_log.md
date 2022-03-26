@@ -74,6 +74,6 @@ x = 2 +;
 |:--:|
 
 And here's what the dependency diagram is looking like now! Much more complex!
-| ![alt text](https://i.imgur.com/AXLH8RU.png "Error Report 1") |
+| ![alt text](https://i.imgur.com/Z0c6m3J.png "Error Report 1") |
 |:--:|
 
