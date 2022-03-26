@@ -12,7 +12,6 @@
 //                              error_handler.hpp
 //                              variable_handler.hpp
 //                              rosky_interface.hpp
-//                              rosky_int.hpp
 //
 //  Classes:                    None
 //
@@ -36,7 +35,6 @@
 #include "variable_handler.hpp"
 
 #include "objects/rosky_interface.hpp"
-#include "objects/rosky_int.hpp"
 
 /******************************************************************************/
 
@@ -45,7 +43,7 @@
 // evaluation fall on the parser.
 // The __top indicates if this is the top level evaluation in the
 // recursion stack. Recursive calls will set this to false.
-std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __root, bool __top = true);
+std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __root, VariableTable_T& __var_table, bool __top = true);
 
 /******************************************************************************/
 

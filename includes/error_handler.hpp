@@ -39,6 +39,8 @@ enum ERROR_TYPE {
     // Parser errors.
     ERR_SYNTAX,
     ERR_UNEXP_EOF,
+    ERR_UNCLOSED_PAREN,
+    ERR_EMPTY_PARENS,
 
     // Evaluator errors.
     ERR_UNREC_SYM,
@@ -59,6 +61,8 @@ static std::vector<std::string> ERROR_STRINGS {
     // Parser errors.
     "Syntax error",
     "Unexpected EOF while parsing (possible missing semicolon)",
+    "Unclosed Parentheses",
+    "Empty parentheses",
 
     // Evaluator errors.
     "Unrecognized symbol",

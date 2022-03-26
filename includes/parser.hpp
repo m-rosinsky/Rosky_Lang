@@ -13,10 +13,14 @@
 //                              The parser will catch logical as well as
 //                              syntactical errors.
 //
+//                              This file also owns the static instance
+//                              of the variable handler backend.
+//
 //  Dependencies:               lexer_utils.hpp
 //                              parser_utils.hpp
 //                              error_handler.hpp
 //                              evaluator.hpp
+//                              variable_handler.hpp
 //                              rosky_interface.hpp
 //
 //  Classes:                    None
@@ -41,15 +45,22 @@
 
 #include "error_handler.hpp"
 #include "evaluator.hpp"
+#include "variable_handler.hpp"
 
 #include "objects/rosky_interface.hpp"
+
+/******************************************************************************/
+
+// Create a static instance of the variable handler.
+static VariableTable_T var_table;
 
 /******************************************************************************/
 
 // This function is the main 'brain' of the parser. It will look through
 // a provided token table and dispatch specialized parse functions based on
 // the tokens it encounters.
-void parse(const std::deque<std::shared_ptr<Token_T>>& __tokens);
+void parse(const std::deque<std::shared_ptr<Token_T>>& __tokens,
+            size_t __start_idx, size_t __end_idx = 0);
 
 /******************************************************************************/
 
@@ -58,7 +69,7 @@ void parse(const std::deque<std::shared_ptr<Token_T>>& __tokens);
 // to get the result.
 extern std::shared_ptr<RoskyInterface>
     parse_expr(const std::deque<std::shared_ptr<Token_T>>& __tokens,
-               size_t& __idx);
+               size_t& __idx, size_t __end_idx);
 
 /******************************************************************************/
 
