@@ -90,6 +90,6 @@ x = (1+2) * 3;
 
 The expression parser will call itself recursively to evaluate the parentheses first.
 
-No new files added with this change, but since the parser is now responsible for object creation we see it referencing the variable handler and the object backend. Here's the dependency diagram:
+No new files added with this change, but since the parser is now responsible for object creation we see it referencing the variable handler and the object backend. Here's the dependency diagram. I've cleaned up the diagram a little bit to only show the major components rather than every file.
 | ![alt text](https://i.imgur.com/6gIiLms.png "Dependency Diagram 3") |
 |:--:|
