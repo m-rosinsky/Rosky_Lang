@@ -74,7 +74,7 @@ x = 2 +;
 |:--:|
 
 And here's what the dependency diagram is looking like now! Much more complex!
-| ![alt text](https://i.imgur.com/Z0c6m3J.png "Error Report 1") |
+| ![alt text](https://i.imgur.com/Z0c6m3J.png "Dependency Diagram 2") |
 |:--:|
 
 ## March 26, 2022
@@ -91,5 +91,5 @@ x = (1+2) * 3;
 The expression parser will call itself recursively to evaluate the parentheses first.
 
 No new files added with this change, but since the parser is now responsible for object creation we see it referencing the variable handler and the object backend. Here's the dependency diagram:
-| ![alt text](https://i.imgur.com/Z0c6m3J.png "Error Report 1") |
+| ![alt text](https://i.imgur.com/6gIiLms.png "Dependency Diagram 3") |
 |:--:|
