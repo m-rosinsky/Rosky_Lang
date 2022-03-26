@@ -45,8 +45,13 @@ Big day today.
 * Created the object interface which defines the behavior of all built-in objects
   * Created the first object, the integer, which inherits from the interface.
 
-I can already tell the expression parser and evaluator are going to be the most complex components of this project. I how elegant the expression parser is compared to my last attempt and how it uses the binary tree data structure.
+I can already tell the expression parser and evaluator are going to be the most complex components of this project. I love how elegant the expression parser is compared to my last attempt and how it uses the binary tree data structure.
 
-It takes a token table containing an expression such as this:
+For an expression like this:
+```python
+x = 2 + 3 * 4;
+```
 
-And turns it into a parse tree to be evaluated, respecting order of operations:
+We get a token table that looks like this:
+
+And the expression parser turns that table into a tree like this:
