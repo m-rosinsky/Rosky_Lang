@@ -38,7 +38,7 @@ Here's the current dependency diagram:
 ## March 25, 2022
 
 Big day today.
-* Created the main parser, which takens in the token table and makes parsing decisions based on the tokens it encounters.
+* Created the main parser, which takes in the token table and makes parsing decisions based on the tokens it encounters.
 * Created the expression parser, which turns a token table for an expression into a parse tree.
 * Created the evaluator which evaluates and acts on the parse tree.
 * Created the variable handler to manage the variable table, which for now is a basic map.
