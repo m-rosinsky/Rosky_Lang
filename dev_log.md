@@ -16,7 +16,7 @@ But i scrapped it with a newfound respect for the process, and the background kn
 
 I took the first week before putting my hands on keyboard prototyping different components, drawing dependency diagrams, and revisiting chapters in the compiler theory books I read. Finally after that I felt ready to put hands on keyboard again, and I created this respository. I hope this learning experience will give me a leg up as I work the ranks of the software engineering ladder and maybe even work my way to being the architect on a large scale project at a big company.
 
-## March 22, 2022
+## March 24, 2022
 
 * Created the repo!
 * Started off writing a bare-bones lexer that I knew could be expanded upon as I added more complexity.
@@ -35,7 +35,7 @@ Here's the current dependency diagram:
 | ![alt text](https://i.imgur.com/bjg6MZV.png "Dependency Diagram 1") |
 |:--:|
 
-## March 23, 2022
+## March 25, 2022
 
 Big day today.
 * Created the main parser, which takens in the token table and makes parsing decisions based on the tokens it encounters.
@@ -77,3 +77,19 @@ And here's what the dependency diagram is looking like now! Much more complex!
 | ![alt text](https://i.imgur.com/Z0c6m3J.png "Error Report 1") |
 |:--:|
 
+## March 26, 2022
+
+Lots of structural changes today. I switched over the expression parse tree to be a tree of objects from the backend rather than a tree of tokens. It now falls on the parser to form the objects rather than the evaluator as it views the tokens.
+
+This allows the parser to make recursive calls to itself whenever it needs to do intermediate evaluations, such as parentheses, function calls, etc.
+
+To test it out, I added parentheses as a viable token. So now we can run source like this:
+```python
+x = (1+2) * 3;
+```
+
+The expression parser will call itself recursively to evaluate the parentheses first.
+
+No new files added with this change, but since the parser is now responsible for object creation we see it referencing the variable handler and the object backend. Here's the dependency diagram:
+| ![alt text](https://i.imgur.com/Z0c6m3J.png "Error Report 1") |
+|:--:|
