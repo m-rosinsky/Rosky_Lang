@@ -17,6 +17,7 @@
 //                              parser_utils.hpp
 //                              error_handler.hpp
 //                              evaluator.hpp
+//                              variable_handler.hpp
 //                              rosky_interface.hpp
 //
 //  Classes:                    None
@@ -32,17 +33,21 @@
 
 /******************************************************************************/
 
-void parse(const std::deque<std::shared_ptr<Token_T>>& __tokens) {
+void parse(const std::deque<std::shared_ptr<Token_T>>& __tokens,
+           size_t __start_idx, size_t __end_idx) {
 
     // Create an index iterator. The reason this is
     // chosen over a traditional std::iterator is
     // because it may potentially go past the .end() point
     // and memory leak. The index can be checked against the max
     // size.
-    size_t idx = 0;
+    size_t idx = __start_idx;
+
+    // Check if the default was provided for the end index.
+    __end_idx = __end_idx == 0 ? __tokens.size() : __end_idx;
 
     // Iterate through the token table.
-    for (; idx < __tokens.size(); idx++) {
+    for (; idx < __end_idx; idx++) {
 
         // Token is a keyword.
         if (__tokens[idx]->_type == TOKEN_KW) {
@@ -58,18 +63,41 @@ void parse(const std::deque<std::shared_ptr<Token_T>>& __tokens) {
             // Check if the token is a function.
 
             // Token must be an expression.
-            auto ignore = parse_expr(__tokens, idx);
+            size_t end_idx = find_nextof(__tokens, idx, ";");
+            if (end_idx == 0) {
+                throw_error(ERR_UNEXP_EOF, "", __tokens[idx]->_colnum, __tokens[idx]->_linenum);
+            }
+            auto ignore = parse_expr(__tokens, idx, end_idx);
             continue;
 
         }
 
         // Token is an operator.
-        if (__tokens[idx]->_type == TOKEN_OP_DLR) {
+        if (__tokens[idx]->_type == TOKEN_OP_BIN) {
 
             // Only select prefix ops can be considered starters
             // of an expression, otherwise this check fails.
             if (is_expr_op(__tokens[idx]->_token)) {
-                auto ignore = parse_expr(__tokens, idx);
+                size_t end_idx = find_nextof(__tokens, idx, ";");
+                if (end_idx == 0) {
+                    throw_error(ERR_UNEXP_EOF, "", __tokens[idx]->_colnum, __tokens[idx]->_linenum);
+                }
+                auto ignore = parse_expr(__tokens, idx, end_idx);
+                continue;
+            }
+
+        }
+
+        // Token is a control structure.
+        if (__tokens[idx]->_type == TOKEN_CTRL) {
+
+            // If left paren, parse as expression.
+            if (__tokens[idx]->_token == "(") {
+                size_t end_idx = find_nextof(__tokens, idx, ";");
+                if (end_idx == 0) {
+                    throw_error(ERR_UNEXP_EOF, "", __tokens[idx]->_colnum, __tokens[idx]->_linenum);
+                }
+                auto ignore = parse_expr(__tokens, idx, end_idx);
                 continue;
             }
 

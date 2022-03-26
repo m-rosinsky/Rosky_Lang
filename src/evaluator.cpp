@@ -12,7 +12,6 @@
 //                              error_handler.hpp
 //                              variable_handler.hpp
 //                              rosky_interface.hpp
-//                              rosky_int.hpp
 //
 //  Classes:                    None
 //
@@ -26,59 +25,51 @@
 
 /******************************************************************************/
 
-std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __root, bool __top) {
+std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __root,
+                                         VariableTable_T& __var_table, bool __top) {
 
-    /***********************************************/
-    /* Create the object based off the token type. */
-    /***********************************************/
+    // Operands
+    
+    if (__root->_type == PARSE_OPERAND) {
 
-    // Literals
-    if (__root->_value->_type == TOKEN_LIT_INT) {
-        return std::make_shared<RoskyInt>(std::stoi(__root->_value->_token));
-    }
-
-    // Symbols
-    if (__root->_value->_type == TOKEN_SYMBOL) {
-        auto ret = get_entry(__root->_value->_token);
-
-        // If this is the top level evaluation and the entry was nullptr,
-        // this is an error for unrecognized symbol.
-        if (__top && ret == nullptr) {
-            throw_error(ERR_UNREC_SYM, __root->_value->_token, __root->_value->_colnum, __root->_value->_linenum);
+        // If this is a top level evaluation and the root is nullptr,
+        // this means there was an unrecognized symbol.
+        if (__root->_obj == nullptr && __top) {
+            throw_error(ERR_UNREC_SYM, __root->_op, __root->_colnum, __root->_linenum);
         }
-        return ret;
+        return __root->_obj;
     }
 
-    /********************************************/
-    /*          Evaluate the operators.         */
-    /********************************************/
+    // Operators
 
     // Double left-right associative operators.
-    if (__root->_value->_type == TOKEN_OP_DLR) {
+    if (__root->_type == PARSE_OPERATOR) {
 
         // Create a temp storage for the return value and the left and right operands.
         std::shared_ptr<RoskyInterface> ret_obj = nullptr;
 
-        std::shared_ptr<RoskyInterface> left = evaluate(__root->_left, false);
-        std::shared_ptr<RoskyInterface> right = evaluate(__root->_right, false);
+        std::shared_ptr<RoskyInterface> left = evaluate(__root->_left, __var_table, false);
+        std::shared_ptr<RoskyInterface> right = evaluate(__root->_right, __var_table, false);
 
         // The right side of an op is never allowed to be nullptr. This means
         // a symbol was unrecognized. Throw an error.
         if (right == nullptr) {
-            throw_error(ERR_UNREC_SYM, __root->_right->_value->_token, __root->_right->_value->_colnum, __root->_right->_value->_linenum);
+            throw_error(ERR_UNREC_SYM, __root->_right->_op, __root->_right->_colnum, __root->_right->_linenum);
         }
 
         // The left side of the op is allowed to be nullptr on assignments,
         // so check those first.
-        if (is_assignment_op(__root->_value->_token)) {
+        if (is_assignment_op(__root->_op)) {
 
             // Simple Assignment.
-            if (__root->_value->_token == "=") {
-                set_entry(__root->_left->_value->_token, right);
+            if (__root->_op == "=") {
+                __var_table.set_entry(__root->_left->_op, right);
             }
 
+            // std::cout << get_entry(__root->_left->_op)->to_string() << std::endl;
+
             // ***DEBUG***
-            std::cout << __root->_left->_value->_token << " = " << right->to_string() << std::endl;
+            std::cout << __root->_left->_op << " = " << right->to_string() << std::endl;
             // ***DEBUG***
 
             // Return the right-side object.
@@ -87,14 +78,14 @@ std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __roo
         }
 
         // Now if the left side of the op is a nullptr, throw an error.
-        if ((!is_assignment_op(__root->_value->_token)) && left == nullptr) {
-            throw_error(ERR_UNREC_SYM, __root->_left->_value->_token, __root->_left->_value->_colnum, __root->_left->_value->_linenum);
+        if ((!is_assignment_op(__root->_op)) && left == nullptr) {
+            throw_error(ERR_UNREC_SYM, __root->_left->_op, __root->_left->_colnum, __root->_left->_linenum);
         }
 
-        if (__root->_value->_token == "+") {
+        if (__root->_op == "+") {
             ret_obj = left->add_op(right);
         }
-        if (__root->_value->_token == "*") {
+        if (__root->_op == "*") {
             ret_obj = left->mul_op(right);
         }
 
@@ -102,10 +93,10 @@ std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __roo
         if (ret_obj == nullptr) {
 
             // Construct the error message.
-            std::string err_msg = "'" + __root->_value->_token + "' with types: '";
+            std::string err_msg = "'" + __root->_op + "' with types: '";
             err_msg += left->get_type_string() + "' and '";
             err_msg += right->get_type_string() + "'";
-            throw_error(ERR_OP_INCOMPAT, err_msg, __root->_value->_colnum, __root->_value->_linenum);
+            throw_error(ERR_OP_INCOMPAT, err_msg, __root->_colnum, __root->_linenum);
         }
 
         // std::cout << ret_obj->to_string() << std::endl;
@@ -116,7 +107,8 @@ std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __roo
     }
 
     // Should never reach here, but for safety.
-    throw_error(ERR_UNEXP_OP, __root->_value->_token, __root->_value->_colnum, __root->_value->_linenum);
+    throw_error(ERR_UNEXP_OP, __root->_op, __root->_colnum, __root->_linenum);
+    return nullptr;
 
 }
 

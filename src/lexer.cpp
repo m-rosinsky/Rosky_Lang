@@ -114,7 +114,25 @@ void tokenize_src(const std::unique_ptr<Src_T>& __src) {
 
             // Push the token into the table.
             tokens.push_back(std::make_shared<Token_T>
-                (token, TOKEN_OP_DLR, colnum, linenum));
+                (token, TOKEN_OP_BIN, colnum, linenum));
+
+            // Reset the token and continue.
+            token = "";
+            idx++;
+            colnum++;
+            continue;
+
+        }
+
+        // Control Structures
+        if (is_ctrl_struct(__src->_data[idx])) {
+
+            // Add the operator to the current token.
+            token += __src->_data[idx];
+
+            // Push the token into the table.
+            tokens.push_back(std::make_shared<Token_T>
+                (token, TOKEN_CTRL, colnum, linenum));
 
             // Reset the token and continue.
             token = "";
@@ -204,12 +222,13 @@ void tokenize_src(const std::unique_ptr<Src_T>& __src) {
     }
 
     // ***DEBUG***
+    // std::cout << "TOKEN:\t| TYPE:\t| LINE:\t| COL:" << std::endl;
     // for (auto& tok : tokens) {
-    //     std::cout << tok->_token << "\t| " << TOKEN_STRINGS[tok->_type] << std::endl;
+    //     std::cout << tok->_token << "\t| " << TOKEN_STRINGS[tok->_type] << "\t| " << tok->_linenum << "\t| " << tok->_colnum << std::endl;
     // }
 
     // Send the token table to the parser.
-    parse(tokens);
+    parse(tokens, 0, tokens.size());
     return;
 
 }
