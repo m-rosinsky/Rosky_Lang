@@ -28,11 +28,11 @@ At the end of today, we could turn a source that looks like this:
 |:--:|
 
 Into a table of tokens like this:
-| ![alt text](https://i.imgur.com/bESIgbj.png "Token Table") |
+| ![alt text](https://i.imgur.com/bESIgbj.png "Token Table 1") |
 |:--:|
 
 Here's the current dependency diagram:
-| ![alt text](https://i.imgur.com/bjg6MZV.png "Token Table") |
+| ![alt text](https://i.imgur.com/bjg6MZV.png "Dependency Diagram 1") |
 |:--:|
 
 ## March 23, 2022
@@ -53,5 +53,27 @@ x = 2 + 3 * 4;
 ```
 
 We get a token table that looks like this:
+| ![alt text](https://i.imgur.com/UEP9xXg.png "Token Table 2") |
+|:--:|
 
 And the expression parser turns that table into a tree like this:
+| ![alt text](https://i.imgur.com/qyWSgKd.png "Parse Tree 1") |
+|:--:|
+
+From there the evaluator can perform the operations, including calling the variable table backend for storing variables on assignment. These variables can later be retreived (during evaluation) in an expression like this:
+```python
+y = x + 4;
+```
+
+* I've also created the error_handler which streamlines throwing different kinds of errors throughout execution. It nicely reports the column and line number that the error occured at from the stored metadata of the token. Like so:
+```python
+x = 2 +;
+```
+
+| ![alt text](https://i.imgur.com/AXLH8RU.png "Error Report 1") |
+|:--:|
+
+And here's what the dependency diagram is looking like now! Much more complex!
+| ![alt text](https://i.imgur.com/AXLH8RU.png "Error Report 1") |
+|:--:|
+
