@@ -23,4 +23,14 @@ I took the first week before putting my hands on keyboard prototyping different 
 * Added parsing of command line arguments borrowed from my last repo.
 * Created a source handler to read in the provided source file.
 
+At the end of today, we could turn a source that looks like this:
+| ![alt text](https://i.imgur.com/7uFTwvI.png "Source1") |
+|:--:|
+| *Figure 1.1: Source 1* |
+
+Into a table of tokens like this:
+| ![alt text](https://i.imgur.com/bESIgbj.png "Token Table") |
+|:--:|
+| *Figure 1.2: Token Table 1* |
+
 Here's the current dependency diagram:
