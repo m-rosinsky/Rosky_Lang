@@ -19,6 +19,7 @@
 //                              is_whitespace
 //                              is_op
 //                              is_delimiter
+//                              is_ctrl_struct
 //                              
 /******************************************************************************/
 
@@ -38,13 +39,16 @@ enum TOKEN_TYPE {
 
     // Generic
     TOKEN_SYMBOL,
-    TOKEN_OP_DLR,       // double left-right-associatve
+    TOKEN_OP_BIN,       // binary operator
     TOKEN_DELIM,        // delimiter
 
     // Literals
     TOKEN_LIT_INT,
     TOKEN_LIT_FLOAT,
     TOKEN_LIT_STRING,
+
+    // Control Structure
+    TOKEN_CTRL,
 
     // Keywords
     TOKEN_KW,
@@ -58,13 +62,16 @@ static std::vector<std::string> TOKEN_STRINGS = {
 
     // Generic
     "SYMB",
-    "OP",
+    "OP BI",
     "DELIM",
 
     // Literals
     "INT",
     "FLOAT",
-    "STRING",
+    "STRIN",
+
+    // Control Structure
+    "CTRL",
 
     // Keywords
     "KEYW",
@@ -138,6 +145,10 @@ inline bool is_op(char c) noexcept {
 
 inline bool is_delimiter(char c) noexcept {
     return (c == ';');
+}
+
+inline bool is_ctrl_struct(char c) noexcept {
+    return (c == '(') || (c == ')');
 }
 
 /******************************************************************************/
