@@ -32,3 +32,21 @@ Into a table of tokens like this:
 |:--:|
 
 Here's the current dependency diagram:
+| ![alt text](https://i.imgur.com/bjg6MZV.png "Token Table") |
+|:--:|
+
+## March 23, 2022
+
+Big day today.
+* Created the main parser, which takens in the token table and makes parsing decisions based on the tokens it encounters.
+* Created the expression parser, which turns a token table for an expression into a parse tree.
+* Created the evaluator which evaluates and acts on the parse tree.
+* Created the variable handler to manage the variable table, which for now is a basic map.
+* Created the object interface which defines the behavior of all built-in objects
+  * Created the first object, the integer, which inherits from the interface.
+
+I can already tell the expression parser and evaluator are going to be the most complex components of this project. I how elegant the expression parser is compared to my last attempt and how it uses the binary tree data structure.
+
+It takes a token table containing an expression such as this:
+
+And turns it into a parse tree to be evaluated, respecting order of operations:
