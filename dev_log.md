@@ -100,7 +100,7 @@ A few more structural changes today based off of a learning experience i had abo
 
 My workaround solution to this was to instantiate the things I had previously made static, which eliminated that nasty global variable "code smell" and replaces it with a nice RAII compliant design.
 
-I then got annoyed with having to pass around the instances of my classes such as the variable handler to every parse function, so i made the Parser into an object as well, which the lexer instantiates before passing in the token table. The parser keeps these class instances as class member's so all of it's sub components can use them rather than having to pass them into each function.
+I then got annoyed with having to pass around the instances of my classes such as the variable handler to every parse function, so i made the Parser into an object as well, which the lexer instantiates before passing in the token table. The parser keeps these class instances as class members so all of it's sub components can use them rather than having to pass them into each function.
 
 With that out of the way, I implemented variable scoping and the ```{``` and ```}``` tokens. Each variable is now stored with an associated scope attribute and when the current scope drops below the variable's scope, the variable is removed from the table. So a piece of code like this:
 ```python
