@@ -150,4 +150,4 @@ z = *ptr; # z is 6
 
 I like this change a lot. It also introduced the first unary operators in Rosky: the ```@``` operator and the ```*``` operator ('address of' and 'dereference' respectively. Which was a quick behavior edit in the expression parser.
 
-The dependency diagram has not changed, but the object backend now contains the parser class which inherits from the object interface.
+The dependency diagram has not changed, but the object backend now contains the pointer class which inherits from the object interface.
