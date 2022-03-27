@@ -123,7 +123,13 @@ The dependency diagram hasn't changed, so no updates there.
 
 Another entry in the same day. I added a second object type to the object backend, this time pointers. I think an inclusion of a raw pointer into an interpreted language is an appealing concept to tackle. Python purposefully stayed away from this feature. This is a quote from the webstie ```realpython.com```:
 ```
-Could pointers in Python exist natively? Probably, but pointers seem to go against the Zen of Python. Pointers encourage implicit changes rather than explicit. Often, they are complex instead of simple, especially for beginners. Even worse, they beg for ways to shoot yourself in the foot, or do something really dangerous like read from a section of memory you were not supposed to.
+"Could pointers in Python exist natively?
+Probably, but pointers seem to go against the Zen of Python.
+Pointers encourage implicit changes rather than explicit.
+Often, they are complex instead of simple, especially for beginners.
+Even worse, they beg for ways to shoot yourself in the foot,
+or do something really dangerous like read from a section of
+memory you were not supposed to."
 ```
 
 In my mind, I see Rosky as a quick and dirty scripting language. Want a quick script to parse through data, Rosky can do that! Throw up an impromptu socket listener, Rosky can do that! My language isn't meant to have any sort of safety handrails. I love the freedom that C++ and C gives with respect to memory management, and the ease of use of python. Rosky is the features I like from both languages put together into a feature-rich language that won't stop you from doing what you want to do (including blow your foot off).
