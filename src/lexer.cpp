@@ -114,7 +114,7 @@ void tokenize_src(std::unique_ptr<Src_T>& __src) {
 
             // Push the token into the table.
             tokens.push_back(std::make_shared<Token_T>
-                (token, TOKEN_OP_BIN, colnum, linenum));
+                (token, TOKEN_OP, colnum, linenum));
 
             // Reset the token and continue.
             token = "";

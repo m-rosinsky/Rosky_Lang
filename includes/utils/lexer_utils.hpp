@@ -39,7 +39,7 @@ enum TOKEN_TYPE {
 
     // Generic
     TOKEN_SYMBOL,
-    TOKEN_OP_BIN,       // binary operator
+    TOKEN_OP,       // binary operator
     TOKEN_DELIM,        // delimiter
 
     // Literals
@@ -62,7 +62,7 @@ static std::vector<std::string> TOKEN_STRINGS = {
 
     // Generic
     "SYMB",
-    "OP BI",
+    "OP",
     "DELIM",
 
     // Literals
@@ -136,7 +136,7 @@ inline bool is_whitespace(char c) noexcept {
 }
 
 inline bool is_op(char c) noexcept {
-    std::string op_string = "+*=";
+    std::string op_string = "+*=@";
     for (auto& op : op_string) {
         if (c == op) { return true; }
     }

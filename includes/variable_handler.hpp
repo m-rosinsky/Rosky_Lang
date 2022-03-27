@@ -83,14 +83,14 @@ public:
 
     }
 
-    // This function returns an entry within the variable table, or
-    // nullptr if the entry is not found.
-    inline std::shared_ptr<RoskyInterface> get_entry(const std::string& __var_name,
-                                                     size_t __scope) const noexcept {
+    // This function returns a pointer to the object of the entry
+    // with a given name, or nullptr if the entry does not exist.
+    inline std::shared_ptr<RoskyInterface>* get_entry(const std::string& __var_name,
+                                                      size_t __scope) noexcept {
 
         for (auto& var : var_table) {
             if (var._name == __var_name) {
-                return var._obj;
+                return &(var._obj);
             }
         }
 

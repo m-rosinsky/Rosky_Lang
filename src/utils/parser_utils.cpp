@@ -35,12 +35,13 @@
 /******************************************************************************/
 
 void insert_right(std::shared_ptr<ParseNode>& __root,
+                  std::shared_ptr<RoskyInterface>* __obj_adr,
                   const std::shared_ptr<RoskyInterface>& __obj,
                   const std::string& __sym_string,
                   size_t __col, size_t __lin) {
 
     // Create the new node.
-    std::shared_ptr<ParseNode> new_node = std::make_shared<ParseNode>(__obj, __sym_string, PARSE_OPERAND, __col, __lin);
+    std::shared_ptr<ParseNode> new_node = std::make_shared<ParseNode>(__obj_adr, __obj, __sym_string, PARSE_OPERAND, __col, __lin);
 
     // If the root node is null, replace it with the new node.
     if (__root == nullptr) {
@@ -71,10 +72,16 @@ void insert_op(std::shared_ptr<ParseNode>& __root,
                size_t __col, size_t __lin) {
 
     // Create the new node.
-    std::shared_ptr<ParseNode> new_node = std::make_shared<ParseNode>(nullptr, __op, PARSE_OPERATOR, __col, __lin);
+    std::shared_ptr<ParseNode> new_node = std::make_shared<ParseNode>(nullptr, nullptr, __op, PARSE_OPERATOR, __col, __lin);
 
     // Create a pointer to navigate the tree.
     std::shared_ptr<ParseNode> cur = __root;
+
+    // If the root is empty, insert the operator as root.
+    if (cur == nullptr) {
+        __root = new_node;
+        return;
+    }
 
     // while the current node is an operator.
     while (cur->_type == PARSE_OPERATOR) {
@@ -86,6 +93,17 @@ void insert_op(std::shared_ptr<ParseNode>& __root,
         if ((get_precedence(cur->_op) < get_precedence(__op)) ||
             (get_precedence(cur->_op) == get_precedence(__op) &&
              is_right_assoc(__op))) {
+
+            // If the right child is nullptr (only applies to unary ops),
+            // insert the operator to the right and return, otherwise
+            // continue.
+            if (cur->_right == nullptr) {
+
+                new_node->_parent = cur;
+                cur->_right = new_node;
+                return;
+
+            }
             cur = cur->_right;
             continue;
         }
@@ -214,21 +232,25 @@ size_t find_matching_ctrl(const std::deque<std::shared_ptr<Token_T>>& __tokens,
 
 /******************************************************************************/
 
-std::shared_ptr<RoskyInterface> form_object(const std::shared_ptr<Token_T>& __token,
-                                            std::unique_ptr<VariableTable_T>& __var_table,
-                                            size_t __scope) {
+std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
+    form_object(const std::shared_ptr<Token_T>& __token,
+                std::unique_ptr<VariableTable_T>& __var_table,
+                size_t __scope) {
 
     // Literals
     if (__token->_type == TOKEN_LIT_INT) {
-        return std::make_shared<RoskyInt>(std::stoi(__token->_token));
+        return {nullptr, std::make_shared<RoskyInt>(std::stoi(__token->_token))};
     }
 
     // Symbols
     if (__token->_type == TOKEN_SYMBOL) {
-        return __var_table->get_entry(__token->_token, __scope);
+        auto ret = __var_table->get_entry(__token->_token, __scope);
+        if (ret != nullptr) {
+            return {ret, *ret};
+        }
     }
 
-    return nullptr;
+    return {nullptr, nullptr};
 
 }
 

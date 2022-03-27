@@ -47,6 +47,7 @@ enum ERROR_TYPE {
     ERR_UNREC_SYM,
     ERR_OP_INCOMPAT,
     ERR_UNEXP_OP,
+    ERR_ADDR_TEMP,
 
 };
 
@@ -70,6 +71,7 @@ static std::vector<std::string> ERROR_STRINGS {
     "Unrecognized symbol",
     "Operator incompatible",
     "Unexpected operator",
+    "Attempt to get address of temporary",
 
 };
 

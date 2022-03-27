@@ -25,9 +25,10 @@
 
 /******************************************************************************/
 
-std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __root,
-                                         std::unique_ptr<VariableTable_T>& __var_table, bool __top,
-                                         size_t __scope) {
+std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
+    evaluate(const std::shared_ptr<ParseNode>& __root,
+             std::unique_ptr<VariableTable_T>& __var_table, bool __top,
+             size_t __scope) {
 
     // Operands
     
@@ -35,10 +36,11 @@ std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __roo
 
         // If this is a top level evaluation and the root is nullptr,
         // this means there was an unrecognized symbol.
-        if (__root->_obj == nullptr && __top) {
+        if (__root->is_nullptr() && __top) {
             throw_error(ERR_UNREC_SYM, __root->_op, __root->_colnum, __root->_linenum);
         }
-        return __root->_obj;
+        return {__root->_obj_adr, __root->_obj};
+
     }
 
     // Operators
@@ -47,14 +49,19 @@ std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __roo
     if (__root->_type == PARSE_OPERATOR) {
 
         // Create a temp storage for the return value and the left and right operands.
-        std::shared_ptr<RoskyInterface> ret_obj = nullptr;
+        std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> ret_obj = {nullptr, nullptr};
 
-        std::shared_ptr<RoskyInterface> left = evaluate(__root->_left, __var_table, false, __scope);
-        std::shared_ptr<RoskyInterface> right = evaluate(__root->_right, __var_table, false, __scope);
+        auto right = evaluate(__root->_right, __var_table, false, __scope);
+        std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> left = {nullptr, nullptr};
+
+        // If the operator is not unary, evaluate the left side.
+        if (!is_unary_eval_op(__root->_op)) {
+            left = evaluate(__root->_left, __var_table, false, __scope);
+        }
 
         // The right side of an op is never allowed to be nullptr. This means
         // a symbol was unrecognized. Throw an error.
-        if (right == nullptr) {
+        if (right.second == nullptr) {
             throw_error(ERR_UNREC_SYM, __root->_right->_op, __root->_right->_colnum, __root->_right->_linenum);
         }
 
@@ -64,13 +71,21 @@ std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __roo
 
             // Simple Assignment.
             if (__root->_op == "=") {
-                __var_table->set_entry(__root->_left->_op, right, __scope);
+
+                // If the left has an addressable object, simply overwrite it.
+                // Otherwise, set an entry.
+                if (left.first != nullptr) {
+                    *(left.first) = right.second;
+                } else {
+                    __var_table->set_entry(__root->_left->_op, right.second, __scope);
+                }
+
             }
 
             // std::cout << get_entry(__root->_left->_op)->to_string() << std::endl;
 
             // ***DEBUG***
-            std::cout << __root->_left->_op << " = " << right->to_string() << std::endl;
+            std::cout << __root->_left->_op << " = " << right.second->to_string() << std::endl;
             // ***DEBUG***
 
             // Return the right-side object.
@@ -78,25 +93,55 @@ std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __roo
 
         }
 
-        // Now if the left side of the op is a nullptr, throw an error.
-        if ((!is_assignment_op(__root->_op)) && left == nullptr) {
-            throw_error(ERR_UNREC_SYM, __root->_left->_op, __root->_left->_colnum, __root->_left->_linenum);
+        // If the left side of an op is nullptr.
+        if (left.second == nullptr) {
+
+            // The left side of the operator is allowed to be nullptr only
+            // on unary operators. If the left side of an op is nullptr
+            // on a non-unary operator, then there was an unrecognized
+            // symbol
+            if (!is_unary_eval_op(__root->_op)) {
+                throw_error(ERR_UNREC_SYM, __root->_left->_op, __root->_left->_colnum, __root->_left->_linenum);
+            }
+
         }
 
         if (__root->_op == "+") {
-            ret_obj = left->add_op(right);
-        }
-        if (__root->_op == "*") {
-            ret_obj = left->mul_op(right);
+            ret_obj = {nullptr, left.second->add_op(right.second)};
+        } else if (__root->_op == "*") {
+            ret_obj = {nullptr, left.second->mul_op(right.second)};
+        } else if (__root->_op == "de") {
+            ret_obj = right.second->deref_op();
+        } else if (__root->_op == "@") {
+            
+            // If the .first attribute of the right object is nullptr,
+            // then we are trying to get the address of a temporary.
+            if (right.first == nullptr) {
+                throw_error(ERR_ADDR_TEMP, "", __root->_colnum, __root->_linenum);
+            }
+
+            ret_obj = {nullptr, std::make_shared<RoskyPointer>(right.first)};
+
         }
 
         // If the ret_obj is nullptr, the operator was incompat.
-        if (ret_obj == nullptr) {
+        if (ret_obj.second == nullptr) {
 
-            // Construct the error message.
-            std::string err_msg = "'" + __root->_op + "' with types: '";
-            err_msg += left->get_type_string() + "' and '";
-            err_msg += right->get_type_string() + "'";
+            // Construct the error message
+            std::string err_op = __root->_op == "de" ? "deref" : __root->_op;
+
+            std::string err_msg = "'" + err_op + "'";
+
+            // Unary operator
+            if (left.second == nullptr) {
+                err_msg += " with type: '";
+                err_msg += right.second->get_type_string();
+            } else{
+                err_msg += " with types: '";
+                err_msg += left.second->get_type_string() + "' and '";
+                err_msg += right.second->get_type_string();
+            }
+
             throw_error(ERR_OP_INCOMPAT, err_msg, __root->_colnum, __root->_linenum);
         }
 
@@ -109,7 +154,7 @@ std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __roo
 
     // Should never reach here, but for safety.
     throw_error(ERR_UNEXP_OP, __root->_op, __root->_colnum, __root->_linenum);
-    return nullptr;
+    return {nullptr, nullptr};
 
 }
 

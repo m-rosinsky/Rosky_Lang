@@ -72,7 +72,7 @@ void Parser_T::parse(size_t __start_idx, size_t __end_idx, size_t __scope) {
         }
 
         // Token is an operator.
-        if (_tokens[idx]->_type == TOKEN_OP_BIN) {
+        if (_tokens[idx]->_type == TOKEN_OP) {
 
             // Only select prefix ops can be considered starters
             // of an expression, otherwise this check fails.

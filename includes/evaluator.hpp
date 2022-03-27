@@ -27,6 +27,7 @@
 /******************************************************************************/
 
 #include <memory>                       // std::shared_ptr
+#include <utility>                      // std::pair
 
 #include "utils/parser_utils.hpp"
 #include "utils/lexer_utils.hpp"
@@ -35,6 +36,7 @@
 #include "variable_handler.hpp"
 
 #include "objects/rosky_interface.hpp"
+#include "objects/rosky_pointer.hpp"
 
 /******************************************************************************/
 
@@ -43,10 +45,11 @@
 // evaluation fall on the parser.
 // The __top indicates if this is the top level evaluation in the
 // recursion stack. Recursive calls will set this to false.
-std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __root,
-                                         std::unique_ptr<VariableTable_T>& __var_table,
-                                         bool __top,
-                                         size_t __scope);
+std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
+    evaluate(const std::shared_ptr<ParseNode>& __root,
+             std::unique_ptr<VariableTable_T>& __var_table,
+             bool __top,
+             size_t __scope);
 
 /******************************************************************************/
 

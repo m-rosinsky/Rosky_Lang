@@ -28,6 +28,7 @@
 
 #include <memory>                   // std::shared_ptr
 #include <string>                   // std::string
+#include <utility>                  // std::pair
 
 /******************************************************************************/
 
@@ -35,7 +36,7 @@
 enum OBJ_TYPES {
 
     OBJ_INT,
-    OBJ_STRING,
+    OBJ_POINTER,
 
 };
 
@@ -45,6 +46,9 @@ enum OBJ_TYPES {
 class RoskyInterface {
 
 public:
+
+    // Virtual desctructor.
+    virtual ~RoskyInterface() {}
 
     // Type information.
     virtual OBJ_TYPES get_type_id() const noexcept = 0;
@@ -57,6 +61,9 @@ public:
     // Arithmetic operators.
     virtual std::shared_ptr<RoskyInterface> add_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
     virtual std::shared_ptr<RoskyInterface> mul_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
+
+    // Pointer operators.
+    virtual std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> deref_op() const noexcept { return {nullptr, nullptr}; }
 
 };
 

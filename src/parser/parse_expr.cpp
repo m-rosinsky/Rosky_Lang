@@ -32,7 +32,8 @@
 
 /******************************************************************************/
 
-std::shared_ptr<RoskyInterface> Parser_T::parse_expr(size_t& __idx, size_t __end_idx, size_t __scope) {
+std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
+    Parser_T::parse_expr(size_t& __idx, size_t __end_idx, size_t __scope) {
 
     // This flag determines if we are expecting an operator or not.
     bool expecting_op = false;
@@ -57,11 +58,11 @@ std::shared_ptr<RoskyInterface> Parser_T::parse_expr(size_t& __idx, size_t __end
             }
 
             // Form the object.
-            std::shared_ptr<RoskyInterface> obj = form_object(_tokens[__idx], _var_table, __scope);
+            auto obj_pair = form_object(_tokens[__idx], _var_table, __scope);
 
             // Continue down the right side of the tree until right child is null,
             // then insert self as right child.
-            insert_right(root, obj, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+            insert_right(root, obj_pair.first, obj_pair.second, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
 
             // Now expecting an operator.
             expecting_op = true;
@@ -94,12 +95,12 @@ std::shared_ptr<RoskyInterface> Parser_T::parse_expr(size_t& __idx, size_t __end
                 }
 
                 // Recursively call the parse_expr function with the new bounds.
-                std::shared_ptr<RoskyInterface> obj = parse_expr(++__idx, match_idx, __scope);
+                auto obj = parse_expr(++__idx, match_idx, __scope);
 
                 // Insert the result to the right.
                 // The token metadata doesn't matter because errors pertaining
                 // to evaluation of this object would have been caught already.
-                insert_right(root, obj, "", 0, 0);
+                insert_right(root, obj.first, obj.second, "", 0, 0);
 
                 // Now expecting an operator.
                 expecting_op = true;
@@ -110,15 +111,47 @@ std::shared_ptr<RoskyInterface> Parser_T::parse_expr(size_t& __idx, size_t __end
         }
 
         // Operator token type.
-        if (_tokens[__idx]->_type == TOKEN_OP_BIN) {
+        if (_tokens[__idx]->_type == TOKEN_OP) {
 
-            // If not expecting an op, throw an error (exits program).
+            // Hold the operator string.
+            std::string op_string = _tokens[__idx]->_token;
+
+            // If not expecting an operator.
             if (!expecting_op) {
-                throw_error(ERR_SYNTAX, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
-            }
 
-            // Insert the operator.
-            insert_op(root, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+                // If it's a unary operator, insert it.
+                if (is_unary_op(op_string)) {
+                    
+                    // Special case where the operator is '*', which in this
+                    // case is deref, set the op string to "de" to avoid
+                    // confusion.
+                    op_string = op_string == "*" ? "de" : op_string;
+
+                    // Insert the operator.
+                    insert_op(root, op_string, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+
+                } else {
+
+                    // Not a unary op, throw an error.
+                    throw_error(ERR_SYNTAX, op_string, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+
+                }
+
+            } else { // expecting operator.
+
+                // If it's a unary operator, only allow "*" which is multiply.
+                if (is_unary_op(op_string)) {
+
+                    if (op_string != "*") {
+                        throw_error(ERR_SYNTAX, op_string, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+                    }                    
+
+                }
+
+                // Insert the operator.
+                insert_op(root, op_string, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+
+            }
 
             // Now not expecting an operator.
             expecting_op = false;

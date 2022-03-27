@@ -40,6 +40,7 @@
 
 #include <deque>                        // std::deque
 #include <memory>                       // std::shared_ptr, std::unique_ptr
+#include <utility>                      // std::pair
 
 #include "utils/lexer_utils.hpp"
 #include "utils/parser_utils.hpp"
@@ -88,7 +89,7 @@ public:
     // This function is for parsing expressions. It forms the tokens into
     // an expression tree, and upon success feeds the tree into the evaluator
     // to get the result.
-    std::shared_ptr<RoskyInterface>
+    std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
         parse_expr(size_t& __idx, size_t __end_idx, size_t __scope);
 
 };
