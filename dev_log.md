@@ -118,5 +118,3 @@ Exiting...
 which is the behavior I want. I like the scoping rules that C and C++ offer, so I integrated that style into my language.
 
 The dependency diagram hasn't changed, so no updates there.
-
-HIIIIIII ANDREAAAAAAA
