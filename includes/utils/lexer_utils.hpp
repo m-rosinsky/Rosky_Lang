@@ -148,7 +148,8 @@ inline bool is_delimiter(char c) noexcept {
 }
 
 inline bool is_ctrl_struct(char c) noexcept {
-    return (c == '(') || (c == ')');
+    return (c == '(') || (c == ')') ||
+           (c == '{') || (c == '}');
 }
 
 /******************************************************************************/

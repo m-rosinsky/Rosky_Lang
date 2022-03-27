@@ -15,6 +15,7 @@
 //  Inherited Subprograms:      None
 //
 //  Exported Subprograms:       ctor
+//                              clean
 //                              
 /******************************************************************************/
 
@@ -66,6 +67,13 @@ struct Src_T {
         // Close the file.
         in_file.close();
 
+    }
+
+    // This function allows us to unload the raw source data,
+    // saving heap memory.
+    inline void clean() noexcept {
+        _data.clear();
+        _data.shrink_to_fit();
     }
 
 };

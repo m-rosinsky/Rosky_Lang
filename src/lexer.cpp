@@ -38,7 +38,7 @@
 
 /******************************************************************************/
 
-void tokenize_src(const std::unique_ptr<Src_T>& __src) {
+void tokenize_src(std::unique_ptr<Src_T>& __src) {
 
     // Create a deque to hold the token table.
     std::deque<std::shared_ptr<Token_T>> tokens;
@@ -226,10 +226,20 @@ void tokenize_src(const std::unique_ptr<Src_T>& __src) {
     // for (auto& tok : tokens) {
     //     std::cout << tok->_token << "\t| " << TOKEN_STRINGS[tok->_type] << "\t| " << tok->_linenum << "\t| " << tok->_colnum << std::endl;
     // }
+    // ***DEBUG***
+
+    // Now that tokenizing is completed, we can unload the raw
+    // source to save memory.
+    __src->clean();
+
+    // Instantiate the parser object.
+    Parser_T main_parser(tokens);
 
     // Send the token table to the parser.
-    parse(tokens, 0, tokens.size());
-    return;
+    // Start index -> 0
+    // end index -> tokens.size()
+    // scope -> 0
+    main_parser.parse(0, tokens.size(), 0);
 
 }
 

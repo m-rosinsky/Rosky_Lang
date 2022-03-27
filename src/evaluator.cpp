@@ -26,7 +26,8 @@
 /******************************************************************************/
 
 std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __root,
-                                         VariableTable_T& __var_table, bool __top) {
+                                         std::unique_ptr<VariableTable_T>& __var_table, bool __top,
+                                         size_t __scope) {
 
     // Operands
     
@@ -48,8 +49,8 @@ std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __roo
         // Create a temp storage for the return value and the left and right operands.
         std::shared_ptr<RoskyInterface> ret_obj = nullptr;
 
-        std::shared_ptr<RoskyInterface> left = evaluate(__root->_left, __var_table, false);
-        std::shared_ptr<RoskyInterface> right = evaluate(__root->_right, __var_table, false);
+        std::shared_ptr<RoskyInterface> left = evaluate(__root->_left, __var_table, false, __scope);
+        std::shared_ptr<RoskyInterface> right = evaluate(__root->_right, __var_table, false, __scope);
 
         // The right side of an op is never allowed to be nullptr. This means
         // a symbol was unrecognized. Throw an error.
@@ -63,7 +64,7 @@ std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __roo
 
             // Simple Assignment.
             if (__root->_op == "=") {
-                __var_table.set_entry(__root->_left->_op, right);
+                __var_table->set_entry(__root->_left->_op, right, __scope);
             }
 
             // std::cout << get_entry(__root->_left->_op)->to_string() << std::endl;

@@ -43,7 +43,10 @@
 // evaluation fall on the parser.
 // The __top indicates if this is the top level evaluation in the
 // recursion stack. Recursive calls will set this to false.
-std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __root, VariableTable_T& __var_table, bool __top = true);
+std::shared_ptr<RoskyInterface> evaluate(const std::shared_ptr<ParseNode>& __root,
+                                         std::unique_ptr<VariableTable_T>& __var_table,
+                                         bool __top,
+                                         size_t __scope);
 
 /******************************************************************************/
 

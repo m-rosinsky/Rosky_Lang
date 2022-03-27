@@ -61,10 +61,14 @@ class VariableTable_T {
     std::deque<VariableEntry_T> var_table;
 
 public:
+
+    VariableTable_T() {}
     
     // This function sets an entry within the variable table, overwriting
     // the previous entry.
-    inline void set_entry(const std::string& __var_name, const std::shared_ptr<RoskyInterface>& __val) noexcept {
+    inline void set_entry(const std::string& __var_name,
+                          const std::shared_ptr<RoskyInterface>& __val,
+                          size_t __scope) noexcept {
 
         // See if the entry already exists.
         for (auto& var : var_table) {
@@ -75,13 +79,14 @@ public:
         }
 
         // Create a new entry.
-        var_table.emplace_back(__var_name, __val, 0);
+        var_table.emplace_back(__var_name, __val, __scope);
 
     }
 
     // This function returns an entry within the variable table, or
     // nullptr if the entry is not found.
-    inline std::shared_ptr<RoskyInterface> get_entry(const std::string& __var_name) const noexcept {
+    inline std::shared_ptr<RoskyInterface> get_entry(const std::string& __var_name,
+                                                     size_t __scope) const noexcept {
 
         for (auto& var : var_table) {
             if (var._name == __var_name) {
@@ -90,6 +95,26 @@ public:
         }
 
         return nullptr;
+
+    }
+
+    // This function releases all variables above and including a given
+    // scope.
+    inline void release_above_scope(size_t __scope) noexcept {
+
+        std::deque<size_t> deletion;
+
+        size_t idx = 0;
+        for (auto& var : var_table) {
+            if (var._scope >= __scope) {
+                deletion.push_front(idx);
+            }
+            idx++;
+        }
+
+        for (auto it = deletion.begin(); it != deletion.end(); it++) {
+            var_table.erase(var_table.begin() + *it);
+        }
 
     }
 

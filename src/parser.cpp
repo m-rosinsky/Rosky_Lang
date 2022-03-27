@@ -20,7 +20,7 @@
 //                              variable_handler.hpp
 //                              rosky_interface.hpp
 //
-//  Classes:                    None
+//  Classes:                    Parser_T
 //
 //  Inherited Subprograms:      None
 //
@@ -33,8 +33,7 @@
 
 /******************************************************************************/
 
-void parse(const std::deque<std::shared_ptr<Token_T>>& __tokens,
-           size_t __start_idx, size_t __end_idx) {
+void Parser_T::parse(size_t __start_idx, size_t __end_idx, size_t __scope) {
 
     // Create an index iterator. The reason this is
     // chosen over a traditional std::iterator is
@@ -44,13 +43,13 @@ void parse(const std::deque<std::shared_ptr<Token_T>>& __tokens,
     size_t idx = __start_idx;
 
     // Check if the default was provided for the end index.
-    __end_idx = __end_idx == 0 ? __tokens.size() : __end_idx;
+    __end_idx = __end_idx == 0 ? _tokens.size() : __end_idx;
 
     // Iterate through the token table.
     for (; idx < __end_idx; idx++) {
 
         // Token is a keyword.
-        if (__tokens[idx]->_type == TOKEN_KW) {
+        if (_tokens[idx]->_type == TOKEN_KW) {
 
             std::cout << "Keyword" << std::endl;
             continue;
@@ -58,53 +57,86 @@ void parse(const std::deque<std::shared_ptr<Token_T>>& __tokens,
         }
 
         // Token is a symbol.
-        if (__tokens[idx]->_type == TOKEN_SYMBOL) {
+        if (_tokens[idx]->_type == TOKEN_SYMBOL) {
 
             // Check if the token is a function.
 
             // Token must be an expression.
-            size_t end_idx = find_nextof(__tokens, idx, ";");
+            size_t end_idx = find_nextof(_tokens, idx, ";");
             if (end_idx == 0) {
-                throw_error(ERR_UNEXP_EOF, "", __tokens[idx]->_colnum, __tokens[idx]->_linenum);
+                throw_error(ERR_UNEXP_EOF, "", _tokens[idx]->_colnum, _tokens[idx]->_linenum);
             }
-            auto ignore = parse_expr(__tokens, idx, end_idx);
+            auto ignore = parse_expr(idx, end_idx, __scope);
             continue;
 
         }
 
         // Token is an operator.
-        if (__tokens[idx]->_type == TOKEN_OP_BIN) {
+        if (_tokens[idx]->_type == TOKEN_OP_BIN) {
 
             // Only select prefix ops can be considered starters
             // of an expression, otherwise this check fails.
-            if (is_expr_op(__tokens[idx]->_token)) {
-                size_t end_idx = find_nextof(__tokens, idx, ";");
+            if (is_expr_op(_tokens[idx]->_token)) {
+                size_t end_idx = find_nextof(_tokens, idx, ";");
                 if (end_idx == 0) {
-                    throw_error(ERR_UNEXP_EOF, "", __tokens[idx]->_colnum, __tokens[idx]->_linenum);
+                    throw_error(ERR_UNEXP_EOF, "", _tokens[idx]->_colnum, _tokens[idx]->_linenum);
                 }
-                auto ignore = parse_expr(__tokens, idx, end_idx);
+                auto ignore = parse_expr(idx, end_idx, __scope);
                 continue;
             }
 
         }
 
         // Token is a control structure.
-        if (__tokens[idx]->_type == TOKEN_CTRL) {
+        if (_tokens[idx]->_type == TOKEN_CTRL) {
 
             // If left paren, parse as expression.
-            if (__tokens[idx]->_token == "(") {
-                size_t end_idx = find_nextof(__tokens, idx, ";");
+            if (_tokens[idx]->_token == "(") {
+                size_t end_idx = find_nextof(_tokens, idx, ";");
                 if (end_idx == 0) {
-                    throw_error(ERR_UNEXP_EOF, "", __tokens[idx]->_colnum, __tokens[idx]->_linenum);
+                    throw_error(ERR_UNEXP_EOF, "", _tokens[idx]->_colnum, _tokens[idx]->_linenum);
                 }
-                auto ignore = parse_expr(__tokens, idx, end_idx);
+                auto ignore = parse_expr(idx, end_idx, __scope);
+                continue;
+            }
+
+            // Left curly brace.
+            if (_tokens[idx]->_token == "{") {
+
+                // Find the matching brace.
+                size_t match_idx = find_matching_ctrl(_tokens, idx, "{");
+
+                // If the match is not found, throw an error.
+                if (match_idx == 0) {
+                    throw_error(ERR_UNCLOSED_BRACE, "", _tokens[idx]->_colnum, _tokens[idx]->_linenum);
+                }
+
+                // Increment the scope.
+                __scope++;
+                continue;
+
+            }
+
+            // Right curly brace.
+            if (_tokens[idx]->_token == "}") {
+                
+                // If the scope is already zero, throw an error.
+                if (__scope == 0) {
+                    throw_error(ERR_SYNTAX, "}", _tokens[idx]->_colnum, _tokens[idx]->_linenum);
+                }
+
+                // Release variables off the table above scope.
+                _var_table->release_above_scope(__scope);
+
+                // Decrement the scope.
+                __scope--;
                 continue;
             }
 
         }
 
         // Anything reaching here is considered a syntax error.
-        throw_error(ERR_SYNTAX, __tokens[idx]->_token, __tokens[idx]->_colnum, __tokens[idx]->_linenum);
+        throw_error(ERR_SYNTAX, _tokens[idx]->_token, _tokens[idx]->_colnum, _tokens[idx]->_linenum);
 
     }
 

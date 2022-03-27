@@ -42,6 +42,7 @@
 #include "source_handler.hpp"
 #include "error_handler.hpp"
 #include "parser.hpp"
+#include "variable_handler.hpp"
 
 #include "utils/lexer_utils.hpp"
 
@@ -49,7 +50,7 @@
 
 // This function is responsible for converting a formatted source
 // into a table of tokens for parsing.
-void tokenize_src(const std::unique_ptr<Src_T>& __src);
+void tokenize_src(std::unique_ptr<Src_T>& __src);
 
 /******************************************************************************/
 

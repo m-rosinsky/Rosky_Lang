@@ -13,7 +13,7 @@
 //                              The parser will catch logical as well as
 //                              syntactical errors.
 //
-//                              This file also owns the static instance
+//                              This file also owns the instance
 //                              of the variable handler backend.
 //
 //  Dependencies:               lexer_utils.hpp
@@ -23,11 +23,12 @@
 //                              variable_handler.hpp
 //                              rosky_interface.hpp
 //
-//  Classes:                    None
+//  Classes:                    Parser_T
 //
 //  Inherited Subprograms:      None
 //
-//  Exported Subprograms:       parse
+//  Exported Subprograms:       Ctor.
+//                              parse
 //                              parse_expr
 //                              
 /******************************************************************************/
@@ -51,25 +52,46 @@
 
 /******************************************************************************/
 
-// Create a static instance of the variable handler.
-static VariableTable_T var_table;
+// This class provides the definition for the parser object. It holds
+// instances the different components it needs to reference so that the
+// instances don't need to be passed to each seperate function of the
+// parser.
+class Parser_T {
 
-/******************************************************************************/
+private:
 
-// This function is the main 'brain' of the parser. It will look through
-// a provided token table and dispatch specialized parse functions based on
-// the tokens it encounters.
-void parse(const std::deque<std::shared_ptr<Token_T>>& __tokens,
-            size_t __start_idx, size_t __end_idx = 0);
+    // The token table object.
+    std::deque<std::shared_ptr<Token_T>> _tokens;
 
-/******************************************************************************/
+    // The variable table handler instance.
+    std::unique_ptr<VariableTable_T> _var_table;
 
-// This function is for parsing expressions. It forms the tokens into
-// an expression tree, and upon success feeds the tree into the evaluator
-// to get the result.
-extern std::shared_ptr<RoskyInterface>
-    parse_expr(const std::deque<std::shared_ptr<Token_T>>& __tokens,
-               size_t& __idx, size_t __end_idx);
+public:
+
+    // Ctor.
+    Parser_T(const std::deque<std::shared_ptr<Token_T>>& __tokens)
+        : _tokens(__tokens) {
+        
+        // Instantiate the variable handler.
+        _var_table = std::make_unique<VariableTable_T>();
+
+    }
+    
+    // This function is the main 'brain' of the parser. It will look through
+    // a provided token table and dispatch specialized parse functions based on
+    // the tokens it encounters.
+    void parse(size_t __start_idx, size_t __end_idx, size_t __scope);
+
+    // The following functions are defined in external files from
+    // the parser.cpp
+
+    // This function is for parsing expressions. It forms the tokens into
+    // an expression tree, and upon success feeds the tree into the evaluator
+    // to get the result.
+    std::shared_ptr<RoskyInterface>
+        parse_expr(size_t& __idx, size_t __end_idx, size_t __scope);
+
+};
 
 /******************************************************************************/
 

@@ -85,7 +85,8 @@ struct ParseNode {
     ParseNode(const std::shared_ptr<RoskyInterface>& __obj,
               const std::string __op, PARSE_NODE_TYPE __type,
               size_t __col, size_t __lin)
-        : _obj(__obj), _op(__op), _type(__type), _colnum(__col), _linenum(__lin) {}
+        : _obj(__obj), _op(__op), _type(__type), _colnum(__col), _linenum(__lin)
+        {}
 
 };
 
@@ -152,7 +153,8 @@ size_t find_matching_ctrl(const std::deque<std::shared_ptr<Token_T>>& __tokens,
 
 // This function forms objects out of a token.
 std::shared_ptr<RoskyInterface> form_object(const std::shared_ptr<Token_T>& __token,
-                                            const VariableTable_T& __var_table);
+                                            std::unique_ptr<VariableTable_T>& __var_table,
+                                            size_t __scope);
 
 /******************************************************************************/
 

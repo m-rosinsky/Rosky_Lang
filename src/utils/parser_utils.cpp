@@ -215,7 +215,8 @@ size_t find_matching_ctrl(const std::deque<std::shared_ptr<Token_T>>& __tokens,
 /******************************************************************************/
 
 std::shared_ptr<RoskyInterface> form_object(const std::shared_ptr<Token_T>& __token,
-                                            const VariableTable_T& __var_table) {
+                                            std::unique_ptr<VariableTable_T>& __var_table,
+                                            size_t __scope) {
 
     // Literals
     if (__token->_type == TOKEN_LIT_INT) {
@@ -224,7 +225,7 @@ std::shared_ptr<RoskyInterface> form_object(const std::shared_ptr<Token_T>& __to
 
     // Symbols
     if (__token->_type == TOKEN_SYMBOL) {
-        return __var_table.get_entry(__token->_token);
+        return __var_table->get_entry(__token->_token, __scope);
     }
 
     return nullptr;
