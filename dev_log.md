@@ -93,3 +93,28 @@ The expression parser will call itself recursively to evaluate the parentheses f
 No new files added with this change, but since the parser is now responsible for object creation we see it referencing the variable handler and the object backend. Here's the dependency diagram. I've cleaned up the diagram a little bit to only show the major components rather than every file.
 | ![alt text](https://i.imgur.com/6gIiLms.png "Dependency Diagram 3") |
 |:--:|
+
+## March 27, 2022
+
+A few more structural changes today based off of a learning experience i had about the ```static``` keyword in C++. I thought it worked similar to python global variables in that i define a static instance of something once and all external files will share the instance, but that wasn't the case.
+
+My workaround solution to this was to instantiate the things I had previously made static, which eliminated that nasty global variable "code smell" and replaces it with a nice RAII compliant design.
+
+I then got annoyed with having to pass around the instances of my classes such as the variable handler to every parse function, so i made the Parser into an object as well, which the lexer instantiates before passing in the token table. The parser keeps these class instances as class member's so all of it's sub components can use them rather than having to pass them into each function.
+
+With that out of the way, I implemented variable scoping and the ```{``` and ```}``` tokens. Each variable is now stored with an associate scope attribute and when the current scope drops below the variable's scope, the variable is removed from the table. So a piece of code like this:
+```python
+{
+    x = 4;
+}
+y = x;
+```
+will throw this error:
+```
+Error [Line 4 Column 5]: Unrecognized symbol: 'x'
+Exiting...
+```
+
+which is the behavior I want. I like the scoping rules that C and C++ offer, so I integrated that style into my language.
+
+The dependency diagram hasn't changed, so no updates there.
