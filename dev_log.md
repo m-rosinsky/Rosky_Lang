@@ -121,7 +121,8 @@ The dependency diagram hasn't changed, so no updates there.
 
 ---
 
-Another entry in the same day. I added a second object type to the object backend, this time pointers. I think an inclusion of a raw pointer into an interpreted language is an appealing concept to tackle. Python purposefully stayed away from this feature. This is a quote from the webstie ```realpython.com```:
+Another entry in the same day. I added a second object type to the object backend, this time pointers. I think an inclusion of a raw pointer into an interpreted language is an appealing concept to tackle. Python purposefully stayed away from this feature. This is a quote from the website ```realpython.com```:
+
 ```
 "Could pointers in Python exist natively?
 Probably, but pointers seem to go against the Zen of Python.
