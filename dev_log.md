@@ -118,3 +118,29 @@ Exiting...
 which is the behavior I want. I like the scoping rules that C and C++ offer, so I integrated that style into my language.
 
 The dependency diagram hasn't changed, so no updates there.
+
+---
+
+Another entry in the same day. I added a second object type to the object backend, this time pointers. I think an inclusion of a raw pointer into an interpreted language is an appealing concept to tackle. Python purposefully stayed away from this feature. This is a quote from the webstie ```realpython.com```:
+```
+Could pointers in Python exist natively? Probably, but pointers seem to go against the Zen of Python. Pointers encourage implicit changes rather than explicit. Often, they are complex instead of simple, especially for beginners. Even worse, they beg for ways to shoot yourself in the foot, or do something really dangerous like read from a section of memory you were not supposed to.
+```
+
+In my mind, I see Rosky as a quick and dirty scripting language. Want a quick script to parse through data, Rosky can do that! Throw up an impromptu socket listener, Rosky can do that! My language isn't meant to have any sort of safety handrails. I love the freedom that C++ and C gives with respect to memory management, and the ease of use of python. Rosky is the features I like from both languages put together into a feature-rich language that won't stop you from doing what you want to do (including blow your foot off).
+
+So pointers seems to naturally follow this mantra. It came with a host of different side-effects, such as having to restructure the parse tree again to contain underlying _pointers_ to objects, rather than just the objects. When we pass objects around in a parse tree, or during evaluation, copies of the objects are made (it's actually in a shared_ptr but the concept is the same). This means that when we edit a raw object, it's editing the copy, and the actual data in the variable table, for instance, isn't affected. So we have to carry a pointer to the actual data if it's applicable. Makes the parse nodes in the tree a pointer heavier, but that's ok.
+
+Now we can do things like this. Don't see this in Python!
+```python
+x = 4;
+
+ptr = @x; # I use the '@' operator for 'address of'
+
+*ptr = 6; # x is now 6 via dereference
+
+z = *ptr; # z is 6
+```
+
+I like this change a lot. It also introduced the first unary operators in Rosky: the ```@``` operator and the ```*``` operator ('address of' and 'dereference' respectively. Which was a quick behavior edit in the expression parser.
+
+The dependency diagram has not changed, but the object backend now contains the parser class which inherits from the object interface.
