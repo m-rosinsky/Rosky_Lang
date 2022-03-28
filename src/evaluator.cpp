@@ -69,6 +69,12 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
         // so check those first.
         if (is_assignment_op(__root->_op)) {
 
+            // If the left side of the assign is unassignable, but not null
+            // (new entry), throw an error.
+            if (left.first == nullptr && left.second != nullptr) {
+                throw_error(ERR_BAD_ASSIGN, "", __root->_colnum, __root->_linenum);
+            }
+
             // Simple Assignment.
             if (__root->_op == "=") {
 
