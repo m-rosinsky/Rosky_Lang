@@ -25,11 +25,11 @@ CFG_LIB=
 CFG_OBJ=
 COMMON_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/lexer.o $(OUTDIR)/main.o \
 	$(OUTDIR)/parse_expr.o $(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o \
-	$(OUTDIR)/rosky_int.o 
+	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_pointer.o 
 OBJ=$(COMMON_OBJ) $(CFG_OBJ)
 ALL_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/lexer.o $(OUTDIR)/main.o \
 	$(OUTDIR)/parse_expr.o $(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o \
-	$(OUTDIR)/rosky_int.o 
+	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_pointer.o 
 
 COMPILE=g++ -c    -g -o "$(OUTDIR)/$(*F).o" $(CFG_INC) "$<"
 LINK=g++  -g -o "$(OUTFILE)" $(OBJ) $(CFG_LIB)
@@ -162,11 +162,11 @@ CFG_LIB=
 CFG_OBJ=
 COMMON_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/lexer.o $(OUTDIR)/main.o \
 	$(OUTDIR)/parse_expr.o $(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o \
-	$(OUTDIR)/rosky_int.o 
+	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_pointer.o 
 OBJ=$(COMMON_OBJ) $(CFG_OBJ)
 ALL_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/lexer.o $(OUTDIR)/main.o \
 	$(OUTDIR)/parse_expr.o $(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o \
-	$(OUTDIR)/rosky_int.o 
+	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_pointer.o 
 
 COMPILE=g++ -c   -o "$(OUTDIR)/$(*F).o" $(CFG_INC) "$<"
 LINK=g++  -o "$(OUTFILE)" $(OBJ) $(CFG_LIB)
