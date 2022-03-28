@@ -145,7 +145,7 @@ ptr = @x; # I use the '@' operator for 'address of'
 
 *ptr = 6; # x is now 6 via dereference
 
-z = *ptr; # z is 6
+z = x; # z is 6
 ```
 
 I like this change a lot. It also introduced the first unary operators in Rosky: the ```@``` operator and the ```*``` operator ('address of' and 'dereference' respectively. Which was a quick behavior edit in the expression parser.
