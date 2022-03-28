@@ -9,8 +9,8 @@
 //
 //  Dependencies:               lexer_utils.hpp
 //                              variable_handler.hpp
-//                              rosky_interface.hpp
-//                              rosky_int.hpp
+//                              
+//                              all object definition files
 //
 //  Classes:                    ParseNode
 //
@@ -46,6 +46,8 @@
 #include "../variable_handler.hpp"
 #include "../objects/rosky_interface.hpp"
 #include "../objects/rosky_int.hpp"
+#include "../objects/rosky_pointer.hpp"
+#include "../objects/rosky_null.hpp"
 
 /******************************************************************************/
 

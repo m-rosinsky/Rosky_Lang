@@ -46,6 +46,12 @@ long RoskyPointer::to_int() const noexcept {
 }
 
 std::string RoskyPointer::to_string() const noexcept {
+
+    // Special case for nullptr.
+    if (_data == nullptr) {
+        return "0x0";
+    }
+
     // Cast the address the data pointer is holding to a string
     std::stringstream ss;
     ss << _data;

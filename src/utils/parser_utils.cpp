@@ -250,6 +250,18 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
         }
     }
 
+    // Keywords
+    if (__token->_type == TOKEN_KW) {
+
+        if (__token->_token == "null") {
+            return {nullptr, std::make_shared<RoskyNull>()};
+        }
+        if (__token->_token == "nullptr") {
+            return {nullptr, std::make_shared<RoskyPointer>(nullptr)};
+        }
+
+    }
+
     return {nullptr, nullptr};
 
 }

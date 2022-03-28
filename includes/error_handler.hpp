@@ -42,6 +42,7 @@ enum ERROR_TYPE {
     ERR_UNCLOSED_BRACE,
     ERR_UNCLOSED_PAREN,
     ERR_EMPTY_PARENS,
+    ERR_RESERVED_USE,
 
     // Evaluator errors.
     ERR_UNREC_SYM,
@@ -49,6 +50,7 @@ enum ERROR_TYPE {
     ERR_UNEXP_OP,
     ERR_ADDR_TEMP,
     ERR_BAD_ASSIGN,
+    ERR_DEREF_NULLPTR,
 
 };
 
@@ -67,6 +69,7 @@ static std::vector<std::string> ERROR_STRINGS {
     "Unclosed curly brace",
     "Unclosed parentheses",
     "Empty parentheses",
+    "Bad use of reserved keyword",
 
     // Evaluator errors.
     "Unrecognized symbol",
@@ -74,6 +77,7 @@ static std::vector<std::string> ERROR_STRINGS {
     "Unexpected operator",
     "Attempt to get address of temporary",
     "Attempt to assign to r-value",
+    "Attempt to dereference a nullptr",
 
 };
 
@@ -101,5 +105,3 @@ inline void throw_error(ERROR_TYPE __err, const std::string& __msg,
 /******************************************************************************/
 
 #endif // ERROR_HANDLER
-
-/******************************************************************************/

@@ -37,6 +37,7 @@ enum OBJ_TYPES {
 
     OBJ_INT,
     OBJ_POINTER,
+    OBJ_NULL,
 
 };
 

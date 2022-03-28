@@ -80,6 +80,16 @@ static std::vector<std::string> TOKEN_STRINGS = {
 
 /******************************************************************************/
 
+// This defines the keywords that are recognized by the lexer.
+static std::vector<std::string> keywords = {
+    "false",
+    "true",
+    "null",
+    "nullptr",
+};
+
+/******************************************************************************/
+
 // This struct defines the token class. It contains the
 // raw token itself, along with metadata.
 struct Token_T {
@@ -150,6 +160,13 @@ inline bool is_delimiter(char c) noexcept {
 inline bool is_ctrl_struct(char c) noexcept {
     return (c == '(') || (c == ')') ||
            (c == '{') || (c == '}');
+}
+
+inline bool is_keyword(const std::string& s) noexcept {
+    for (auto& kw : keywords) {
+        if (kw == s) { return true; }
+    }
+    return false;
 }
 
 /******************************************************************************/

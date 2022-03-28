@@ -51,7 +51,14 @@ void Parser_T::parse(size_t __start_idx, size_t __end_idx, size_t __scope) {
         // Token is a keyword.
         if (_tokens[idx]->_type == TOKEN_KW) {
 
-            std::cout << "Keyword" << std::endl;
+            // Check keyword and parse accordingly.
+
+            // Keyword will be parsed as expression.
+            size_t end_idx = find_nextof(_tokens, idx, ";");
+            if (end_idx == 0) {
+                throw_error(ERR_UNEXP_EOF, "", _tokens[idx]->_colnum, _tokens[idx]->_linenum);
+            }
+            auto ignore = parse_expr(idx, end_idx, __scope);
             continue;
 
         }

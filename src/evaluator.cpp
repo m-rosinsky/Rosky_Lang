@@ -112,12 +112,19 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
         }
 
+        // Perform the operation.
         if (__root->_op == "+") {
             ret_obj = {nullptr, left.second->add_op(right.second)};
         } else if (__root->_op == "*") {
             ret_obj = {nullptr, left.second->mul_op(right.second)};
         } else if (__root->_op == "de") {
             ret_obj = right.second->deref_op();
+
+            // Special case where we try to dereference a nullptr.
+            if (ret_obj.second == nullptr && right.second->get_type_id() == OBJ_POINTER) {
+                throw_error(ERR_DEREF_NULLPTR, "", __root->_colnum, __root->_linenum);
+            }
+
         } else if (__root->_op == "@") {
             
             // If the .first attribute of the right object is nullptr,
@@ -145,7 +152,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
             } else{
                 err_msg += " with types: '";
                 err_msg += left.second->get_type_string() + "' and '";
-                err_msg += right.second->get_type_string();
+                err_msg += right.second->get_type_string() + "'";
             }
 
             throw_error(ERR_OP_INCOMPAT, err_msg, __root->_colnum, __root->_linenum);

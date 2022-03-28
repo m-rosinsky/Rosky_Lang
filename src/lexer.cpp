@@ -203,9 +203,13 @@ void tokenize_src(std::unique_ptr<Src_T>& __src) {
                 colnum++;
             }
 
+            // Determine a token type based on if the token
+            // is a keyword.
+            TOKEN_TYPE t = is_keyword(token) ? TOKEN_KW : TOKEN_SYMBOL;
+
             // Push the token into the table.
             tokens.push_back(std::make_shared<Token_T>
-                             (token, TOKEN_SYMBOL, start_col, linenum));
+                             (token, t, start_col, linenum));
 
             // Reset the token and continue.
             token = "";

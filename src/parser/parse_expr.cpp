@@ -70,6 +70,31 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
         }
 
+        // Keyword.
+        if (_tokens[__idx]->_type == TOKEN_KW) {
+
+            // If we are expecting an op, throw an error.
+            if (expecting_op) {
+                throw_error(ERR_SYNTAX, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+            }
+
+            // Form the object.
+            auto obj_pair = form_object(_tokens[__idx], _var_table, __scope);
+
+            // If the object is null, the keyword is an illegal use.
+            if (obj_pair.first == nullptr && obj_pair.second == nullptr) {
+                throw_error(ERR_RESERVED_USE, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+            }
+
+            // Insert right.
+            insert_right(root, obj_pair.first, obj_pair.second, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+
+            // Now expecting an operator.
+            expecting_op = true;
+            continue;
+
+        }
+
         // Parentheses.
         if (_tokens[__idx]->_type == TOKEN_CTRL) {
 
