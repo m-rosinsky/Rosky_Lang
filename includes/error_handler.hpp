@@ -48,6 +48,7 @@ enum ERROR_TYPE {
     ERR_OP_INCOMPAT,
     ERR_UNEXP_OP,
     ERR_ADDR_TEMP,
+    ERR_BAD_ASSIGN,
 
 };
 
@@ -72,6 +73,7 @@ static std::vector<std::string> ERROR_STRINGS {
     "Operator incompatible",
     "Unexpected operator",
     "Attempt to get address of temporary",
+    "Attempt to assign to r-value",
 
 };
 
