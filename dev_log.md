@@ -133,7 +133,7 @@ or do something really dangerous like read from a section of
 memory you were not supposed to."
 ```
 
-In my mind, I see Rosky as a quick and dirty scripting language. Want a quick script to parse through data, Rosky can do that! Throw up an impromptu socket listener, Rosky can do that! My language isn't meant to have any sort of safety handrails. I love the freedom that C++ and C gives with respect to memory management, and the ease of use of python. Rosky is the features I like from both languages put together into a feature-rich language that won't stop you from doing what you want to do (including blow your foot off).
+In my mind, I see Rosky as a quick and dirty scripting language. My language isn't meant to have any sort of safety handrails. I love the freedom that C++ and C gives with respect to memory management, and the ease of use of python. Rosky is the features I like from both languages put together into a feature-rich language that won't stop you from doing what you want to do (including blow your foot off).
 
 So pointers seems to naturally follow this mantra. It came with a host of different side-effects, such as having to restructure the parse tree again to contain underlying _pointers_ to objects, rather than just the objects. When we pass objects around in a parse tree, or during evaluation, copies of the objects are made (it's actually in a shared_ptr but the concept is the same). This means that when we edit a raw object, it's editing the copy, and the actual data in the variable table, for instance, isn't affected. So we have to carry a pointer to the actual data if it's applicable. Makes the parse nodes in the tree a pointer heavier, but that's ok.
 
