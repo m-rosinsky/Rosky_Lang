@@ -191,7 +191,7 @@ As of right now, I've only implemented built-in functions. User defined function
 
 When a function is encountered by the expression parser, it is handed off to the function parser, which formats the provided arguments (throwing errors if necessary) and then calling the ```call_function``` function of the backend to execute the built-in function given the arguments.
 
-The two built-in functions I've implemented so far is ```out``` and ```outln``` which are really the same thing except ```outln``` inserts a new line after. Both of these function print a given argument to standard output. Like so:
+The two built-in functions I've implemented so far is ```out``` and ```outln``` which are really the same thing except ```outln``` inserts a new line after. Both of these functions print a given argument to standard output. Like so:
 
 ```python
 x = 4;
@@ -218,3 +218,7 @@ out = 2;
 Error [Line 1 Column 1]: Syntax error: 'Illegal use of reserved function name 'out''
 Exiting...
 ```
+
+Here's what the dependency diagram is looking like now. Note the addition of the function handler in the backend:
+| ![alt text](https://i.imgur.com/ARaTcxP.png "Dependency Diagram 4") |
+|:--:|
