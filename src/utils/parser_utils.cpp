@@ -244,6 +244,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
     // Symbols
     if (__token->_type == TOKEN_SYMBOL) {
+
         auto ret = __var_table->get_entry(__token->_token, __scope);
         if (ret != nullptr) {
             return {ret, *ret};

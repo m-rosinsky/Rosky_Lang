@@ -21,6 +21,7 @@
 //                              error_handler.hpp
 //                              evaluator.hpp
 //                              variable_handler.hpp
+//                              function_handler.hpp
 //                              rosky_interface.hpp
 //
 //  Classes:                    Parser_T
@@ -41,6 +42,7 @@
 #include <deque>                        // std::deque
 #include <memory>                       // std::shared_ptr, std::unique_ptr
 #include <utility>                      // std::pair
+#include <vector>                       // std::vector
 
 #include "utils/lexer_utils.hpp"
 #include "utils/parser_utils.hpp"
@@ -48,6 +50,7 @@
 #include "error_handler.hpp"
 #include "evaluator.hpp"
 #include "variable_handler.hpp"
+#include "function_handler.hpp"
 
 #include "objects/rosky_interface.hpp"
 
@@ -67,6 +70,9 @@ private:
     // The variable table handler instance.
     std::unique_ptr<VariableTable_T> _var_table;
 
+    // The function table handler instance.
+    std::unique_ptr<FunctionTable_T> _func_table;
+
 public:
 
     // Ctor.
@@ -75,6 +81,9 @@ public:
         
         // Instantiate the variable handler.
         _var_table = std::make_unique<VariableTable_T>();
+
+        // Instantiate the function handler.
+        _func_table = std::make_unique<FunctionTable_T>();
 
     }
     
@@ -91,6 +100,12 @@ public:
     // to get the result.
     std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
         parse_expr(size_t& __idx, size_t __end_idx, size_t __scope);
+
+    // This function is for parsing function calls. It forms objects from the
+    // arguments and calls upon the function handler to evaluate the
+    // provided function along with its arguments.
+    std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
+        parse_func(size_t& __idx, size_t __end_idx, size_t __scope);
 
 };
 

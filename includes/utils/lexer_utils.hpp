@@ -154,7 +154,7 @@ inline bool is_op(char c) noexcept {
 }
 
 inline bool is_delimiter(char c) noexcept {
-    return (c == ';');
+    return (c == ';') || (c == ',');
 }
 
 inline bool is_ctrl_struct(char c) noexcept {

@@ -88,12 +88,6 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
             }
 
-            // std::cout << get_entry(__root->_left->_op)->to_string() << std::endl;
-
-            // ***DEBUG***
-            std::cout << __root->_left->_op << " = " << right.second->to_string() << std::endl;
-            // ***DEBUG***
-
             // Return the right-side object.
             return right;
 

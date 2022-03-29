@@ -48,9 +48,8 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     // Iterate through the token table.
     for (; __idx < __end_idx; __idx++) {
 
-        // Literal token type or symbol.
-        if (is_literal(_tokens[__idx]->_type) ||
-            _tokens[__idx]->_type == TOKEN_SYMBOL) {
+        // Literal token type.
+        if (is_literal(_tokens[__idx]->_type)) {
 
             // If we are expecting an op, throw an error (exits program).
             if (expecting_op) {
@@ -62,6 +61,39 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
             // Continue down the right side of the tree until right child is null,
             // then insert self as right child.
+            insert_right(root, obj_pair.first, obj_pair.second, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+
+            // Now expecting an operator.
+            expecting_op = true;
+            continue;
+
+        }
+
+        // Symbol.
+        if (_tokens[__idx]->_type == TOKEN_SYMBOL) {
+
+            // If we are expecting an op, throw an error.
+            if (expecting_op) {
+                throw_error(ERR_SYNTAX, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+            }
+
+            // Create a temporary for the object pair
+            std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> obj_pair = {nullptr, nullptr};
+
+            // Check if the symbol is the name of a function.
+            if (_func_table->is_function(_tokens[__idx]->_token)) {
+
+                // Parse the function and get the result.
+                obj_pair = parse_func(__idx, _tokens.size(), __scope);
+
+            } else {
+
+                // symbol is treated as a variable name.
+                obj_pair = form_object(_tokens[__idx], _var_table, __scope);
+
+            }
+
+            // Insert the object pair right.
             insert_right(root, obj_pair.first, obj_pair.second, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
 
             // Now expecting an operator.

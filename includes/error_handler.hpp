@@ -52,6 +52,10 @@ enum ERROR_TYPE {
     ERR_BAD_ASSIGN,
     ERR_DEREF_NULLPTR,
 
+    // Function errors.
+    ERR_BAD_FUNC_ARGS,
+    ERR_EMPTY_ARG,
+
 };
 
 /******************************************************************************/
@@ -78,6 +82,10 @@ static std::vector<std::string> ERROR_STRINGS {
     "Attempt to get address of temporary",
     "Attempt to assign to r-value",
     "Attempt to dereference a nullptr",
+
+    // Function errors.
+    "Improper function arguments",
+    "Empty argument",
 
 };
 

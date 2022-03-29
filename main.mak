@@ -23,15 +23,17 @@ OUTFILE=$(OUTDIR)/rosky.exe
 CFG_INC=
 CFG_LIB=
 CFG_OBJ=
-COMMON_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/lexer.o $(OUTDIR)/main.o \
-	$(OUTDIR)/parse_expr.o $(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o \
-	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
-	$(OUTDIR)/rosky_pointer.o 
+COMMON_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
+	$(OUTDIR)/lexer.o $(OUTDIR)/main.o $(OUTDIR)/native_functions.o \
+	$(OUTDIR)/parse_expr.o $(OUTDIR)/parse_func.o $(OUTDIR)/parser.o \
+	$(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_int.o \
+	$(OUTDIR)/rosky_null.o $(OUTDIR)/rosky_pointer.o 
 OBJ=$(COMMON_OBJ) $(CFG_OBJ)
-ALL_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/lexer.o $(OUTDIR)/main.o \
-	$(OUTDIR)/parse_expr.o $(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o \
-	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
-	$(OUTDIR)/rosky_pointer.o 
+ALL_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
+	$(OUTDIR)/lexer.o $(OUTDIR)/main.o $(OUTDIR)/native_functions.o \
+	$(OUTDIR)/parse_expr.o $(OUTDIR)/parse_func.o $(OUTDIR)/parser.o \
+	$(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_int.o \
+	$(OUTDIR)/rosky_null.o $(OUTDIR)/rosky_pointer.o 
 
 COMPILE=g++ -c    -g -o "$(OUTDIR)/$(*F).o" $(CFG_INC) "$<"
 LINK=g++  -g -o "$(OUTFILE)" $(OBJ) $(CFG_LIB)
@@ -51,6 +53,9 @@ $(OUTDIR)/%.o : %.cpp
 $(OUTDIR)/%.o : src/%.cpp
 	$(COMPILE)
 
+$(OUTDIR)/%.o : src/functions/%.cpp
+	$(COMPILE)
+
 $(OUTDIR)/%.o : src/parser/%.cpp
 	$(COMPILE)
 
@@ -64,6 +69,9 @@ $(OUTDIR)/%.o : %.ada
 	$(COMPILE_ADA)
 
 $(OUTDIR)/%.o : src/%.ada
+	$(COMPILE_ADA)
+
+$(OUTDIR)/%.o : src/functions/%.ada
 	$(COMPILE_ADA)
 
 $(OUTDIR)/%.o : src/parser/%.ada
@@ -81,6 +89,9 @@ $(OUTDIR)/%.o : %.d
 $(OUTDIR)/%.o : src/%.d
 	$(COMPILE_D)
 
+$(OUTDIR)/%.o : src/functions/%.d
+	$(COMPILE_D)
+
 $(OUTDIR)/%.o : src/parser/%.d
 	$(COMPILE_D)
 
@@ -94,6 +105,9 @@ $(OUTDIR)/%.o : %.adb
 	$(COMPILE_ADB)
 
 $(OUTDIR)/%.o : src/%.adb
+	$(COMPILE_ADB)
+
+$(OUTDIR)/%.o : src/functions/%.adb
 	$(COMPILE_ADB)
 
 $(OUTDIR)/%.o : src/parser/%.adb
@@ -111,6 +125,9 @@ $(OUTDIR)/%.o : %.f90
 $(OUTDIR)/%.o : src/%.f90
 	$(COMPILE_F90)
 
+$(OUTDIR)/%.o : src/functions/%.f90
+	$(COMPILE_F90)
+
 $(OUTDIR)/%.o : src/parser/%.f90
 	$(COMPILE_F90)
 
@@ -124,6 +141,9 @@ $(OUTDIR)/%.o : %.f
 	$(COMPILE_F)
 
 $(OUTDIR)/%.o : src/%.f
+	$(COMPILE_F)
+
+$(OUTDIR)/%.o : src/functions/%.f
 	$(COMPILE_F)
 
 $(OUTDIR)/%.o : src/parser/%.f
@@ -162,15 +182,17 @@ OUTFILE=$(OUTDIR)/rosky.exe
 CFG_INC=
 CFG_LIB=
 CFG_OBJ=
-COMMON_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/lexer.o $(OUTDIR)/main.o \
-	$(OUTDIR)/parse_expr.o $(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o \
-	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
-	$(OUTDIR)/rosky_pointer.o 
+COMMON_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
+	$(OUTDIR)/lexer.o $(OUTDIR)/main.o $(OUTDIR)/native_functions.o \
+	$(OUTDIR)/parse_expr.o $(OUTDIR)/parse_func.o $(OUTDIR)/parser.o \
+	$(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_int.o \
+	$(OUTDIR)/rosky_null.o $(OUTDIR)/rosky_pointer.o 
 OBJ=$(COMMON_OBJ) $(CFG_OBJ)
-ALL_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/lexer.o $(OUTDIR)/main.o \
-	$(OUTDIR)/parse_expr.o $(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o \
-	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
-	$(OUTDIR)/rosky_pointer.o 
+ALL_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
+	$(OUTDIR)/lexer.o $(OUTDIR)/main.o $(OUTDIR)/native_functions.o \
+	$(OUTDIR)/parse_expr.o $(OUTDIR)/parse_func.o $(OUTDIR)/parser.o \
+	$(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_int.o \
+	$(OUTDIR)/rosky_null.o $(OUTDIR)/rosky_pointer.o 
 
 COMPILE=g++ -c   -o "$(OUTDIR)/$(*F).o" $(CFG_INC) "$<"
 LINK=g++  -o "$(OUTFILE)" $(OBJ) $(CFG_LIB)
@@ -190,6 +212,9 @@ $(OUTDIR)/%.o : %.cpp
 $(OUTDIR)/%.o : src/%.cpp
 	$(COMPILE)
 
+$(OUTDIR)/%.o : src/functions/%.cpp
+	$(COMPILE)
+
 $(OUTDIR)/%.o : src/parser/%.cpp
 	$(COMPILE)
 
@@ -203,6 +228,9 @@ $(OUTDIR)/%.o : %.ada
 	$(COMPILE_ADA)
 
 $(OUTDIR)/%.o : src/%.ada
+	$(COMPILE_ADA)
+
+$(OUTDIR)/%.o : src/functions/%.ada
 	$(COMPILE_ADA)
 
 $(OUTDIR)/%.o : src/parser/%.ada
@@ -220,6 +248,9 @@ $(OUTDIR)/%.o : %.d
 $(OUTDIR)/%.o : src/%.d
 	$(COMPILE_D)
 
+$(OUTDIR)/%.o : src/functions/%.d
+	$(COMPILE_D)
+
 $(OUTDIR)/%.o : src/parser/%.d
 	$(COMPILE_D)
 
@@ -233,6 +264,9 @@ $(OUTDIR)/%.o : %.adb
 	$(COMPILE_ADB)
 
 $(OUTDIR)/%.o : src/%.adb
+	$(COMPILE_ADB)
+
+$(OUTDIR)/%.o : src/functions/%.adb
 	$(COMPILE_ADB)
 
 $(OUTDIR)/%.o : src/parser/%.adb
@@ -250,6 +284,9 @@ $(OUTDIR)/%.o : %.f90
 $(OUTDIR)/%.o : src/%.f90
 	$(COMPILE_F90)
 
+$(OUTDIR)/%.o : src/functions/%.f90
+	$(COMPILE_F90)
+
 $(OUTDIR)/%.o : src/parser/%.f90
 	$(COMPILE_F90)
 
@@ -263,6 +300,9 @@ $(OUTDIR)/%.o : %.f
 	$(COMPILE_F)
 
 $(OUTDIR)/%.o : src/%.f
+	$(COMPILE_F)
+
+$(OUTDIR)/%.o : src/functions/%.f
 	$(COMPILE_F)
 
 $(OUTDIR)/%.o : src/parser/%.f
