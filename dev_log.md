@@ -152,7 +152,7 @@ I like this change a lot. It also introduced the first unary operators in Rosky:
 
 The dependency diagram has not changed, but the object backend now contains the pointer class which inherits from the object interface.
 
-## March 28, 2021
+## March 28, 2022
 
 I added the null object type as well as the first few keywords into the language. The null type will act similarly to Python's ```None``` object. I mainly added this in because tomorrow I hope to add the foundations of the function handler. When the return type of a "void" function is requested, the null object should be returned. Like this:
 ```python
@@ -183,3 +183,38 @@ Error [Line 2 Column 5]: Attempt to dereference null pointer
 Exiting...
 ```
 
+## March 29, 2022
+
+As mentioned in my last entry, I implemented the foundation for the function backend today. The function backend consists of a function table object which is a mapping between the name of a function and a function pointer.
+
+As of right now, I've only implemented built-in functions. User defined functions will come a bit later, although I have a good idea as to how I want to tackle them.
+
+When a function is encountered by the expression parser, it is handed off to the function parser, which formats the provided arguments (throwing errors if necessary) and then calling the ```call_function``` function of the backend to execute the built-in function given the arguments.
+
+The two built-in functions I've implemented so far is ```out``` and ```outln``` which are really the same thing except ```outln``` inserts a new line after. Both of these function print a given argument to standard output. Like so:
+
+```python
+x = 4;
+y = null;
+
+outln(y);
+out(x);
+```
+```
+null
+4
+```
+
+Where I diverge from python is that python allows the user to overwrite reserved functions. So this is valid syntax is python
+```python
+print = 5 # overwriting of a reserved function name
+```
+
+I've decided that is not allowed in Rosky, so doing something similar will produce an error:
+```python
+out = 2;
+```
+```
+Error [Line 1 Column 1]: Syntax error: 'Illegal use of reserved function name 'out''
+Exiting...
+```
