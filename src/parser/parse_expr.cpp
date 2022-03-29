@@ -84,7 +84,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
             if (_func_table->is_function(_tokens[__idx]->_token)) {
 
                 // Parse the function and get the result.
-                obj_pair = parse_func(__idx, _tokens.size(), __scope);
+                obj_pair = parse_func(__idx, __end_idx, __scope);
 
             } else {
 
@@ -148,7 +148,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
                 // If the matching paren is at a higher index than our stop
                 // point, throw an error.
                 if (match_idx > __end_idx) {
-                    throw_error(ERR_UNCLOSED_PAREN, "", _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+                    throw_error(ERR_TERM_BEFORE_CLOSURE, "", _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
                 }
 
                 // Recursively call the parse_expr function with the new bounds.

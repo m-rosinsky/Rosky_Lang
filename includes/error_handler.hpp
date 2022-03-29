@@ -41,6 +41,7 @@ enum ERROR_TYPE {
     ERR_UNEXP_EOF,
     ERR_UNCLOSED_BRACE,
     ERR_UNCLOSED_PAREN,
+    ERR_TERM_BEFORE_CLOSURE,
     ERR_EMPTY_PARENS,
     ERR_RESERVED_USE,
 
@@ -72,6 +73,7 @@ static std::vector<std::string> ERROR_STRINGS {
     "Unexpected EOF while parsing (possible missing semicolon)",
     "Unclosed curly brace",
     "Unclosed parentheses",
+    "Expression terminated before closure",
     "Empty parentheses",
     "Bad use of reserved keyword",
 
@@ -91,17 +93,32 @@ static std::vector<std::string> ERROR_STRINGS {
 
 /******************************************************************************/
 
+// This function determines if the provided error type will have
+// an error message surrounded in quotes.
+inline bool err_has_quotes(ERROR_TYPE __err) noexcept {
+
+    return (__err == ERR_SYNTAX) || (__err == ERR_UNREC_SYM) ||
+           (__err == ERR_UNEXP_TOKEN);
+
+}
+
+/******************************************************************************/
+
 // This function takes in an error type, additional message, and source
 // position and throws an error to stderr.
 // This terminates program execution.
 inline void throw_error(ERROR_TYPE __err, const std::string& __msg,
                         size_t __colnum, size_t __linenum) {
-
+    
     // Report the error.
     std::cerr << "Error [Line "<< __linenum << " Column " << __colnum << "]: ";
     std::cerr << ERROR_STRINGS[__err];
     if (__msg.size() > 0) {
-        std::cerr << ": '" << __msg << "'";
+        if (err_has_quotes(__err)) {
+            std::cerr << ": '" << __msg << "'";
+        } else {
+            std::cerr << ": " << __msg;
+        }
     }
     std::cerr << std::endl << "Exiting..." << std::endl;
 

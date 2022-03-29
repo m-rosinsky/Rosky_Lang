@@ -67,6 +67,11 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
         throw_error(ERR_UNCLOSED_PAREN, "", _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
     }
 
+    // If matching paren is past the end idx, throw error.
+    if (match_idx > __end_idx) {
+        throw_error(ERR_TERM_BEFORE_CLOSURE, "", _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+    }
+
     // Collect function arguments until no more commas.
     size_t comma_idx = find_nextof(_tokens, ++__idx, ",");
     
