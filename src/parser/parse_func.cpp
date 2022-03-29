@@ -46,8 +46,8 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
     // The next token must be a left paren.
     if (_tokens[__idx]->_token != "(") {
-        throw_error(ERR_SYNTAX, "expected argument list for function '" + func_name + "'",
-                    _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+        throw_error(ERR_SYNTAX, "Illegal use of reserved function name '" + func_name + "'",
+                    _tokens[__idx-1]->_colnum, _tokens[__idx-1]->_linenum);
     }
 
     // Find the matching parentheses.
