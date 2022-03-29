@@ -151,3 +151,35 @@ z = x; # z is 6
 I like this change a lot. It also introduced the first unary operators in Rosky: the ```@``` operator and the ```*``` operator ('address of' and 'dereference' respectively. Which was a quick behavior edit in the expression parser.
 
 The dependency diagram has not changed, but the object backend now contains the pointer class which inherits from the object interface.
+
+## March 28, 2021
+
+I added the null object type as well as the first few keywords into the language. The null type will act similarly to Python's ```None``` object. I mainly added this in because tomorrow I hope to add the foundations of the function handler. When the return type of a "void" function is requested, the null object should be returned. Like this:
+```python
+# 'out' will be my 'print' function to stdout
+x = out("Hello, World!");
+
+out(x); # "Null"
+```
+
+```out``` will be a void function that prints to stdout, so when we try to get a value from it, it will return with the null object.
+
+I also added the ```null``` and ```nullptr``` keywords, which are the first reserved keywords in the language. The parse_expr function will form a ```null``` object and a pointer with the value nullptr when assigned respectively.
+
+So now we can do things like this:
+```cpp
+x = nullptr;
+
+y = null;
+```
+
+I also added an error message for trying to dereference a nullptr:
+```cpp
+x = nullptr;
+y = *x;
+```
+```
+Error [Line 2 Column 5]: Attempt to dereference null pointer
+Exiting...
+```
+
