@@ -222,3 +222,29 @@ Exiting...
 Here's what the dependency diagram is looking like now. Note the addition of the function handler in the backend:
 | ![alt text](https://i.imgur.com/ARaTcxP.png "Dependency Diagram 4") |
 |:--:|
+
+## March 30, 2022
+
+Today I added the built in string type for the language. Strings are surrounded in double quotes. I've also added a couple escape sequences such as ```\n``` and ```\t```. All of that processing is handled in the lexer, so if a string is improperly formatted (i.e. unclosed quote or bad escape sequence) it will not be sent to the parser.
+
+So now without further ado...
+```python
+out("Hello, World!");
+```
+```
+Hello, World!
+```
+
+That feels really good to see working. I've also added the string concatenation operator ```&```, similar to Ada's string concat operator. This will convert the left and right side's of the operator to strings and put them together, like so:
+```python
+name = "Mike";
+
+out("Hello, " & name & "!");
+```
+```
+Hello, Mike!
+```
+
+Very happy with the progress so far and how easy it was to make these changes. It shows how a good foundational design goes a long way when expanding new features down the road. All of today's changes took less than an hour before I went in to work. I'm very happy with the design so far.
+
+The dependency diagram has not changed, but the object backend now has the string class defintion.
