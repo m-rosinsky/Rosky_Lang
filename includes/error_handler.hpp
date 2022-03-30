@@ -35,6 +35,8 @@ enum ERROR_TYPE {
 
     // Lexer errors.
     ERR_UNEXP_TOKEN,
+    ERR_UNCLOSED_QUOTE,
+    ERR_INVALID_ESC_CHAR,
 
     // Parser errors.
     ERR_SYNTAX,
@@ -67,6 +69,8 @@ static std::vector<std::string> ERROR_STRINGS {
     
     // Lexer errors.
     "Unexpected token",
+    "Unclosed quote",
+    "Invalid escape character",
 
     // Parser errors.
     "Syntax error",
@@ -98,7 +102,7 @@ static std::vector<std::string> ERROR_STRINGS {
 inline bool err_has_quotes(ERROR_TYPE __err) noexcept {
 
     return (__err == ERR_SYNTAX) || (__err == ERR_UNREC_SYM) ||
-           (__err == ERR_UNEXP_TOKEN);
+           (__err == ERR_UNEXP_TOKEN) || (__err == ERR_INVALID_ESC_CHAR);
 
 }
 

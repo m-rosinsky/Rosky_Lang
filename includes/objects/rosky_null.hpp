@@ -30,6 +30,7 @@
 #include <string>                       // std::string
 
 #include "rosky_interface.hpp"
+#include "rosky_string.hpp"
 
 /******************************************************************************/
 
@@ -51,6 +52,9 @@ public:
     // Casting.
     long to_int() const noexcept override;
     std::string to_string() const noexcept override;
+
+    // String operators.
+    std::shared_ptr<RoskyInterface> concat_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
 
 };
 

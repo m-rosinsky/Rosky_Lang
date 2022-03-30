@@ -36,6 +36,7 @@
 #include <utility>                      // std::pair
 
 #include "rosky_interface.hpp"
+#include "rosky_string.hpp"
 
 /******************************************************************************/
 
@@ -68,6 +69,9 @@ public:
 
     // Pointer operators.
     std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> deref_op() const noexcept override;
+
+    // String operators.
+    std::shared_ptr<RoskyInterface> concat_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
 
 };
 

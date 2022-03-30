@@ -48,6 +48,19 @@ void Parser_T::parse(size_t __start_idx, size_t __end_idx, size_t __scope) {
     // Iterate through the token table.
     for (; idx < __end_idx; idx++) {
 
+        // token is a literal.
+        if (is_literal(_tokens[idx]->_type)) {
+
+            // Parse as expression.
+            size_t end_idx = find_nextof(_tokens, idx, ";");
+            if (end_idx == 0) {
+                throw_error(ERR_UNEXP_EOF, "", _tokens[idx]->_colnum, _tokens[idx]->_linenum);
+            }
+            auto ignore = parse_expr(idx, end_idx, __scope);
+            continue;
+
+        }
+
         // Token is a keyword.
         if (_tokens[idx]->_type == TOKEN_KW) {
 

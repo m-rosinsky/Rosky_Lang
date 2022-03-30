@@ -38,6 +38,7 @@ enum OBJ_TYPES {
     OBJ_INT,
     OBJ_POINTER,
     OBJ_NULL,
+    OBJ_STRING,
 
 };
 
@@ -65,6 +66,9 @@ public:
 
     // Pointer operators.
     virtual std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> deref_op() const noexcept { return {nullptr, nullptr}; }
+
+    // String operators.
+    virtual std::shared_ptr<RoskyInterface> concat_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
 
 };
 

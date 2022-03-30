@@ -73,3 +73,12 @@ std::shared_ptr<RoskyInterface> RoskyInt::mul_op(const std::shared_ptr<RoskyInte
 }
 
 /******************************************************************************/
+
+// String operators.
+std::shared_ptr<RoskyInterface> RoskyInt::concat_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    return std::make_shared<RoskyString>(to_string() + __r->to_string());
+
+}
+
+/******************************************************************************/

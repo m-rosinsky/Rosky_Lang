@@ -49,15 +49,17 @@
 #include "../objects/rosky_int.hpp"
 #include "../objects/rosky_pointer.hpp"
 #include "../objects/rosky_null.hpp"
+#include "../objects/rosky_string.hpp"
 
 /******************************************************************************/
 
 // This function allows us to get operator precedence.
 inline size_t get_precedence(const std::string& op) {
     if (op == "=") { return 1; }
-    if (op == "+") { return 2; }
-    if (op == "*") { return 3; }
-    if (op == "de" || op == "@") { return 4; }
+    if (op == "&") { return 2; }
+    if (op == "+") { return 3; }
+    if (op == "*") { return 4; }
+    if (op == "de" || op == "@") { return 5; }
     return 0;
 }
 
@@ -144,7 +146,8 @@ inline bool is_assignment_op(const std::string& op) noexcept {
 
 // This function determines if an operator is left associative.
 inline bool is_left_assoc(const std::string& op) noexcept {
-    return (op == "+") || (op == "*");
+    return (op == "+") || (op == "*") ||
+           (op == "&");
 }
 
 // This function determines if an operator is right associative.

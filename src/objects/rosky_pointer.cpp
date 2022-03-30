@@ -72,3 +72,12 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> Ros
 }
 
 /******************************************************************************/
+
+// String operators.
+std::shared_ptr<RoskyInterface> RoskyPointer::concat_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    return std::make_shared<RoskyString>(to_string() + __r->to_string());
+
+}
+
+/******************************************************************************/

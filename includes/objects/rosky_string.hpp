@@ -1,17 +1,16 @@
 
 /******************************************************************************/
 //
-//  Source Name:                rosky_int.hpp
+//  Source Name:                rosky_string.hpp
 //
 //  Description:                This file contains the class definition for
-//                              the built in integer type.
+//                              the built in string type.
 // 
-//                              The underlying data type is a long, rather
-//                              than an int.
+//                              The underlying data type is an std::string
 //
 //  Dependencies:               RoskyInterface
 //
-//  Classes:                    RoskyInt
+//  Classes:                    RoskyString
 //
 //  Inherited Subprograms:      get_type_id
 //                              get_type_string
@@ -21,38 +20,38 @@
 //                              mul_op
 //
 //  Exported Subprograms:       ctor
-//                              ctor(long)
+//                              ctor(const std::string&)
 //                              
 /******************************************************************************/
 
-#ifndef ROSKY_INT
-#define ROSKY_INT
+#ifndef ROSKY_STRING
+#define ROSKY_STRING
 
 /******************************************************************************/
 
-#include <string>                           // std::string
+#include <string>                       // std::string
+#include <memory>                       // std::shared_ptr
 
 #include "rosky_interface.hpp"
-#include "rosky_string.hpp"
 
 /******************************************************************************/
 
-// This is the class defintion for the RoskyInt class.
-class RoskyInt : public RoskyInterface {
+// This is the class definition for the built-in string type.
+class RoskyString : public RoskyInterface {
 
 private:
 
-    // The underlying data type is a long.
-    long _data;
+    // The underlying data type is an std::string
+    std::string _data;
 
 public:
 
-    // Constructors.
-    RoskyInt() : _data(0) {}
-    RoskyInt(long __data) : _data(__data) {}
+    // Ctors.
+    RoskyString() : _data("") {}
+    RoskyString(const std::string& __data) : _data(__data) {}
 
-    // Destrcutor.
-    ~RoskyInt() {}
+    // Dtor.
+    ~RoskyString() {}
 
     // Type information.
     OBJ_TYPES get_type_id() const noexcept override;
@@ -64,13 +63,12 @@ public:
 
     // Arithmetic operators.
     std::shared_ptr<RoskyInterface> add_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
-    std::shared_ptr<RoskyInterface> mul_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
 
     // String operators.
     std::shared_ptr<RoskyInterface> concat_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
-
+    
 };
 
 /******************************************************************************/
 
-#endif // ROSKY_INT
+#endif // ROSKY_STRING

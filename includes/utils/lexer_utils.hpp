@@ -118,6 +118,7 @@ struct Token_T {
 #define VERTTAB 11
 #define NEWLINE 10
 #define COMMENT 35  // '#'
+#define ESCCHAR 92  // '\'
 
 /******************************************************************************/
 
@@ -146,7 +147,7 @@ inline bool is_whitespace(char c) noexcept {
 }
 
 inline bool is_op(char c) noexcept {
-    std::string op_string = "+*=@";
+    std::string op_string = "+*=@&";
     for (auto& op : op_string) {
         if (c == op) { return true; }
     }

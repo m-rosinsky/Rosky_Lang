@@ -217,6 +217,95 @@ void tokenize_src(std::unique_ptr<Src_T>& __src) {
 
         }
 
+        // Quote
+        if (__src->_data[idx] == '"') {
+
+            // Bookmark the start column and line number.
+            size_t start_col = colnum;
+            size_t start_lin = linenum;
+
+            // Increment the index so we don't collect the quote.
+            idx++;
+            colnum++;
+
+            // Flag to determine if we found end quote.
+            bool found_end_quote = false;
+
+            // Collect until receive close quote or until we
+            // reach EOF.
+            while (idx < __src->_data.size()) {
+                
+                // Check if end quote.
+                if (__src->_data[idx] == '"') {
+
+                    // Mark the flag.
+                    found_end_quote = true;
+
+                    // Break.
+                    break;
+
+                }
+
+                // Check escape character.
+                if (__src->_data[idx] == char(ESCCHAR)) {
+
+                    idx++;
+                    colnum++;
+
+                    // Check valid escape sequences.
+                    if (__src->_data[idx] == 'n') {
+                        token += char(NEWLINE);
+                    } else if (__src->_data[idx] == 't') {
+                        token += char(HORIZTAB);
+                    } else if (__src->_data[idx] == char(ESCCHAR)) {
+                        token += char(ESCCHAR);
+                    } else if (__src->_data[idx] == '0') {
+                        token += char(0);
+                    } else {
+                        token = __src->_data[idx];
+                        throw_error(ERR_INVALID_ESC_CHAR, token, colnum, linenum);
+                    }
+
+                    idx++;
+                    colnum++;
+                    continue;
+
+                }
+
+                // Check if new line.
+                if (__src->_data[idx] == NEWLINE) {
+
+                    // Increment the linenum and break.
+                    linenum++;
+                    colnum = 0;
+
+                }
+
+                // Collect the char.
+                token += __src->_data[idx];
+                idx++;
+                colnum++;
+
+            }
+
+            // If we did not collect an end quote, throw
+            // an error.
+            if (!found_end_quote) {
+                throw_error(ERR_UNCLOSED_QUOTE, "", start_col, start_lin);
+            }
+
+            // Add the token as a string literal.
+            tokens.push_back(std::make_shared<Token_T>
+                            (token, TOKEN_LIT_STRING, start_col, start_lin));
+
+            // Reset the token and continue.
+            idx++;
+            colnum++;
+            token = "";
+            continue;
+
+        }
+
         // Anything else is considered unexpected.
         token += __src->_data[idx];
 

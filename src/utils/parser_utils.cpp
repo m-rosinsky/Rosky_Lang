@@ -241,6 +241,9 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     if (__token->_type == TOKEN_LIT_INT) {
         return {nullptr, std::make_shared<RoskyInt>(std::stoi(__token->_token))};
     }
+    if (__token->_type == TOKEN_LIT_STRING) {
+        return {nullptr, std::make_shared<RoskyString>(__token->_token)};
+    }
 
     // Symbols
     if (__token->_type == TOKEN_SYMBOL) {
