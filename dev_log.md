@@ -245,6 +245,16 @@ out("Hello, " & name & "!");
 Hello, Mike!
 ```
 
+```python
+x = 92;
+ptr = @x;
+
+out("x is " & x & " and is located at address " & ptr);
+```
+```
+x is 92 and is located at address 0x9e8fc0
+```
+
 Very happy with the progress so far and how easy it was to make these changes. It shows how a good foundational design goes a long way when expanding new features down the road. All of today's changes took less than an hour before I went in to work. I'm very happy with the design so far.
 
 The dependency diagram has not changed, but the object backend now has the string class defintion.
