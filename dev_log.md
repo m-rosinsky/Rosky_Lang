@@ -250,7 +250,7 @@ Concatenation also works with non-string types:
 x = 92;
 ptr = @x;
 
-out("x is " & x & " and is located at address " & ptr);
+out("x is " & *ptr & " and is located at address " & ptr);
 ```
 ```
 x is 92 and is located at address 0x9e8fc0
