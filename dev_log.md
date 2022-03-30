@@ -245,6 +245,7 @@ out("Hello, " & name & "!");
 Hello, Mike!
 ```
 
+Concatenation also works with non-string types:
 ```python
 x = 92;
 ptr = @x;
