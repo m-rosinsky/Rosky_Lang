@@ -87,8 +87,6 @@ void Parser_T::parse(size_t __start_idx, size_t __end_idx, size_t __scope) {
         // Token is a symbol.
         if (_tokens[idx]->_type == TOKEN_SYMBOL) {
 
-            // Check if the token is a function.
-
             // Token must be an expression.
             size_t end_idx = find_nextof(_tokens, idx, ";");
             if (end_idx == 0 || end_idx > __end_idx) {

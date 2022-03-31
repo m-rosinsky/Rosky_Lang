@@ -156,6 +156,44 @@ void insert_op(std::shared_ptr<ParseNode>& __root,
 
 /******************************************************************************/
 
+void replace_right(std::shared_ptr<ParseNode>& __root,
+                   std::shared_ptr<RoskyInterface>* __obj_adr,
+                   const std::shared_ptr<RoskyInterface>& __obj) {
+
+    // Create a pointer to traverse the tree.
+    std::shared_ptr<ParseNode> cur = __root;
+
+    // Move while right is not nullptr.
+    while (cur->_right != nullptr) {
+        cur = cur->_right;
+    }
+
+    // Replace cur's contents with the provided objects.
+    cur->_obj_adr = __obj_adr;
+    cur->_obj = __obj;
+    cur->_op = "";
+
+}
+
+/******************************************************************************/
+
+std::shared_ptr<ParseNode> get_last_obj(const std::shared_ptr<ParseNode>& __root) {
+
+    // Create a pointer to traverse the tree.
+    std::shared_ptr<ParseNode> cur = __root;
+
+    // Move while right is not nullptr.
+    while (cur->_right != nullptr) {
+        cur = cur->_right;
+    }
+
+    // Return cur.
+    return cur;
+
+}
+
+/******************************************************************************/
+
 void print_inorder(const std::shared_ptr<ParseNode>& __root) {
 
     if (__root == nullptr) { return; }

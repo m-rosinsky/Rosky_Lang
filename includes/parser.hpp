@@ -101,11 +101,21 @@ public:
     std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
         parse_expr(size_t& __idx, size_t __end_idx, size_t __scope);
 
+    // This is a helper function for parsing function arguments.
+    std::vector<std::shared_ptr<RoskyInterface>>
+        parse_func_args(size_t& __idx, size_t __end_idx, size_t __scope);
+
     // This function is for parsing function calls. It forms objects from the
     // arguments and calls upon the function handler to evaluate the
     // provided function along with its arguments.
     std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
         parse_func(size_t& __idx, size_t __end_idx, size_t __scope);
+
+    // This function is for parsing member function calls. It forms objects
+    // from the arguments and calls the function handler.
+    std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
+        parse_member_func(std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> __obj,
+                          size_t& __idx, size_t __end_idx, size_t __scope);
 
     // This function is for parsing if statements.
     void parse_if(size_t& __idx, size_t __end_idx, size_t __scope);

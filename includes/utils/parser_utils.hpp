@@ -123,6 +123,16 @@ void insert_op(std::shared_ptr<ParseNode>& __root,
                const std::string& __op,
                size_t __col, size_t __lin);
 
+// This function replaces the object contents of the right-most
+// object with given object contents.
+void replace_right(std::shared_ptr<ParseNode>& __root,
+                   std::shared_ptr<RoskyInterface>* __obj_adr,
+                   const std::shared_ptr<RoskyInterface>& __obj);
+
+// This function returns the last object added to the tree, which
+// happens to be furthest right.
+std::shared_ptr<ParseNode> get_last_obj(const std::shared_ptr<ParseNode>& __root);
+
 // This is a debug function for displaying the parse tree.
 void print_inorder(const std::shared_ptr<ParseNode>& __root);
 

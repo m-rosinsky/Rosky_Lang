@@ -87,10 +87,10 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
                 obj_pair = parse_func(__idx, __end_idx, __scope);
 
             } else {
-
+                
                 // symbol is treated as a variable name.
                 obj_pair = form_object(_tokens[__idx], _var_table, __scope);
-
+                
             }
 
             // Insert the object pair right.
@@ -152,12 +152,12 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
                 }
 
                 // Recursively call the parse_expr function with the new bounds.
-                auto obj = parse_expr(++__idx, match_idx, __scope);
+                auto obj_pair = parse_expr(++__idx, match_idx, __scope);
 
                 // Insert the result to the right.
                 // The token metadata doesn't matter because errors pertaining
                 // to evaluation of this object would have been caught already.
-                insert_right(root, obj.first, obj.second, "", 0, 0);
+                insert_right(root, obj_pair.first, obj_pair.second, "", 0, 0);
 
                 // Now expecting an operator.
                 expecting_op = true;
@@ -212,6 +212,44 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
             // Now not expecting an operator.
             expecting_op = false;
+            continue;
+
+        }
+
+        // Member functions.
+        if (_tokens[__idx]->_token == ".") {
+
+            // If not expecting op, throw error.
+            if (!expecting_op) {
+                throw_error(ERR_SYNTAX, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+            }
+
+            // If we haven't inserted an object yet, throw syntax.
+            if (root == nullptr) {
+                throw_error(ERR_SYNTAX, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+            }
+
+            // Grab the last object inserted into the tree.
+            auto last_obj = get_last_obj(root);
+
+            // If the last object is null, throw unrecognized symbol.
+            if (last_obj->is_nullptr()) {
+                throw_error(ERR_UNREC_SYM, last_obj->_op, last_obj->_colnum, last_obj->_linenum);
+            }
+
+            // If this is the last token, throw error.
+            if (__idx + 1 == __end_idx) {
+                throw_error(ERR_SYNTAX, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+            }
+
+            // Parse the member function starting at the next index.
+            auto obj_pair = parse_member_func({last_obj->_obj_adr, last_obj->_obj}, ++__idx, __end_idx, __scope);
+
+            // Insert the resulting object in place of the last object.
+            replace_right(root, obj_pair.first, obj_pair.second);
+
+            // Now expecting operator.
+            expecting_op = true;
             continue;
 
         }

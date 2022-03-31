@@ -47,3 +47,27 @@ FunctionTable_T::obj_pair FunctionTable_T::call_function(const std::string& __fu
 }
 
 /******************************************************************************/
+
+bool FunctionTable_T::is_member_function(const std::string& __func) const noexcept {
+
+    return _native_member_table.count(__func) > 0;
+
+}
+
+/******************************************************************************/
+
+FunctionTable_T::obj_pair FunctionTable_T::call_member_function
+    (const std::string& __func,
+     obj_pair& __obj,
+     const std::vector<obj>& __func_args,
+     size_t __colnum, size_t __linenum) {
+
+    // Check if the provided function name is in the member table.
+    if (!is_member_function(__func)) { return {nullptr, nullptr}; }
+    
+    // Call the appropriate function with the given args.
+    return _native_member_table[__func](__obj, __func_args, __colnum, __linenum);
+
+}
+
+/******************************************************************************/
