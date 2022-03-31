@@ -1,17 +1,16 @@
 
 /******************************************************************************/
 //
-//  Source Name:                rosky_int.hpp
+//  Source Name:                rosky_bool.hpp
 //
 //  Description:                This file contains the class definition for
-//                              the built in integer type.
+//                              the built in boolean type.
 // 
-//                              The underlying data type is a long, rather
-//                              than an int.
+//                              The underlying data type is a bool
 //
 //  Dependencies:               RoskyInterface
 //
-//  Classes:                    RoskyInt
+//  Classes:                    RoskyBool
 //
 //  Inherited Subprograms:      get_type_id
 //                              get_type_string
@@ -21,56 +20,52 @@
 //                              mul_op
 //
 //  Exported Subprograms:       ctor
-//                              ctor(long)
+//                              ctor(bool)
 //                              
 /******************************************************************************/
 
-#ifndef ROSKY_INT
-#define ROSKY_INT
+#ifndef ROSKY_BOOL
+#define ROSKY_BOOL
 
 /******************************************************************************/
 
-#include <string>                           // std::string
+#include <string>                       // std::string
+#include <memory>                       // std::shared_ptr
 
 #include "rosky_interface.hpp"
 #include "rosky_string.hpp"
-#include "rosky_bool.hpp"
 
 /******************************************************************************/
 
-// This is the class defintion for the RoskyInt class.
-class RoskyInt : public RoskyInterface {
+// This is the class definition for the built-in boolean type.
+class RoskyBool : public RoskyInterface {
 
 private:
 
-    // The underlying data type is a long.
-    long _data;
+    // The underlying data type is a bool.
+    bool _data;
 
 public:
 
-    // Constructors.
-    RoskyInt() : _data(0) {}
-    RoskyInt(long __data) : _data(__data) {}
+    // Ctors.
+    RoskyBool() : _data("") {}
+    RoskyBool(bool __data) : _data(__data) {}
 
-    // Destrcutor.
-    ~RoskyInt() {}
+    // Dtor.
+    ~RoskyBool() {}
 
     // Type information.
     OBJ_TYPES get_type_id() const noexcept override;
     std::string get_type_string() const noexcept override;
-    bool to_bool() const noexcept override;
 
     // Casting.
     long to_int() const noexcept override;
     std::string to_string() const noexcept override;
-
-    // Arithmetic operators.
-    std::shared_ptr<RoskyInterface> add_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
-    std::shared_ptr<RoskyInterface> mul_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
+    bool to_bool() const noexcept override;
 
     // String operators.
     std::shared_ptr<RoskyInterface> concat_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
-
+    
     // Boolean operators.
     std::shared_ptr<RoskyInterface> eq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
 
@@ -78,4 +73,4 @@ public:
 
 /******************************************************************************/
 
-#endif // ROSKY_INT
+#endif // ROSKY_BOOL

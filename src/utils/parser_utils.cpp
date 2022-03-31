@@ -263,6 +263,12 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
         if (__token->_token == "nullptr") {
             return {nullptr, std::make_shared<RoskyPointer>(nullptr)};
         }
+        if (__token->_token == "true") {
+            return {nullptr, std::make_shared<RoskyBool>(true)};
+        }
+        if (__token->_token == "false") {
+            return {nullptr, std::make_shared<RoskyBool>(false)};
+        }
 
     }
 

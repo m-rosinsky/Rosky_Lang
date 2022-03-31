@@ -1,59 +1,61 @@
 
 /******************************************************************************/
 //
-//  Source Name:                rosky_null.cpp
+//  Source Name:                rosky_bool.cpp
 //
 //  Description:                This file contains the class definition for
-//                              the built in null type.
+//                              the built in boolean type.
 // 
-//                              There is no underlying data type for this
-//                              class.
+//                              The underlying data type is a bool
 //
 //  Dependencies:               RoskyInterface
 //
-//  Classes:                    RoskyNull
+//  Classes:                    RoskyBool
 //
 //  Inherited Subprograms:      get_type_id
 //                              get_type_string
 //                              to_int
 //                              to_string
+//                              add_op
+//                              mul_op
 //
 //  Exported Subprograms:       ctor
+//                              ctor(bool)
 //                              
 /******************************************************************************/
 
-#include "../../includes/objects/rosky_null.hpp"
+#include "../../includes/objects/rosky_bool.hpp"
 
 /******************************************************************************/
 
 // Type information.
-OBJ_TYPES RoskyNull::get_type_id() const noexcept {
-    return OBJ_NULL;
+OBJ_TYPES RoskyBool::get_type_id() const noexcept {
+    return OBJ_BOOL;
 }
 
-std::string RoskyNull::get_type_string() const noexcept {
-    return "null";
+std::string RoskyBool::get_type_string() const noexcept {
+    return "bool";
 }
 
 /******************************************************************************/
 
 // Casting.
-long RoskyNull::to_int() const noexcept {
-    return 0;
+long RoskyBool::to_int() const noexcept {
+    return _data ? 1 : 0;
 }
 
-std::string RoskyNull::to_string() const noexcept {
-    return "null";
+std::string RoskyBool::to_string() const noexcept {
+    return _data ? "true" : "false";
 }
 
-bool RoskyNull::to_bool() const noexcept {
-    return false;
+bool RoskyBool::to_bool() const noexcept {
+    return _data;
 }
 
 /******************************************************************************/
 
-// String operators.
-std::shared_ptr<RoskyInterface> RoskyNull::concat_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+// String operators
+std::shared_ptr<RoskyInterface> RoskyBool::concat_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
 
     return std::make_shared<RoskyString>(to_string() + __r->to_string());
 
@@ -62,14 +64,15 @@ std::shared_ptr<RoskyInterface> RoskyNull::concat_op(const std::shared_ptr<Rosky
 /******************************************************************************/
 
 // Boolean operators.
-std::shared_ptr<RoskyInterface> RoskyNull::eq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+std::shared_ptr<RoskyInterface> RoskyBool::eq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
 
-    if (__r->get_type_id() == OBJ_NULL) {
-        return std::make_shared<RoskyBool>(true);
+    if (__r->get_type_id() != OBJ_NULL) {
+        return std::make_shared<RoskyBool>(_data == __r->to_bool());
     }
 
+    // If compared to null, always return false.
     return std::make_shared<RoskyBool>(false);
 
-}
+} 
 
 /******************************************************************************/

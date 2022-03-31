@@ -49,6 +49,10 @@ std::string RoskyInt::to_string() const noexcept {
     return std::to_string(_data);
 }
 
+bool RoskyInt::to_bool() const noexcept {
+    return _data != 0;
+}
+
 /******************************************************************************/
 
 // Arithmetic operators.
@@ -78,6 +82,25 @@ std::shared_ptr<RoskyInterface> RoskyInt::mul_op(const std::shared_ptr<RoskyInte
 std::shared_ptr<RoskyInterface> RoskyInt::concat_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
 
     return std::make_shared<RoskyString>(to_string() + __r->to_string());
+
+}
+
+/******************************************************************************/
+
+// Boolean operators.
+std::shared_ptr<RoskyInterface> RoskyInt::eq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_INT) {
+        return std::make_shared<RoskyBool>(_data == __r->to_int());
+    }
+    if (__r->get_type_id() == OBJ_BOOL) {
+        return std::make_shared<RoskyBool>(to_bool() == __r->to_bool());
+    }
+    if (__r->get_type_id() == OBJ_NULL) {
+        return std::make_shared<RoskyBool>(false);
+    }
+
+    return nullptr;
 
 }
 

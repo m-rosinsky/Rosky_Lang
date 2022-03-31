@@ -112,9 +112,27 @@ void tokenize_src(std::unique_ptr<Src_T>& __src) {
             // Add the operator to the current token.
             token += __src->_data[idx];
 
+            // Bookmark the start column number.
+            size_t start_col = colnum;
+
+            // Compound operator for ?=
+            if (idx + 1 < __src->_data.size()) {
+
+                if (token == "=") {
+
+                    if (__src->_data[idx + 1] == '=') {
+                        idx++;
+                        colnum++;
+                        token += __src->_data[idx];
+                    }
+
+                }
+
+            }
+
             // Push the token into the table.
             tokens.push_back(std::make_shared<Token_T>
-                (token, TOKEN_OP, colnum, linenum));
+                (token, TOKEN_OP, start_col, linenum));
 
             // Reset the token and continue.
             token = "";

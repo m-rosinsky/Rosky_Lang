@@ -37,6 +37,7 @@
 
 #include "rosky_interface.hpp"
 #include "rosky_string.hpp"
+#include "rosky_bool.hpp"
 
 /******************************************************************************/
 
@@ -66,12 +67,17 @@ public:
     // Casting.
     long to_int() const noexcept override;
     std::string to_string() const noexcept override;
+    std::shared_ptr<RoskyInterface>* to_pointer() const noexcept override;
+    bool to_bool() const noexcept override;
 
     // Pointer operators.
     std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> deref_op() const noexcept override;
 
     // String operators.
     std::shared_ptr<RoskyInterface> concat_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
+
+    // Boolean operators.
+    std::shared_ptr<RoskyInterface> eq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
 
 };
 

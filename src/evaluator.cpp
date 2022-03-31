@@ -113,6 +113,8 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
             ret_obj = {nullptr, left.second->mul_op(right.second)};
         } else if (__root->_op == "&") {
             ret_obj = {nullptr, left.second->concat_op(right.second)};
+        } else if (__root->_op == "==") {
+            ret_obj = {nullptr, left.second->eq_op(right.second)};
         } else if (__root->_op == "de") {
             ret_obj = right.second->deref_op();
 
