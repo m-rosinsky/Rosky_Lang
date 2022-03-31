@@ -1,7 +1,7 @@
 
 /******************************************************************************/
 //
-//  Source Name:                parse_expr.cpp
+//  Source Name:                parse_func.cpp
 //
 //  Description:                This file is responsible for parsing
 //                              function calls. It will create
@@ -28,7 +28,6 @@
 
 #include "../../includes/parser.hpp"
 
-#include <iostream>
 /******************************************************************************/
 
 std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>

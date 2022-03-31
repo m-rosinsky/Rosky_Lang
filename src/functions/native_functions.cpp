@@ -32,7 +32,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     }
 
     // Print the arg to stdout.
-    std::cout << __func_args.front()->to_string();
+    std::cout << __func_args.front()->to_string() << std::flush;
 
     // Return a null object.
     return {nullptr, std::make_shared<RoskyNull>()};

@@ -46,6 +46,9 @@ enum ERROR_TYPE {
     ERR_TERM_BEFORE_CLOSURE,
     ERR_EMPTY_PARENS,
     ERR_RESERVED_USE,
+    ERR_MISSING_BODY,
+    ERR_MISSING_COND,
+    ERR_BAD_COND_TYPE,
 
     // Evaluator errors.
     ERR_UNREC_SYM,
@@ -74,12 +77,15 @@ static std::vector<std::string> ERROR_STRINGS {
 
     // Parser errors.
     "Syntax error",
-    "Unexpected EOF while parsing (possible missing semicolon)",
+    "Missing terminator (possible missing semicolon)",
     "Unclosed curly brace",
     "Unclosed parentheses",
     "Expression terminated before closure",
     "Empty parentheses",
     "Bad use of reserved keyword",
+    "Missing statement body",
+    "Expected condition before body",
+    "Expected a boolean condition",
 
     // Evaluator errors.
     "Unrecognized symbol",

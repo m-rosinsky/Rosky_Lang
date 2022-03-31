@@ -86,6 +86,8 @@ static std::vector<std::string> keywords = {
     "true",
     "null",
     "nullptr",
+    "if",
+    "while",
 };
 
 /******************************************************************************/

@@ -107,6 +107,12 @@ public:
     std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
         parse_func(size_t& __idx, size_t __end_idx, size_t __scope);
 
+    // This function is for parsing if statements.
+    void parse_if(size_t& __idx, size_t __end_idx, size_t __scope);
+
+    // This function is for parsing while loops.
+    void parse_while(size_t& __idx, size_t __end_idx, size_t __scope);
+
 };
 
 /******************************************************************************/
