@@ -259,3 +259,25 @@ x is 92 and is located at address 0x9e8fc0
 Very happy with the progress so far and how easy it was to make these changes. It shows how a good foundational design goes a long way when expanding new features down the road. All of today's changes took less than an hour before I went in to work. I'm very happy with the design so far.
 
 The dependency diagram has not changed, but the object backend now has the string class defintion.
+
+## March 31, 2022
+
+Today I added the ```bool``` type to the project as well as the ```==``` operator. Creating a relationship table between each object type in comparison operations was something I had planned out before I started, so it was just a matter of putting in my design notes.
+
+The most interesting one was the ```null``` type. The ```null``` type will only ever return ```true``` in a comparison when compared to another ```null``` type. So for example:
+```python
+outln(0 == null);
+outln(true == null);
+outln(false == null);
+outln("" == null);
+outln(nullptr == null);
+```
+all return ```false```! However,
+```python
+outln(null == null);
+```
+returns ```true```.
+
+The goal with null is to test if an object is "legitimate" or not. So ```false``` and ```nullptr```, while typically being thought of as the negative state, is still a valid object, so it will return ```false``` when compared to ```null```.
+
+This addition sets the stage for my plans for either later today or tomorrow: the first bits of control flow! I'm going to look to add ```if``` statements and ```while``` loops in the next entry, and of course we need boolean logic for that, so today's entry is in prep for that.
