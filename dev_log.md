@@ -266,11 +266,11 @@ Today I added the ```bool``` type to the project as well as the ```==``` operato
 
 The most interesting one was the ```null``` type. The ```null``` type will only ever return ```true``` in a comparison when compared to another ```null``` type. So for example:
 ```python
-0 == null;
-true == null;
-false == null;
-"" == null;
-nullptr == null;
+null == 0;
+null == true;
+null == false;
+null == "";
+null == nullptr;
 ```
 all return ```false```! However,
 ```python
