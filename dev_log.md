@@ -280,4 +280,4 @@ returns ```true```.
 
 The goal with null is to test if an object is "legitimate" or not. So ```false``` and ```nullptr```, while typically being thought of as the negative state, is still a valid object, so it will return ```false``` when compared to ```null```.
 
-This addition sets the stage for my plans for either later today or tomorrow: the first bits of control flow! I'm going to look to add ```if``` statements and ```while``` loops in the next entry, and of course we need boolean logic for that, so today's entry is in prep for that.
+This addition sets the stage for my plans for either later today or tomorrow: the first bits of control flow! I'm going to look to add ```if``` statements and ```while``` loops in the next entry, and of course we need boolean logic for that.
