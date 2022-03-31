@@ -262,7 +262,7 @@ The dependency diagram has not changed, but the object backend now has the strin
 
 ## March 31, 2022
 
-Today I added the ```bool``` type to the project as well as the ```==``` operator. Creating a relationship table between each object type in comparison operations was something I had planned out before I started, so it was just a matter of putting in my design notes.
+Today I added the ```bool``` type to the project as well as the ```==``` operator. Creating a relationship table between each object type in comparison operations was something I had planned out before I started, so it was just a matter of putting in my design notes. I also added the ```true``` and ```false``` keywords.
 
 The most interesting one was the ```null``` type. The ```null``` type will only ever return ```true``` in a comparison when compared to another ```null``` type. So for example:
 ```python
