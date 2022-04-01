@@ -325,7 +325,7 @@ if ptr == nullptr {
 }
 ```
 ```
-ptr -> nullptr
+ptr -> 2
 ```
 It's really starting to feel and look like a legitimate language.
 
