@@ -345,7 +345,7 @@ My expression parser will go left to right forming the tree function, so when we
 
 We can see the ```name``` object is already in the parse tree, but now we encounter the ```.``` operator. We can't simply insert the ```.``` as a normal operator on the tree and the ```size()``` as it's right child. The parse tree is a tree of objects and operators and ```size()``` is an invocable function. So how do we go about performing the member function on the ```name``` object?
 
-My solution was when we encounter a ```.``` operator, we ensure that the token to it's right (in this case ```size``` actually names a function. We then retreive the object that was last inserted into the tree, which is always the right-most node. And because the ```.``` operator will throw if we're not expecting an operator, the tree is guaranteed to not be null, so object retreival will always succeed.
+My solution was when we encounter a ```.``` operator, we ensure that the token to it's right (in this case ```size```) actually names a function. We then retreive the object that was last inserted into the tree, which is always the right-most node. And because the ```.``` operator will throw if we're not expecting an operator, the tree is guaranteed to not be null, so object retreival will always succeed.
 
 We retreive the right-most object, send the function off along with the object to be handled by the function backend, but now what?
 
