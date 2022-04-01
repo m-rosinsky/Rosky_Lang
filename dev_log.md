@@ -296,6 +296,14 @@ if true {
 Condition is true
 ```
 
-Pretty straight forward. I'll look to flesh out the boolean operators to include more than just the ```==``` operator in the near future.
+Note that the syntax follows C/C++'s approach in that the body must be wrapped in ```{``` ```}```, but differs in that the condition does NOT need to be wrapped in ```(``` ```)```. 
 
-I hope to also add ```break``` and ```continue``` statements to ```while``` loops as well as ```elsif``` and ```else``` blocks to the ```if``` statement.
+So this syntax still works fine:
+```python
+if (true) {
+    outln("Condition is true");
+}
+```
+but the parentheses around ```true``` are unnecessary.
+
+In the next entry I'll add the ```elsif``` and ```else``` clauses. I also would like to add ```continue``` and ```break``` statements to while loops, but that isn't as straight forward. The while loop parser calls the main parse function recursively, so I'll have to add some sort of flag there to let the main parse function know that it is in a loop or not. I'm not sure if it would be smarter to add the flag as a member of the ```Parser_T``` class, or as an argument in the main parse function.
