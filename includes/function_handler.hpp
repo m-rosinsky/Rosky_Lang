@@ -76,7 +76,7 @@ public:
         _native_table["outln"] = outln_func;
 
         // Populate the native function table with the built-in member funciton pointers.
-        _native_member_table["dummy"] = dummy_func;
+        _native_member_table["size"] = size_func;
 
     }
 

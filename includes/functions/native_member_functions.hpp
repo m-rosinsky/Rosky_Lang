@@ -33,7 +33,7 @@
 
 // This function is a dummy function for member function testing.
 std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
-    dummy_func(std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>& __obj,
+    size_func(std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>& __obj,
                const std::vector<std::shared_ptr<RoskyInterface>>& __func_args,
                size_t __colnum, size_t __linenum);
 

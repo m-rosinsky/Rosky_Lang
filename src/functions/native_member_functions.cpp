@@ -23,13 +23,13 @@
 /******************************************************************************/
 
 std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
-    dummy_func(std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>& __obj,
+    size_func(std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>& __obj,
                const std::vector<std::shared_ptr<RoskyInterface>>& __func_args,
                size_t __colnum, size_t __linenum) {
 
     // Check the number of arguments.
-    if (__func_args.size() != 1) {
-        throw_error(ERR_BAD_FUNC_ARGS, "'dummy' expects 1 argument, received " +
+    if (__func_args.size() != 0) {
+        throw_error(ERR_BAD_FUNC_ARGS, "'dummy' expects 0 arguments, received " +
                     std::to_string(__func_args.size()), __colnum, __linenum);
     }
 
