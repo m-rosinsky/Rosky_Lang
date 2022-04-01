@@ -309,3 +309,34 @@ but the parentheses around ```true``` are unnecessary.
 In the next entry I'll add the ```elsif``` and ```else``` clauses. I also would like to add ```continue``` and ```break``` statements to while loops, but that isn't as straight forward. The while loop parser calls the main parse function recursively, so I'll have to add some sort of flag there to let the main parse function know that it is in a loop or not. I'm not sure if it would be smarter to add the flag as a member of the ```Parser_T``` class, or as an argument in the main parse function.
 
 The ```break``` keyword also comes with a bit more complexity, because it has to let the while loop parser know that we're breaking so it doesn't check the condition again. I'm sure another flag can take care of this, but I'm not sure where to put it yet.
+
+## April 1, 2022
+
+I've decided to stop working on this project. I've just gotten a little tired or how this project is turning out. April fools of course! Another day another feature! I've gone ahead and implemented the ```elsif``` and ```else``` keywords, which came with a rework to the ```parse_if``` function. Now we can run code like this:
+```python
+y = 2;
+ptr = @y;
+
+out("ptr -> ");
+if ptr == nullptr {
+    out("nullptr");
+} else {
+    out(*ptr);
+}
+```
+```
+ptr -> nullptr
+```
+It's really starting to feel and look like a legitimate language.
+
+---
+
+Another feature I tackled today, a bit off topic, was member functions. Member functions was a thing I've had in the "design works" for quite a few days now and I finally found a design that I felt the most confident with.
+
+Member functions are a little trickier than the normal functions we already have. The trick being that not only do we have to do all the normal function parsing along with the actual function invoking, but we have to pass the object being acted upon as well. For instance:
+```python
+name = "mike";
+
+name_len = name.size();
+```
+My expression parser will go left to right forming the tree function, so when we arrive at the ```.```, the tree looks like this:
