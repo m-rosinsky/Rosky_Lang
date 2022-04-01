@@ -39,7 +39,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
                     __obj.second->get_type_string() + "'", __colnum, __linenum);
     }
 
-    // return dumb obj.
+    // return the new obj.
     return {nullptr, std::make_shared<RoskyInt>(__obj.second->to_string().size())};
 
 }
