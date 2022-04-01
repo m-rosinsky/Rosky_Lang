@@ -62,6 +62,8 @@ enum ERROR_TYPE {
     ERR_BAD_FUNC_ARGS,
     ERR_EMPTY_ARG,
     ERR_NONMEMBER,
+    ERR_UNREC_FUNC,
+    ERR_NO_FUNC_ARGS,
 
 };
 
@@ -100,6 +102,8 @@ static std::vector<std::string> ERROR_STRINGS {
     "Improper function arguments",
     "Empty argument",
     "Member function error",
+    "Unrecognized function",
+    "Expected arguments for function",
 
 };
 

@@ -54,7 +54,7 @@ void Parser_T::parse(size_t __start_idx, size_t __end_idx, size_t __scope) {
             // Parse as expression.
             size_t end_idx = find_nextof(_tokens, idx, ";");
             if (end_idx == 0 || end_idx > __end_idx) {
-                throw_error(ERR_UNEXP_EOF, "", _tokens[__end_idx]->_colnum, _tokens[__end_idx]->_linenum);
+                throw_error(ERR_UNEXP_EOF, "", _tokens[__end_idx - 1]->_colnum, _tokens[__end_idx - 1]->_linenum);
             }
             auto ignore = parse_expr(idx, end_idx, __scope);
             continue;
@@ -77,7 +77,7 @@ void Parser_T::parse(size_t __start_idx, size_t __end_idx, size_t __scope) {
             // Keyword will be parsed as expression.
             size_t end_idx = find_nextof(_tokens, idx, ";");
             if (end_idx == 0 || end_idx > __end_idx) {
-                throw_error(ERR_UNEXP_EOF, "", _tokens[__end_idx]->_colnum, _tokens[__end_idx]->_linenum);
+                throw_error(ERR_UNEXP_EOF, "", _tokens[__end_idx - 1]->_colnum, _tokens[__end_idx - 1]->_linenum);
             }
             auto ignore = parse_expr(idx, end_idx, __scope);
             continue;
@@ -90,7 +90,7 @@ void Parser_T::parse(size_t __start_idx, size_t __end_idx, size_t __scope) {
             // Token must be an expression.
             size_t end_idx = find_nextof(_tokens, idx, ";");
             if (end_idx == 0 || end_idx > __end_idx) {
-                throw_error(ERR_UNEXP_EOF, "", _tokens[__end_idx]->_colnum, _tokens[__end_idx]->_linenum);
+                throw_error(ERR_UNEXP_EOF, "", _tokens[__end_idx - 1]->_colnum, _tokens[__end_idx - 1]->_linenum);
             }
             auto ignore = parse_expr(idx, end_idx, __scope);
             continue;
@@ -105,7 +105,7 @@ void Parser_T::parse(size_t __start_idx, size_t __end_idx, size_t __scope) {
             if (is_expr_op(_tokens[idx]->_token)) {
                 size_t end_idx = find_nextof(_tokens, idx, ";");
                 if (end_idx == 0 || end_idx > __end_idx) {
-                    throw_error(ERR_UNEXP_EOF, "", _tokens[__end_idx]->_colnum, _tokens[__end_idx]->_linenum);
+                    throw_error(ERR_UNEXP_EOF, "", _tokens[__end_idx - 1]->_colnum, _tokens[__end_idx - 1]->_linenum);
                 }
                 auto ignore = parse_expr(idx, end_idx, __scope);
                 continue;
@@ -120,7 +120,7 @@ void Parser_T::parse(size_t __start_idx, size_t __end_idx, size_t __scope) {
             if (_tokens[idx]->_token == "(") {
                 size_t end_idx = find_nextof(_tokens, idx, ";");
                 if (end_idx == 0 || end_idx > __end_idx) {
-                    throw_error(ERR_UNEXP_EOF, "", _tokens[__end_idx]->_colnum, _tokens[__end_idx]->_linenum);
+                    throw_error(ERR_UNEXP_EOF, "", _tokens[__end_idx - 1]->_colnum, _tokens[__end_idx - 1]->_linenum);
                 }
                 auto ignore = parse_expr(idx, end_idx, __scope);
                 continue;

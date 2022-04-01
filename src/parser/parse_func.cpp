@@ -125,8 +125,15 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     // Parse the function arguments.
     func_args = parse_func_args(__idx, match_idx, __scope);
 
-     // Call the function with the args and return the value.
-    return _func_table->call_function(func_name, func_args, func_col, func_lin);
+    // Call the function with the args and return the value.
+     auto ret_obj = _func_table->call_function(func_name, func_args, func_col, func_lin);
+
+     // If ret_obj is null, throw an error.
+     if (ret_obj.first == nullptr && ret_obj.second == nullptr) {
+         throw_error(ERR_UNREC_FUNC, "'" + func_name + "'", func_col, func_lin);
+     }
+
+     return ret_obj;
 
 }
 
@@ -148,7 +155,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
     // The next token must be a left paren.
     if (_tokens[__idx]->_token != "(") {
-        throw_error(ERR_SYNTAX, "Illegal use of reserved function name '" + func_name + "'",
+        throw_error(ERR_NO_FUNC_ARGS, "'" + _tokens[__idx-1]->_token + "'",
                     _tokens[__idx-1]->_colnum, _tokens[__idx-1]->_linenum);
     }
 
@@ -169,7 +176,14 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     func_args = parse_func_args(__idx, match_idx, __scope);
 
      // Call the function with the args and return the value.
-    return _func_table->call_member_function(func_name, __obj, func_args, func_col, func_lin);
+     auto ret_obj = _func_table->call_member_function(func_name, __obj, func_args, func_col, func_lin);
+
+     // If ret_obj is null, throw an error.
+     if (ret_obj.first == nullptr && ret_obj.second == nullptr) {
+         throw_error(ERR_UNREC_FUNC, "'" + func_name + "'", func_col, func_lin);
+     }
+
+     return ret_obj;
 
 }
 

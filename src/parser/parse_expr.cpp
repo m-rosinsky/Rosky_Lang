@@ -80,8 +80,9 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
             // Create a temporary for the object pair
             std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> obj_pair = {nullptr, nullptr};
 
-            // Check if the symbol is the name of a function.
-            if (_func_table->is_function(_tokens[__idx]->_token)) {
+            // If the next token is a left paren, pass as function, otherwise
+            // pass as symbol.
+            if (_tokens[__idx+1]->_token == "(") {
 
                 // Parse the function and get the result.
                 obj_pair = parse_func(__idx, __end_idx, __scope);
