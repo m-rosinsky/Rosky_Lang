@@ -307,3 +307,5 @@ if (true) {
 but the parentheses around ```true``` are unnecessary.
 
 In the next entry I'll add the ```elsif``` and ```else``` clauses. I also would like to add ```continue``` and ```break``` statements to while loops, but that isn't as straight forward. The while loop parser calls the main parse function recursively, so I'll have to add some sort of flag there to let the main parse function know that it is in a loop or not. I'm not sure if it would be smarter to add the flag as a member of the ```Parser_T``` class, or as an argument in the main parse function.
+
+The ```break``` keyword also comes with a bit more complexity, because it has to let the while loop parser know that we're breaking so it doesn't check the condition again. I'm sure another flag can take care of this, but I'm not sure where to put it yet.
