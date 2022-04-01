@@ -281,3 +281,21 @@ returns ```true```.
 The goal with null is to test if an object is "legitimate" or not. So ```false``` and ```nullptr```, while typically being thought of as the negative state, is still a valid object, so it will return ```false``` when compared to ```null```.
 
 This addition sets the stage for my plans for either later today or tomorrow: the first bits of control flow! I'm going to look to add ```if``` statements and ```while``` loops in the next entry, and of course we need boolean logic for that.
+
+---
+
+I've gone ahead an added the ```if``` statement and the ```while``` loop to the parser. It leverages a recrusive call to the expression parser to evaluate the condition, and then recursively calls the main parser within the body if the condition is ```true```.
+
+Here's an example of this in action:
+```python
+if true {
+    outln("Condition is true");
+}
+```
+```
+Condition is true
+```
+
+Pretty straight forward. I'll look to flesh out the boolean operators to include more than just the ```==``` operator in the near future.
+
+I hope to also add ```break``` and ```continue``` statements to ```while``` loops as well as ```elsif``` and ```else``` blocks to the ```if``` statement.
