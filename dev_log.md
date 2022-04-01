@@ -340,3 +340,29 @@ name = "mike";
 name_len = name.size();
 ```
 My expression parser will go left to right forming the tree function, so when we arrive at the ```.```, the tree looks like this:
+| ![alt text](https://i.imgur.com/dulT8SG.png "Member function tree 1") |
+|:--:|
+
+We can see the ```name``` object is already in the parse tree, but now we encounter the ```.``` operator. We can't simply insert the ```.``` as a normal operator on the tree and the ```size()``` as it's right child. The parse tree is a tree of objects and operators and ```size()``` is an invocable function. So how do we go about performing the member function on the ```name``` object?
+
+My solution was when we encounter a ```.``` operator, we ensure that the token to it's right (in this case ```size``` actually names a function. We then retreive the object that was last inserted into the tree, which is always the right-most node. And because the ```.``` operator will throw if we're not expecting an operator, the tree is guaranteed to not be null, so object retreival will always succeed.
+
+We retreive the right-most object, send the function off along with the object to be handled by the function backend, but now what?
+
+Our tree still looks the same. We essentially have to replace the node that we just retreived with the new object formed by the member function. This can be done by either popping the node upon retreival and inserting the new object as normal, or by replacing the contents of the right-most node with the new object contents, and I opted for the latter, but either would work fine.
+
+So after the function backend is called and the object is replaced, the tree would look like this:
+| ![alt text](https://i.imgur.com/TqBZU3t.png "Member function tree 1") |
+|:--:|
+
+And from then on we let the tree be evaluated. So this code outputs:
+```python
+name = "mike";
+
+name_len = name.size();
+
+out(name & " is " & name_len & " letters long");
+```
+```
+mike is 4 letters long
+```
