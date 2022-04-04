@@ -335,7 +335,7 @@ Another feature I tackled today, a bit off topic, was member functions. Member f
 
 Member functions are a little trickier than the normal functions we already have. The trick being that not only do we have to do all the normal function parsing along with the actual function invoking, but we have to pass the object being acted upon as well. For instance:
 ```python
-name = "mike";
+name = "Lukey";
 
 name_len = name.size();
 ```
@@ -357,12 +357,12 @@ So after the function backend is called and the object is replaced, the tree wou
 
 And from then on we let the tree be evaluated. So this code outputs:
 ```python
-name = "mike";
+name = "Lukey";
 
 name_len = name.size();
 
 out(name & " is " & name_len & " letters long");
 ```
 ```
-mike is 4 letters long
+Lukey is 5 letters long
 ```
