@@ -53,6 +53,12 @@ void Parser_T::parse_while(size_t& __idx, size_t __end_idx, size_t __scope) {
         throw_error(ERR_UNCLOSED_BRACE, "", _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
     }
 
+    // Bookmark the previous state of the loop flag.
+    bool loop_flag = _loop_flag;
+
+    // Assert the loop flag.
+    _loop_flag = true;
+
     // Loop
     while (true) {
 
@@ -80,7 +86,22 @@ void Parser_T::parse_while(size_t& __idx, size_t __end_idx, size_t __scope) {
         // Parse the body.
         parse(__idx, close_index, __scope);
 
+        // If the break flag has been asserted, deassert and break.
+        if (_break_flag == true) {
+            _break_flag = false;
+            break;
+        }
+
+        // If the continue flag has been asserted, deassert and continue.
+        if (_cont_flag == true) {
+            _cont_flag = false;
+            continue;
+        }
+
     }
+
+    // Reset the loop flag to its previous state.
+    _loop_flag = loop_flag;
 
     // Release above the current scope.
     _var_table->release_above_scope(__scope);
@@ -88,6 +109,60 @@ void Parser_T::parse_while(size_t& __idx, size_t __end_idx, size_t __scope) {
     // Set the index to close index and return.
     __idx = close_index;
     return;
+
+}
+
+/******************************************************************************/
+
+void Parser_T::parse_continue(size_t& __idx, size_t __end_idx, size_t __scope) {
+
+    // If the next token is not a ';', throw error.
+    size_t end_token = find_nextof(_tokens, __idx, ";");
+
+    if (end_token == 0 || end_token > __end_idx) {
+        throw_error(ERR_UNEXP_EOF, "", _tokens[__end_idx-1]->_colnum, _tokens[__end_idx-1]->_linenum);
+    }
+
+    __idx++;
+
+    if (__idx != end_token) {
+        throw_error(ERR_SYNTAX, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+    }
+
+    // If we are not in a loop, throw error.
+    if (_loop_flag == false) {
+        throw_error(ERR_RESERVED_USE, "'continue' not in loop", _tokens[__idx-1]->_colnum, _tokens[__idx-1]->_linenum);
+    }
+
+    // Assert the continue flag.
+    _cont_flag = true;
+
+}
+
+/******************************************************************************/
+
+void Parser_T::parse_break(size_t& __idx, size_t __end_idx, size_t __scope) {
+
+    // If the next token is not a ';', throw error.
+    size_t end_token = find_nextof(_tokens, __idx, ";");
+
+    if (end_token == 0 || end_token > __end_idx) {
+        throw_error(ERR_UNEXP_EOF, "", _tokens[__end_idx-1]->_colnum, _tokens[__end_idx-1]->_linenum);
+    }
+
+    __idx++;
+
+    if (__idx != end_token) {
+        throw_error(ERR_SYNTAX, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+    }
+
+    // If we are not in a loop, throw error.
+    if (_loop_flag == false) {
+        throw_error(ERR_RESERVED_USE, "'break' not in loop", _tokens[__idx-1]->_colnum, _tokens[__idx-1]->_linenum);
+    }
+
+    // Assert the break flag.
+    _break_flag = true;
 
 }
 

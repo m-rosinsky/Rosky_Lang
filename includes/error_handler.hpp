@@ -42,6 +42,7 @@ enum ERROR_TYPE {
     ERR_SYNTAX,
     ERR_UNEXP_EOF,
     ERR_UNCLOSED_BRACE,
+    ERR_UNCLOSED_BRACKET,
     ERR_UNCLOSED_PAREN,
     ERR_TERM_BEFORE_CLOSURE,
     ERR_EMPTY_PARENS,
@@ -57,6 +58,8 @@ enum ERROR_TYPE {
     ERR_ADDR_TEMP,
     ERR_BAD_ASSIGN,
     ERR_DEREF_NULLPTR,
+    ERR_NON_ITERABLE,
+    ERR_INDEX_OOB,
 
     // Function errors.
     ERR_BAD_FUNC_ARGS,
@@ -64,6 +67,7 @@ enum ERROR_TYPE {
     ERR_NONMEMBER,
     ERR_UNREC_FUNC,
     ERR_NO_FUNC_ARGS,
+    ERR_ASSERT,
 
 };
 
@@ -82,6 +86,7 @@ static std::vector<std::string> ERROR_STRINGS {
     "Syntax error",
     "Missing terminator (possible missing semicolon)",
     "Unclosed curly brace",
+    "Unclosed square bracket",
     "Unclosed parentheses",
     "Expression terminated before closure",
     "Empty parentheses",
@@ -97,6 +102,8 @@ static std::vector<std::string> ERROR_STRINGS {
     "Attempt to get address of temporary",
     "Attempt to assign to r-value",
     "Attempt to dereference a nullptr",
+    "Attempt to index a non-iterable object",
+    "Index out of bounds",
 
     // Function errors.
     "Improper function arguments",
@@ -104,6 +111,7 @@ static std::vector<std::string> ERROR_STRINGS {
     "Member function error",
     "Unrecognized function",
     "Expected arguments for function",
+    "Assertion error",
 
 };
 

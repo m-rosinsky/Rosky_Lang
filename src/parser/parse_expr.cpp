@@ -177,6 +177,35 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
             // If not expecting an operator.
             if (!expecting_op) {
 
+                // Special case for new group forming.
+                if (op_string == "[") {
+
+                    // Find the matching bracket.
+                    size_t match_idx = find_matching_ctrl(_tokens, __idx, "[");
+
+                    // Check if not found.
+                    if (match_idx == 0) {
+                        throw_error(ERR_UNCLOSED_PAREN, "", _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+                    }
+
+                    // If the matching paren is at a higher index than our stop
+                    // point, throw an error.
+                    if (match_idx > __end_idx) {
+                        throw_error(ERR_TERM_BEFORE_CLOSURE, "", _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+                    }
+
+                    // Call the group parser.
+                    //auto obj_pair = parse_group(__idx, match_idx, __scope);
+
+                    // Insert the group object.
+                    //insert_right(root, obj_pair.first, obj_pair.second, "", 0, 0);
+
+                    // Now expecting op.
+                    expecting_op = true;
+                    continue;
+
+                }
+
                 // If it's a unary operator, insert it.
                 if (is_unary_op(op_string)) {
                     
@@ -196,6 +225,38 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
                 }
 
             } else { // expecting operator.
+
+                // Special case for index operator.
+                if (op_string == "[") {
+
+                    // Find the matching bracket.
+                    size_t match_idx = find_matching_ctrl(_tokens, __idx, "[");
+
+                    // Check if not found.
+                    if (match_idx == 0) {
+                        throw_error(ERR_UNCLOSED_PAREN, "", _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+                    }
+
+                    // If the matching paren is at a higher index than our stop
+                    // point, throw an error.
+                    if (match_idx > __end_idx) {
+                        throw_error(ERR_TERM_BEFORE_CLOSURE, "", _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+                    }
+
+                    // Push the operator into the tree.
+                    insert_op(root, "[", _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+
+                    // Evaluate inside the brackets.
+                    auto obj_pair = parse_expr(++__idx, match_idx, __scope);
+
+                    // Push the result into the tree.
+                    insert_right(root, obj_pair.first, obj_pair.second, "", 0, 0);
+
+                    // Now expecting operator.
+                    expecting_op = true;
+                    continue;
+
+                }
 
                 // If it's a unary operator, only allow "*" which is multiply.
                 if (is_unary_op(op_string)) {

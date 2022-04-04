@@ -15,6 +15,8 @@
 //  Inherited Subprograms:      None
 //
 //  Exported Subprograms:       out
+//                              outln
+//                              assert
 //                              
 /******************************************************************************/
 
@@ -39,7 +41,7 @@
 // This function outputs an object to the standard output.
 std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     out_func(const std::vector<std::shared_ptr<RoskyInterface>>& __func_args,
-        size_t __colnum, size_t __linenum);
+             size_t __colnum, size_t __linenum);
 
 /******************************************************************************/
 
@@ -47,7 +49,15 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 // a new line after.
 std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     outln_func(const std::vector<std::shared_ptr<RoskyInterface>>& __func_args,
-        size_t __colnum, size_t __linenum);
+               size_t __colnum, size_t __linenum);
+
+/******************************************************************************/
+
+// This function takes in a boolean expression and throws an assertion error
+// if the condition is false.
+std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
+    assert_func(const std::vector<std::shared_ptr<RoskyInterface>>& __func_args,
+                size_t __colnum, size_t __linenum);
 
 /******************************************************************************/
 

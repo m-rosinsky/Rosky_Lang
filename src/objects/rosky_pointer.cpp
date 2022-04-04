@@ -40,6 +40,17 @@ std::string RoskyPointer::get_type_string() const noexcept {
 
 /******************************************************************************/
 
+// Iterable information.
+bool RoskyPointer::is_iterable() const noexcept {
+    return false;
+}
+
+bool RoskyPointer::is_addressable() const noexcept {
+    return false;
+}
+
+/******************************************************************************/
+
 // Casting.
 long RoskyPointer::to_int() const noexcept {
     return 0;

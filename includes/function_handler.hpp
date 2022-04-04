@@ -74,6 +74,7 @@ public:
         // Populate the function table with the built-in function pointers.
         _native_table["out"] = out_func;
         _native_table["outln"] = outln_func;
+        _native_table["assert"] = assert_func;
 
         // Populate the native function table with the built-in member funciton pointers.
         _native_member_table["size"] = size_func;

@@ -48,6 +48,11 @@ void Parser_T::parse(size_t __start_idx, size_t __end_idx, size_t __scope) {
     // Iterate through the token table.
     for (; idx < __end_idx; idx++) {
 
+        // If the continue flag or break flag are asserted, return.
+        if (_cont_flag || _break_flag) {
+            return;
+        }
+
         // token is a literal.
         if (is_literal(_tokens[idx]->_type)) {
 
@@ -72,6 +77,17 @@ void Parser_T::parse(size_t __start_idx, size_t __end_idx, size_t __scope) {
             if (_tokens[idx]->_token == "while") {
                 parse_while(idx, __end_idx, __scope+1);
                 continue;
+            }
+
+            // Loop keywords.
+            if (_tokens[idx]->_token == "continue") {
+                parse_continue(idx, __end_idx, __scope);
+                // Return so the loop advances.
+                return;
+            }
+            if (_tokens[idx]->_token == "break") {
+                parse_break(idx, __end_idx, __scope);
+                return;
             }
 
             // Keyword will be parsed as expression.

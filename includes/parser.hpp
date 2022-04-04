@@ -73,11 +73,20 @@ private:
     // The function table handler instance.
     std::unique_ptr<FunctionTable_T> _func_table;
 
+    // This flag defines whether we are currently in a loop.
+    bool _loop_flag;
+
+    // This flag defines whether we have encountered a loop break.
+    bool _break_flag;
+
+    // This flag defines whether we have encountered a loop continue.
+    bool _cont_flag;
+
 public:
 
     // Ctor.
     Parser_T(const std::deque<std::shared_ptr<Token_T>>& __tokens)
-        : _tokens(__tokens) {
+        : _tokens(__tokens), _loop_flag(false), _break_flag(false), _cont_flag(false) {
         
         // Instantiate the variable handler.
         _var_table = std::make_unique<VariableTable_T>();
@@ -122,6 +131,11 @@ public:
 
     // This function is for parsing while loops.
     void parse_while(size_t& __idx, size_t __end_idx, size_t __scope);
+
+    // These functions (also found in the parse_while.cpp file) are
+    // loop controls.
+    void parse_continue(size_t& __idx, size_t __end_idx, size_t __scope);
+    void parse_break(size_t& __idx, size_t __end_idx, size_t __scope);
 
 };
 

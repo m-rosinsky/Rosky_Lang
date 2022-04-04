@@ -34,7 +34,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     }
 
     // Ensure we have a string type as an object.
-    if (__obj.second->get_type_id() != OBJ_STRING) {
+    if (__obj.second->is_iterable() == false) {
         throw_error(ERR_NONMEMBER, "'size' is not a member function for type '" +
                     __obj.second->get_type_string() + "'", __colnum, __linenum);
     }

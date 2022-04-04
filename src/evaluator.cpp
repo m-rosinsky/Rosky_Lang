@@ -115,6 +115,33 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
             ret_obj = {nullptr, left.second->concat_op(right.second)};
         } else if (__root->_op == "==") {
             ret_obj = {nullptr, left.second->eq_op(right.second)};
+        } else if (__root->_op == "[") {
+
+            // If the left object is not iterable, throw error.
+            if (left.second->is_iterable() == false) {
+                throw_error(ERR_NON_ITERABLE, "'" + left.second->get_type_string() + "'", __root->_colnum, __root->_linenum);
+            }
+
+            // Check if the operation should return an addressable object.
+            bool addressable = false;
+            if (left.first != nullptr) {
+                if ((*left.first)->is_addressable()) {
+                    addressable = true;
+                }
+            }
+
+            // Perform the operation.
+            if (addressable) {
+                ret_obj = (*left.first)->index_op(right.second, true);
+            } else {
+                ret_obj = left.second->index_op(right.second, false);
+            }
+
+            // Special case of index oob.
+            if (ret_obj.first == nullptr && ret_obj.second == nullptr) {
+                throw_error(ERR_INDEX_OOB, right.second->to_string(), __root->_right->_colnum, __root->_right->_linenum);
+            }
+
         } else if (__root->_op == "de") {
             ret_obj = right.second->deref_op();
 

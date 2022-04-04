@@ -39,6 +39,17 @@ std::string RoskyBool::get_type_string() const noexcept {
 
 /******************************************************************************/
 
+// Iterable information.
+bool RoskyBool::is_iterable() const noexcept {
+    return false;
+}
+
+bool RoskyBool::is_addressable() const noexcept {
+    return false;
+}
+
+/******************************************************************************/
+
 // Casting.
 long RoskyBool::to_int() const noexcept {
     return _data ? 1 : 0;

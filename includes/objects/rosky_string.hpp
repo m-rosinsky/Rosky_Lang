@@ -58,6 +58,10 @@ public:
     OBJ_TYPES get_type_id() const noexcept override;
     std::string get_type_string() const noexcept override;
 
+    // Iterable information.
+    bool is_iterable() const noexcept override;
+    bool is_addressable() const noexcept override;
+
     // Casting.
     long to_int() const noexcept override;
     std::string to_string() const noexcept override;
@@ -71,6 +75,10 @@ public:
     
     // Boolean operators.
     std::shared_ptr<RoskyInterface> eq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
+
+    // Iterable functionality.
+    size_t get_size() const noexcept override;
+    std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> index_op(const std::shared_ptr<RoskyInterface>& __r, bool __addr) noexcept override;
 
 };
 

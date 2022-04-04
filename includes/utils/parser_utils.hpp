@@ -62,6 +62,7 @@ inline size_t get_precedence(const std::string& op) {
     if (op == "+") { return 4; }
     if (op == "*") { return 5; }
     if (op == "de" || op == "@") { return 6; }
+    if (op == "[") { return 7; }
     return 0;
 }
 
@@ -141,7 +142,7 @@ void print_inorder(const std::shared_ptr<ParseNode>& __root);
 // This function determines if an operator is valid in starting
 // an expression. (i.e. *p = 2;)
 inline bool is_expr_op(const std::string& op) noexcept {
-    return op == "*";
+    return op == "*" || op == "[";
 }
 
 // This function determines if a token type is a literal
@@ -159,7 +160,8 @@ inline bool is_assignment_op(const std::string& op) noexcept {
 // This function determines if an operator is left associative.
 inline bool is_left_assoc(const std::string& op) noexcept {
     return (op == "+") || (op == "*") ||
-           (op == "&") || (op == "==");
+           (op == "&") || (op == "==") ||
+           (op == "[");
 }
 
 // This function determines if an operator is right associative.
