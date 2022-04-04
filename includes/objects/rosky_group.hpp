@@ -1,16 +1,16 @@
 
 /******************************************************************************/
 //
-//  Source Name:                rosky_string.hpp
+//  Source Name:                rosky_group.hpp
 //
 //  Description:                This file contains the class definition for
-//                              the built in string type.
+//                              the built in group type.
 // 
-//                              The underlying data type is an std::string
+//                              The underlying data type is a deque.
 //
 //  Dependencies:               RoskyInterface
 //
-//  Classes:                    RoskyString
+//  Classes:                    RoskyGroup
 //
 //  Inherited Subprograms:      get_type_id
 //                              get_type_string
@@ -20,39 +20,39 @@
 //                              mul_op
 //
 //  Exported Subprograms:       ctor
-//                              ctor(const std::string&)
+//                              ctor(deque)
 //                              
 /******************************************************************************/
 
-#ifndef ROSKY_STRING
-#define ROSKY_STRING
+#ifndef ROSKY_GROUP
+#define ROSKY_GROUP
 
 /******************************************************************************/
 
-#include <string>                       // std::string
-#include <memory>                       // std::shared_ptr
+#include <string>                           // std::string
 
 #include "rosky_interface.hpp"
+#include "rosky_string.hpp"
 #include "rosky_bool.hpp"
 
 /******************************************************************************/
 
-// This is the class definition for the built-in string type.
-class RoskyString : public RoskyInterface {
+// This is the class defintion for the RoskyGroup class.
+class RoskyGroup : public RoskyInterface {
 
 private:
 
-    // The underlying data type is an std::string
-    std::string _data;
+    // The underlying data type is a deque.
+    std::deque<std::shared_ptr<RoskyInterface>> _data;
 
 public:
 
-    // Ctors.
-    RoskyString() : _data("") {}
-    RoskyString(const std::string& __data) : _data(__data) {}
+    // Constructors.
+    RoskyGroup() : _data(0) {}
+    RoskyGroup(const std::deque<std::shared_ptr<RoskyInterface>>& __data) : _data(__data) {}
 
-    // Dtor.
-    ~RoskyString() {}
+    // Destrcutor.
+    ~RoskyGroup() {}
 
     // Type information.
     OBJ_TYPES get_type_id() const noexcept override;
@@ -66,22 +66,26 @@ public:
     long to_int() const noexcept override;
     std::string to_string() const noexcept override;
     bool to_bool() const noexcept override;
+    std::deque<std::shared_ptr<RoskyInterface>> to_group() const noexcept override;
 
     // Arithmetic operators.
     std::shared_ptr<RoskyInterface> add_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
+    std::shared_ptr<RoskyInterface> mul_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
 
     // String operators.
     std::shared_ptr<RoskyInterface> concat_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
-    
+
     // Boolean operators.
     std::shared_ptr<RoskyInterface> eq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
 
     // Iterable functionality.
     size_t get_size() const noexcept override;
     std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> index_op(const std::shared_ptr<RoskyInterface>& __r) noexcept override;
+    void append_func(const std::shared_ptr<RoskyInterface>& __r) noexcept override;
 
 };
 
 /******************************************************************************/
 
-#endif // ROSKY_STRING
+#endif // ROSKY_GROUP
+

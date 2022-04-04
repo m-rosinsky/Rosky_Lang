@@ -78,6 +78,7 @@ public:
 
         // Populate the native function table with the built-in member funciton pointers.
         _native_member_table["size"] = size_func;
+        _native_member_table["append"] = append_func;
 
     }
 

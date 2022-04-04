@@ -218,6 +218,23 @@ size_t find_nextof(const std::deque<std::shared_ptr<Token_T>>& __tokens,
     // Iterate through the token table.
     for (size_t idx = __start_idx; idx < __tokens.size(); idx++) {
 
+        // The token can't be in a closure, so if we find start
+        // start of a closure, skip over it.
+        if (__tokens[idx]->_type != TOKEN_LIT_STRING) {
+
+            if (__tokens[idx]->_token == "[" ||
+                __tokens[idx]->_token == "{" ||
+                __tokens[idx]->_token == "(") {
+
+                size_t match_idx = find_matching_ctrl(__tokens, idx, __tokens[idx]->_token);
+
+                idx = match_idx == 0 ? idx : match_idx;
+                continue;
+
+            }
+
+        }
+
         // If the token matches, return the index.
         if (__tokens[idx]->_token == __token) {
             return idx;

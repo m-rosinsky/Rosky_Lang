@@ -29,6 +29,7 @@
 #include <memory>                   // std::shared_ptr
 #include <string>                   // std::string
 #include <utility>                  // std::pair
+#include <deque>                    // std::deque
 
 /******************************************************************************/
 
@@ -40,6 +41,7 @@ enum OBJ_TYPES {
     OBJ_NULL,
     OBJ_STRING,
     OBJ_BOOL,
+    OBJ_GROUP,
 
 };
 
@@ -66,6 +68,7 @@ public:
     virtual std::string to_string() const noexcept = 0;
     virtual std::shared_ptr<RoskyInterface>* to_pointer() const noexcept { return nullptr; }
     virtual bool to_bool() const noexcept = 0;
+    virtual std::deque<std::shared_ptr<RoskyInterface>> to_group() const noexcept { return {}; }
     
     // Arithmetic operators.
     virtual std::shared_ptr<RoskyInterface> add_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
@@ -82,7 +85,8 @@ public:
 
     // Iterable functionality.
     virtual size_t get_size() const noexcept { return 0; }
-    virtual std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> index_op(const std::shared_ptr<RoskyInterface>& __r, bool __addr) noexcept { return {nullptr, nullptr}; }
+    virtual std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> index_op(const std::shared_ptr<RoskyInterface>& __r) noexcept { return {nullptr, nullptr}; }
+    virtual void append_func(const std::shared_ptr<RoskyInterface>& __r) noexcept {}
 
 };
 

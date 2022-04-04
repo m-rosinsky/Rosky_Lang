@@ -26,18 +26,20 @@ CFG_OBJ=
 COMMON_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
 	$(OUTDIR)/lexer.o $(OUTDIR)/main.o $(OUTDIR)/native_functions.o \
 	$(OUTDIR)/native_member_functions.o $(OUTDIR)/parse_expr.o \
-	$(OUTDIR)/parse_func.o $(OUTDIR)/parse_if.o $(OUTDIR)/parse_while.o \
-	$(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_bool.o \
-	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
-	$(OUTDIR)/rosky_pointer.o $(OUTDIR)/rosky_string.o 
+	$(OUTDIR)/parse_func.o $(OUTDIR)/parse_group.o $(OUTDIR)/parse_if.o \
+	$(OUTDIR)/parse_while.o $(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o \
+	$(OUTDIR)/rosky_bool.o $(OUTDIR)/rosky_group.o $(OUTDIR)/rosky_int.o \
+	$(OUTDIR)/rosky_null.o $(OUTDIR)/rosky_pointer.o \
+	$(OUTDIR)/rosky_string.o 
 OBJ=$(COMMON_OBJ) $(CFG_OBJ)
 ALL_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
 	$(OUTDIR)/lexer.o $(OUTDIR)/main.o $(OUTDIR)/native_functions.o \
 	$(OUTDIR)/native_member_functions.o $(OUTDIR)/parse_expr.o \
-	$(OUTDIR)/parse_func.o $(OUTDIR)/parse_if.o $(OUTDIR)/parse_while.o \
-	$(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_bool.o \
-	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
-	$(OUTDIR)/rosky_pointer.o $(OUTDIR)/rosky_string.o 
+	$(OUTDIR)/parse_func.o $(OUTDIR)/parse_group.o $(OUTDIR)/parse_if.o \
+	$(OUTDIR)/parse_while.o $(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o \
+	$(OUTDIR)/rosky_bool.o $(OUTDIR)/rosky_group.o $(OUTDIR)/rosky_int.o \
+	$(OUTDIR)/rosky_null.o $(OUTDIR)/rosky_pointer.o \
+	$(OUTDIR)/rosky_string.o 
 
 COMPILE=g++ -c    -g -o "$(OUTDIR)/$(*F).o" $(CFG_INC) "$<"
 LINK=g++  -g -o "$(OUTFILE)" $(OBJ) $(CFG_LIB)
@@ -189,18 +191,20 @@ CFG_OBJ=
 COMMON_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
 	$(OUTDIR)/lexer.o $(OUTDIR)/main.o $(OUTDIR)/native_functions.o \
 	$(OUTDIR)/native_member_functions.o $(OUTDIR)/parse_expr.o \
-	$(OUTDIR)/parse_func.o $(OUTDIR)/parse_if.o $(OUTDIR)/parse_while.o \
-	$(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_bool.o \
-	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
-	$(OUTDIR)/rosky_pointer.o $(OUTDIR)/rosky_string.o 
+	$(OUTDIR)/parse_func.o $(OUTDIR)/parse_group.o $(OUTDIR)/parse_if.o \
+	$(OUTDIR)/parse_while.o $(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o \
+	$(OUTDIR)/rosky_bool.o $(OUTDIR)/rosky_group.o $(OUTDIR)/rosky_int.o \
+	$(OUTDIR)/rosky_null.o $(OUTDIR)/rosky_pointer.o \
+	$(OUTDIR)/rosky_string.o 
 OBJ=$(COMMON_OBJ) $(CFG_OBJ)
 ALL_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
 	$(OUTDIR)/lexer.o $(OUTDIR)/main.o $(OUTDIR)/native_functions.o \
 	$(OUTDIR)/native_member_functions.o $(OUTDIR)/parse_expr.o \
-	$(OUTDIR)/parse_func.o $(OUTDIR)/parse_if.o $(OUTDIR)/parse_while.o \
-	$(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_bool.o \
-	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
-	$(OUTDIR)/rosky_pointer.o $(OUTDIR)/rosky_string.o 
+	$(OUTDIR)/parse_func.o $(OUTDIR)/parse_group.o $(OUTDIR)/parse_if.o \
+	$(OUTDIR)/parse_while.o $(OUTDIR)/parser.o $(OUTDIR)/parser_utils.o \
+	$(OUTDIR)/rosky_bool.o $(OUTDIR)/rosky_group.o $(OUTDIR)/rosky_int.o \
+	$(OUTDIR)/rosky_null.o $(OUTDIR)/rosky_pointer.o \
+	$(OUTDIR)/rosky_string.o 
 
 COMPILE=g++ -c   -o "$(OUTDIR)/$(*F).o" $(CFG_INC) "$<"
 LINK=g++  -o "$(OUTFILE)" $(OBJ) $(CFG_LIB)

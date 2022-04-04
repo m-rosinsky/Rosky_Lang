@@ -132,14 +132,16 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
             // Perform the operation.
             if (addressable) {
-                ret_obj = (*left.first)->index_op(right.second, true);
+                ret_obj = (*left.first)->index_op(right.second);
             } else {
-                ret_obj = left.second->index_op(right.second, false);
+                ret_obj = left.second->index_op(right.second);
+                ret_obj.first = nullptr;
             }
 
             // Special case of index oob.
-            if (ret_obj.first == nullptr && ret_obj.second == nullptr) {
-                throw_error(ERR_INDEX_OOB, right.second->to_string(), __root->_right->_colnum, __root->_right->_linenum);
+            if (right.second->get_type_id() == OBJ_INT &&
+                ret_obj.first == nullptr && ret_obj.second == nullptr) {
+                throw_error(ERR_INDEX_OOB, right.second->to_string(), __root->_colnum, __root->_linenum);
             }
 
         } else if (__root->_op == "de") {
@@ -167,6 +169,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
             // Construct the error message
             std::string err_op = __root->_op == "de" ? "deref" : __root->_op;
+            err_op = __root->_op == "[" ? "index" : __root->_op;
 
             std::string err_msg = "'" + err_op + "'";
 

@@ -185,7 +185,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
                     // Check if not found.
                     if (match_idx == 0) {
-                        throw_error(ERR_UNCLOSED_PAREN, "", _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+                        throw_error(ERR_UNCLOSED_BRACKET, "", _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
                     }
 
                     // If the matching paren is at a higher index than our stop
@@ -195,10 +195,10 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
                     }
 
                     // Call the group parser.
-                    //auto obj_pair = parse_group(__idx, match_idx, __scope);
+                    auto obj_pair = parse_group(__idx, match_idx, __scope);
 
                     // Insert the group object.
-                    //insert_right(root, obj_pair.first, obj_pair.second, "", 0, 0);
+                    insert_right(root, obj_pair.first, obj_pair.second, "", 0, 0);
 
                     // Now expecting op.
                     expecting_op = true;
@@ -234,7 +234,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
                     // Check if not found.
                     if (match_idx == 0) {
-                        throw_error(ERR_UNCLOSED_PAREN, "", _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+                        throw_error(ERR_UNCLOSED_BRACKET, "", _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
                     }
 
                     // If the matching paren is at a higher index than our stop

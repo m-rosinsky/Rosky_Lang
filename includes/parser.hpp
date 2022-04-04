@@ -137,6 +137,10 @@ public:
     void parse_continue(size_t& __idx, size_t __end_idx, size_t __scope);
     void parse_break(size_t& __idx, size_t __end_idx, size_t __scope);
 
+    // This function creates a group object.
+    std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
+        parse_group(size_t& __idx, size_t __end_idx, size_t __scope);
+
 };
 
 /******************************************************************************/

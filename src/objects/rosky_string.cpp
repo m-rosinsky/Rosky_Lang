@@ -112,7 +112,8 @@ size_t RoskyString::get_size() const noexcept {
     return _data.size();
 }
 
-std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> RoskyString::index_op(const std::shared_ptr<RoskyInterface>& __r, bool __addr) noexcept {
+std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
+    RoskyString::index_op(const std::shared_ptr<RoskyInterface>& __r) noexcept {
 
     if (__r->get_type_id() != OBJ_INT) {
         return {nullptr, nullptr};
