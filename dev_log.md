@@ -437,7 +437,7 @@ Error [Line 3 Column 7]: Attempt to get address of temporary
 Exiting...
 ```
 
-I've also added the ```append``` member function to the ```group``` data type"
+I've also added the ```append``` member function to the ```group``` data type:
 ```python
 x = [1,2,3];
 x.append(4);
