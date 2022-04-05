@@ -115,12 +115,19 @@ void tokenize_src(std::unique_ptr<Src_T>& __src) {
             // Bookmark the start column number.
             size_t start_col = colnum;
 
-            // Compound operator for ?=
             if (idx + 1 < __src->_data.size()) {
 
-                if (token == "=") {
+                if (token == "=" || token == "!" || token == "<" || token == ">") {
 
                     if (__src->_data[idx + 1] == '=') {
+                        idx++;
+                        colnum++;
+                        token += __src->_data[idx];
+                    }
+
+                } else if (token == "/") {
+
+                    if (__src->_data[idx + 1] == '/') {
                         idx++;
                         colnum++;
                         token += __src->_data[idx];

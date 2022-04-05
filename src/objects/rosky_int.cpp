@@ -77,10 +77,40 @@ std::shared_ptr<RoskyInterface> RoskyInt::add_op(const std::shared_ptr<RoskyInte
 
 }
 
+std::shared_ptr<RoskyInterface> RoskyInt::sub_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_INT) {
+        return std::make_shared<RoskyInt>(_data - __r->to_int());
+    }
+
+    return nullptr;
+
+}
+
 std::shared_ptr<RoskyInterface> RoskyInt::mul_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
 
     if (__r->get_type_id() == OBJ_INT) {
         return std::make_shared<RoskyInt>(_data * __r->to_int());
+    }
+
+    return nullptr;
+
+}
+
+std::shared_ptr<RoskyInterface> RoskyInt::idiv_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_INT) {
+        return std::make_shared<RoskyInt>((long)(_data / __r->to_int()));
+    }
+
+    return nullptr;
+
+}
+
+std::shared_ptr<RoskyInterface> RoskyInt::mod_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_INT) {
+        return std::make_shared<RoskyInt>(_data % __r->to_int());
     }
 
     return nullptr;
@@ -98,17 +128,67 @@ std::shared_ptr<RoskyInterface> RoskyInt::concat_op(const std::shared_ptr<RoskyI
 
 /******************************************************************************/
 
-// Boolean operators.
+// Comparison operators.
 std::shared_ptr<RoskyInterface> RoskyInt::eq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
 
     if (__r->get_type_id() == OBJ_INT) {
         return std::make_shared<RoskyBool>(_data == __r->to_int());
     }
-    if (__r->get_type_id() == OBJ_BOOL) {
-        return std::make_shared<RoskyBool>(to_bool() == __r->to_bool());
+    if (__r->get_type_id() == OBJ_NULL) {
+        return std::make_shared<RoskyBool>(false);
+    }
+
+    return nullptr;
+
+}
+
+std::shared_ptr<RoskyInterface> RoskyInt::neq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_INT) {
+        return std::make_shared<RoskyBool>(_data != __r->to_int());
     }
     if (__r->get_type_id() == OBJ_NULL) {
         return std::make_shared<RoskyBool>(false);
+    }
+
+    return nullptr;
+
+}
+
+std::shared_ptr<RoskyInterface> RoskyInt::gt_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_INT) {
+        return std::make_shared<RoskyBool>(_data > __r->to_int());
+    }
+
+    return nullptr;
+
+}
+
+std::shared_ptr<RoskyInterface> RoskyInt::lt_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_INT) {
+        return std::make_shared<RoskyBool>(_data < __r->to_int());
+    }
+
+    return nullptr;
+
+}
+
+std::shared_ptr<RoskyInterface> RoskyInt::geq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_INT) {
+        return std::make_shared<RoskyBool>(_data >= __r->to_int());
+    }
+
+    return nullptr;
+
+}
+
+std::shared_ptr<RoskyInterface> RoskyInt::leq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_INT) {
+        return std::make_shared<RoskyBool>(_data <= __r->to_int());
     }
 
     return nullptr;

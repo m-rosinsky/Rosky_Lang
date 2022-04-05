@@ -92,6 +92,9 @@ static std::vector<std::string> keywords = {
     "while",
     "continue",
     "break",
+    "and",
+    "or",
+    "xor",
 };
 
 /******************************************************************************/
@@ -153,7 +156,7 @@ inline bool is_whitespace(char c) noexcept {
 }
 
 inline bool is_op(char c) noexcept {
-    std::string op_string = "+*=@&[]";
+    std::string op_string = "+*=@&[]-/%!<>";
     for (auto& op : op_string) {
         if (c == op) { return true; }
     }

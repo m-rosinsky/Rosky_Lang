@@ -109,12 +109,36 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
         // Perform the operation.
         if (__root->_op == "+") {
             ret_obj = {nullptr, left.second->add_op(right.second)};
+        } else if (__root->_op == "-") {
+            ret_obj = {nullptr, left.second->sub_op(right.second)};
         } else if (__root->_op == "*") {
             ret_obj = {nullptr, left.second->mul_op(right.second)};
+        } else if (__root->_op == "//") {
+            ret_obj = {nullptr, left.second->idiv_op(right.second)};
+        } else if (__root->_op == "%") {
+            ret_obj = {nullptr, left.second->mod_op(right.second)};
         } else if (__root->_op == "&") {
             ret_obj = {nullptr, left.second->concat_op(right.second)};
         } else if (__root->_op == "==") {
             ret_obj = {nullptr, left.second->eq_op(right.second)};
+        } else if (__root->_op == "!=") {
+            ret_obj = {nullptr, left.second->neq_op(right.second)};
+        } else if (__root->_op == ">") {
+            ret_obj = {nullptr, left.second->gt_op(right.second)};
+        } else if (__root->_op == "<") {
+            ret_obj = {nullptr, left.second->lt_op(right.second)};
+        } else if (__root->_op == ">=") {
+            ret_obj = {nullptr, left.second->geq_op(right.second)};
+        } else if (__root->_op == "<=") {
+            ret_obj = {nullptr, left.second->leq_op(right.second)};
+        } else if (__root->_op == "!") {
+            ret_obj = {nullptr, right.second->not_op()};
+        } else if (__root->_op == "and") {
+            ret_obj = {nullptr, left.second->and_op(right.second)};
+        } else if (__root->_op == "xor") {
+            ret_obj = {nullptr, left.second->xor_op(right.second)};
+        } else if (__root->_op == "or") {
+            ret_obj = {nullptr, left.second->or_op(right.second)};
         } else if (__root->_op == "[") {
 
             // If the left object is not iterable, throw error.

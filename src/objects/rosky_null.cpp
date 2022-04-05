@@ -72,7 +72,7 @@ std::shared_ptr<RoskyInterface> RoskyNull::concat_op(const std::shared_ptr<Rosky
 
 /******************************************************************************/
 
-// Boolean operators.
+// Comparison operators.
 std::shared_ptr<RoskyInterface> RoskyNull::eq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
 
     if (__r->get_type_id() == OBJ_NULL) {
@@ -80,6 +80,16 @@ std::shared_ptr<RoskyInterface> RoskyNull::eq_op(const std::shared_ptr<RoskyInte
     }
 
     return std::make_shared<RoskyBool>(false);
+
+}
+
+std::shared_ptr<RoskyInterface> RoskyNull::neq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_NULL) {
+        return std::make_shared<RoskyBool>(false);
+    }
+
+    return std::make_shared<RoskyBool>(true);
 
 }
 

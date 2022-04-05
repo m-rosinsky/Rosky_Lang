@@ -57,12 +57,17 @@
 // This function allows us to get operator precedence.
 inline size_t get_precedence(const std::string& op) {
     if (op == "=") { return 1; }
-    if (op == "==") { return 2; }
-    if (op == "&") { return 3; }
-    if (op == "+") { return 4; }
-    if (op == "*") { return 5; }
-    if (op == "de" || op == "@") { return 6; }
-    if (op == "[") { return 7; }
+    if (op == "or") { return 2; }
+    if (op == "xor") { return 3; }
+    if (op == "and") { return 4; }
+    if (op == "==" || op == "!=" || op == ">" || op == "<" ||
+        op == ">=" || op == "<=") { return 5; }
+    if (op == "&") { return 6; }
+    if (op == "+" || op == "-") { return 7; }
+    if (op == "*" || op == "/" || op == "//" || op == "%") { return 8; }
+    if (op == "de" || op == "@") { return 9; }
+    if (op == "!") { return 9; }
+    if (op == "[") { return 10; }
     return 0;
 }
 
@@ -158,26 +163,29 @@ inline bool is_assignment_op(const std::string& op) noexcept {
 }
 
 // This function determines if an operator is left associative.
-inline bool is_left_assoc(const std::string& op) noexcept {
-    return (op == "+") || (op == "*") ||
-           (op == "&") || (op == "==") ||
-           (op == "[");
-}
+// inline bool is_left_assoc(const std::string& op) noexcept {
+//     return (op == "+") || (op == "*") ||
+//            (op == "&") || (op == "==") ||
+//            (op == "[") || (op == "//") ||;
+// }
 
 // This function determines if an operator is right associative.
 inline bool is_right_assoc(const std::string& op) noexcept {
     return (op == "=") ||
-           (op == "@") || (op == "de");
+           (op == "@") || (op == "de") ||
+           (op == "!");
 }
 
 // This function determines if an operator is unary.
 inline bool is_unary_op(const std::string& op) noexcept {
-    return (op == "*") || (op == "@");
+    return (op == "*") || (op == "@") ||
+           (op == "!");
 }
 
 // This function determines if an evaluator op is unary.
 inline bool is_unary_eval_op(const std::string& op) noexcept {
-    return (op == "de") || (op == "@");
+    return (op == "de") || (op == "@") ||
+           (op == "!");
 }
 
 /******************************************************************************/

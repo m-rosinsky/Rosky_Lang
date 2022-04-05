@@ -72,7 +72,10 @@ public:
     
     // Arithmetic operators.
     virtual std::shared_ptr<RoskyInterface> add_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
+    virtual std::shared_ptr<RoskyInterface> sub_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
     virtual std::shared_ptr<RoskyInterface> mul_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
+    virtual std::shared_ptr<RoskyInterface> idiv_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
+    virtual std::shared_ptr<RoskyInterface> mod_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
 
     // Pointer operators.
     virtual std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> deref_op() const noexcept { return {nullptr, nullptr}; }
@@ -80,8 +83,19 @@ public:
     // String operators.
     virtual std::shared_ptr<RoskyInterface> concat_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
 
-    // Boolean operators.
+    // Comparison operators.
     virtual std::shared_ptr<RoskyInterface> eq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
+    virtual std::shared_ptr<RoskyInterface> neq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
+    virtual std::shared_ptr<RoskyInterface> gt_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
+    virtual std::shared_ptr<RoskyInterface> lt_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
+    virtual std::shared_ptr<RoskyInterface> geq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
+    virtual std::shared_ptr<RoskyInterface> leq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
+
+    // Boolean operators.
+    virtual std::shared_ptr<RoskyInterface> not_op() const noexcept { return nullptr; }
+    virtual std::shared_ptr<RoskyInterface> and_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
+    virtual std::shared_ptr<RoskyInterface> xor_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
+    virtual std::shared_ptr<RoskyInterface> or_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
 
     // Iterable functionality.
     virtual size_t get_size() const noexcept { return 0; }

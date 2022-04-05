@@ -101,17 +101,27 @@ std::shared_ptr<RoskyInterface> RoskyPointer::concat_op(const std::shared_ptr<Ro
 
 /******************************************************************************/
 
-// Boolean operators.
+// Comparison operators.
 std::shared_ptr<RoskyInterface> RoskyPointer::eq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
 
     if (__r->get_type_id() == OBJ_POINTER) {
         return std::make_shared<RoskyBool>(_data == __r->to_pointer());
     }
-    if (__r->get_type_id() == OBJ_BOOL) {
-        return std::make_shared<RoskyBool>(to_bool() == __r->to_bool());
-    }
     if (__r->get_type_id() == OBJ_NULL) {
         return std::make_shared<RoskyBool>(false);
+    }
+
+    return nullptr;
+
+}
+
+std::shared_ptr<RoskyInterface> RoskyPointer::neq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_POINTER) {
+        return std::make_shared<RoskyBool>(_data != __r->to_pointer());
+    }
+    if (__r->get_type_id() == OBJ_NULL) {
+        return std::make_shared<RoskyBool>(true);
     }
 
     return nullptr;

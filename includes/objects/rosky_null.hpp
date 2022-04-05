@@ -62,8 +62,9 @@ public:
     // String operators.
     std::shared_ptr<RoskyInterface> concat_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
 
-    // Boolean operators.
+    // Comparison operators.
     std::shared_ptr<RoskyInterface> eq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
+    std::shared_ptr<RoskyInterface> neq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
 
 };
 

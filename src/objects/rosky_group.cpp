@@ -131,7 +131,7 @@ std::shared_ptr<RoskyInterface> RoskyGroup::concat_op(const std::shared_ptr<Rosk
 
 /******************************************************************************/
 
-// Boolean operators.
+// Comparison operators.
 std::shared_ptr<RoskyInterface> RoskyGroup::eq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
 
     // Can only be compared to other groups.
@@ -153,6 +153,34 @@ std::shared_ptr<RoskyInterface> RoskyGroup::eq_op(const std::shared_ptr<RoskyInt
         }
 
         return std::make_shared<RoskyBool>(true);
+
+    }
+
+    return nullptr;
+
+}
+
+std::shared_ptr<RoskyInterface> RoskyGroup::neq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    // Can only be compared to other groups.
+    if (__r->get_type_id() == OBJ_GROUP) {
+        
+        if (_data.size() != __r->get_size()) {
+            return std::make_shared<RoskyBool>(true);
+        }
+
+        auto it1 = _data.begin();
+        auto it2 = __r->to_group().begin();
+
+        while (it1 != _data.end()) {
+            if (((*it1)->eq_op(*it2))->to_bool() == false) {
+                return std::make_shared<RoskyBool>(true);
+            }
+            it1++;
+            it2++;
+        }
+
+        return std::make_shared<RoskyBool>(false);
 
     }
 

@@ -74,16 +74,68 @@ std::shared_ptr<RoskyInterface> RoskyBool::concat_op(const std::shared_ptr<Rosky
 
 /******************************************************************************/
 
-// Boolean operators.
+// Comparison operators.
 std::shared_ptr<RoskyInterface> RoskyBool::eq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
 
-    if (__r->get_type_id() != OBJ_NULL) {
+    if (__r->get_type_id() == OBJ_BOOL) {
         return std::make_shared<RoskyBool>(_data == __r->to_bool());
+    } else if (__r->get_type_id() == OBJ_NULL) {
+        return std::make_shared<RoskyBool>(false);
     }
 
-    // If compared to null, always return false.
-    return std::make_shared<RoskyBool>(false);
+    return nullptr;
 
 } 
+
+std::shared_ptr<RoskyInterface> RoskyBool::neq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_BOOL) {
+        return std::make_shared<RoskyBool>(_data != __r->to_bool());
+    } else if (__r->get_type_id() == OBJ_NULL) {
+        return std::make_shared<RoskyBool>(true);
+    }
+
+    return nullptr;
+
+} 
+
+/******************************************************************************/
+
+// Boolean operators.
+std::shared_ptr<RoskyInterface> RoskyBool::not_op() const noexcept {
+
+    return std::make_shared<RoskyBool>(!_data);
+
+}
+
+std::shared_ptr<RoskyInterface> RoskyBool::and_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_BOOL) {
+        return std::make_shared<RoskyBool>(_data && __r->to_bool());
+    }
+
+    return nullptr;
+
+}
+
+std::shared_ptr<RoskyInterface> RoskyBool::xor_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_BOOL) {
+        return std::make_shared<RoskyBool>((_data || __r->to_bool()) && !(_data && __r->to_bool()));
+    }
+
+    return nullptr;
+
+}
+
+std::shared_ptr<RoskyInterface> RoskyBool::or_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_BOOL) {
+        return std::make_shared<RoskyBool>(_data || __r->to_bool());
+    }
+
+    return nullptr;
+
+}
 
 /******************************************************************************/

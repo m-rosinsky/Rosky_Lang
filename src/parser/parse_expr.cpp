@@ -106,8 +106,21 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
         // Keyword.
         if (_tokens[__idx]->_type == TOKEN_KW) {
 
-            // If we are expecting an op, throw an error.
+            // If we are expecting an op, check for keyword operators.
             if (expecting_op) {
+
+                if (_tokens[__idx]->_token == "and" || _tokens[__idx]->_token == "or" ||
+                    _tokens[__idx]->_token == "xor") {
+
+                    // Add the keywords as an operator.
+                    insert_op(root, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+
+                    // Now not expecting an op.
+                    expecting_op = false;
+                    continue;
+
+                }
+
                 throw_error(ERR_SYNTAX, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
             }
 
