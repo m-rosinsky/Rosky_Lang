@@ -366,3 +366,121 @@ out(name & " is " & name_len & " letters long");
 ```
 Lukey is 5 letters long
 ```
+
+## April 4, 2022
+
+Now that most of the core features of the language are in place, I'm able to start fleshing out of the features of the language. The biggest thing I added today was the ```group``` data type. This is similar to a python ```list``` in that it is a collection of objects:
+```python
+x = [1,2,3];
+
+out(x);
+```
+```
+[1, 2, 3]
+```
+
+This comes with the concept called "iterators" in Rosky. ```strings``` and ```groups``` are considered iterators in Rosky, meaning they can be indexed as such:
+```python
+s = "Hello";
+g = [1,2,3];
+
+outln(s[0]);
+out(g[0]);
+```
+```
+H
+1
+```
+
+The key difference in these two objects is that a group is considered an "addressable" iterator. This means that the objects that a ```group``` is holding are considered "l-values" just as variables are, while non-addressable iterators like ```string``` have their indexable objects considered "r-values".
+
+So for example:
+```python
+g = [1,2,3];
+
+g[0] = 4;
+```
+runs fine, and ```g``` is now ```[4,2,3]```. Whereas:
+```python
+s = "hello";
+
+s[0] = "a";
+```
+will throw:
+```
+Error [Line 3 Column 6]: Attempt to assign to r-value
+Exiting...
+```
+
+This also has applications in pointers:
+```python
+g = [1,2,3];
+
+ptr = @g[0]; # ptr holds the address of the 0th object of g
+
+*ptr = 4;
+
+out(g);
+```
+```
+[4, 2, 3]
+```
+
+Conversely, we aren't able to take the address of an indexed string because it is considered an r-value:
+```python
+s = "hello";
+
+ptr = @s[0];
+```
+```
+Error [Line 3 Column 7]: Attempt to get address of temporary
+Exiting...
+```
+
+---
+
+The next feature added today was the ```break``` and ```continue``` keywords. To make these work I added a few flags to the parser object, namely a "break" flag, "continue" flag, and "loop" flag.
+
+The "break" flag is asserted when we encounter a break statement, and tells the ```while``` parser to terminate. The ```while``` parser then deasserts the flag.
+
+The "continue" flag works the exact same way, except the ```while``` parser loops again instead of breaking.
+
+Finally the "loop" flag is asserted when we are in a loop, which allows us to throw errors if we encounter ```break``` and ```continue``` outside of a loop. Like so:
+```python
+break;
+```
+```
+Error [Line 1 Column 1]: Bad use of reserved keyword: 'break' not in loop
+Exiting...
+```
+
+So now we can make a counter like this: (Using the operators that we currently have implemented)
+```python
+idx = 0;
+while true {
+    idx = idx + 1; 
+    out(idx & " ");
+    if idx == 10 {
+        break;
+    }
+}
+```
+```
+1 2 3 4 5 6 7 8 9 10
+```
+
+---
+
+I've also added in the ```assert``` function which throws an error if the condition it is given is false, and will print an optional string if supplied:
+```python
+x = 5;
+y = @x;
+
+assert(y == nullptr, "y is non nullptr");
+```
+```
+Error [Line 4 Column 1]: Assertion error: y is non nullptr
+Exiting...
+```
+
+The next feature I'm looking to add is custom user functions.
