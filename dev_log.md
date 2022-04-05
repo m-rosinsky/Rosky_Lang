@@ -392,7 +392,7 @@ H
 1
 ```
 
-The key difference in these two objects is that a group is considered an "addressable" iterator. This means that the objects that a ```group``` is holding are considered "l-values" just as variables are, while non-addressable iterators like ```string``` have their indexable objects considered "r-values".
+The key difference in these two objects is that a ```group``` is considered an "addressable" iterator. This means that the objects that a ```group``` is holding are considered "l-values" just as variables are, while non-addressable iterators like ```string``` have their indexable objects considered "r-values".
 
 So for example:
 ```python
