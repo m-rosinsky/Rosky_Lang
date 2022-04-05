@@ -226,6 +226,10 @@ size_t find_nextof(const std::deque<std::shared_ptr<Token_T>>& __tokens,
                 __tokens[idx]->_token == "{" ||
                 __tokens[idx]->_token == "(") {
 
+                if (__tokens[idx]->_token == __token) {
+                    return idx;
+                }
+
                 size_t match_idx = find_matching_ctrl(__tokens, idx, __tokens[idx]->_token);
 
                 idx = match_idx == 0 ? idx : match_idx;
