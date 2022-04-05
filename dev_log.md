@@ -379,7 +379,7 @@ out(x);
 [1, 2, 3]
 ```
 
-This comes with the concept called "iterators" in Rosky. ```strings``` and ```groups``` are considered iterators in Rosky, meaning they can be indexed as such:
+This comes with the concept called "iterators". ```strings``` and ```groups``` are considered iterators in Rosky, meaning they can be indexed as such:
 ```python
 s = "Hello";
 g = [1,2,3];
@@ -435,6 +435,16 @@ ptr = @s[0];
 ```
 Error [Line 3 Column 7]: Attempt to get address of temporary
 Exiting...
+```
+
+I've also added the ```append``` member function to the ```group``` data type"
+```python
+x = [1,2,3];
+x.append(4);
+out(x);
+```
+```
+[1, 2, 3, 4]
 ```
 
 ---
