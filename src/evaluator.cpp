@@ -139,6 +139,20 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
             ret_obj = {nullptr, left.second->xor_op(right.second)};
         } else if (__root->_op == "or") {
             ret_obj = {nullptr, left.second->or_op(right.second)};
+        } else if (__root->_op == "<->") {
+            
+            // This operator will only have an affect on addressable
+            // objects.
+            if (left.first != nullptr && right.first != nullptr) {
+                *left.first = right.second;
+                *right.first = left.second;
+            } else if (left.first != nullptr && right.first == nullptr) {
+                *left.first = right.second;
+            } else if (left.first == nullptr && right.first != nullptr) {
+                *right.first = left.second;
+            }
+            ret_obj = {nullptr, std::make_shared<RoskyNull>()};
+
         } else if (__root->_op == "[") {
 
             // If the left object is not iterable, throw error.

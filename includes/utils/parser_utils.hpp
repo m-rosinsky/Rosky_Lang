@@ -57,17 +57,18 @@
 // This function allows us to get operator precedence.
 inline size_t get_precedence(const std::string& op) {
     if (op == "=") { return 1; }
-    if (op == "or") { return 2; }
-    if (op == "xor") { return 3; }
-    if (op == "and") { return 4; }
+    if (op == "<->") { return 2; }
+    if (op == "or") { return 3; }
+    if (op == "xor") { return 4; }
+    if (op == "and") { return 5; }
     if (op == "==" || op == "!=" || op == ">" || op == "<" ||
-        op == ">=" || op == "<=") { return 5; }
-    if (op == "&") { return 6; }
-    if (op == "+" || op == "-") { return 7; }
-    if (op == "*" || op == "/" || op == "//" || op == "%") { return 8; }
-    if (op == "de" || op == "@") { return 9; }
-    if (op == "!") { return 9; }
-    if (op == "[") { return 10; }
+        op == ">=" || op == "<=") { return 6; }
+    if (op == "&") { return 7; }
+    if (op == "+" || op == "-") { return 8; }
+    if (op == "*" || op == "/" || op == "//" || op == "%") { return 9; }
+    if (op == "de" || op == "@") { return 10; }
+    if (op == "!") { return 10; }
+    if (op == "[") { return 11; }
     return 0;
 }
 

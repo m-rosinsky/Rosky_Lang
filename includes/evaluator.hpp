@@ -37,6 +37,7 @@
 
 #include "objects/rosky_interface.hpp"
 #include "objects/rosky_pointer.hpp"
+#include "objects/rosky_null.hpp"
 
 /******************************************************************************/
 

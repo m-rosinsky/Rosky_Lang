@@ -50,7 +50,7 @@ void Parser_T::parse_while(size_t& __idx, size_t __end_idx, size_t __scope) {
 
     // If not found, throw error.
     if (close_index == 0 || close_index > __end_idx) {
-        throw_error(ERR_UNCLOSED_BRACE, "", _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+        throw_error(ERR_UNCLOSED_BRACE, "", _tokens[open_index]->_colnum, _tokens[open_index]->_linenum);
     }
 
     // Bookmark the previous state of the loop flag.

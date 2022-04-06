@@ -125,6 +125,19 @@ void tokenize_src(std::unique_ptr<Src_T>& __src) {
                         token += __src->_data[idx];
                     }
 
+                    // Swap operator <->
+                    if (token == "<" && __src->_data[idx+1] == '-') {
+
+                        if (idx + 2 < __src->_data.size() && __src->_data[idx+2] == '>') {
+
+                            idx += 2;
+                            colnum += 2;
+                            token += "->";
+
+                        }
+
+                    }
+
                 } else if (token == "/") {
 
                     if (__src->_data[idx + 1] == '/') {
