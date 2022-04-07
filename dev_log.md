@@ -495,7 +495,7 @@ Exiting...
 
 The next feature I'm looking to add is custom user functions.
 
-April 6, 2022
+## April 6, 2022
 
 No user functions yet, but lots of new operators. I've fleshed out the comparison operators to include ```!=```, ```>```, ```>=```, ```<```, ```<=```, as well as boolean operators ```!```, ```and```, ```xor```, and ```or```.
 
