@@ -494,3 +494,52 @@ Exiting...
 ```
 
 The next feature I'm looking to add is custom user functions.
+
+April 6, 2022
+
+No user functions yet, but lots of new operators. I've fleshed out the comparison operators to include ```!=```, ```>```, ```>=```, ```<```, ```<=```, as well as boolean operators ```!```, ```and```, ```xor```, and ```or```.
+
+I've also gone ahead and added a new operator, which I call the swap operator, or "swaperator":
+```python
+x = 2;
+y = 3;
+
+x <-> y; # x swaps with y
+
+out(x & " " & y);
+```
+```
+3 2
+```
+
+Here's an example program with the swaperator doing bubble sort:
+```python
+g = [1,3,5,2,6,4,7,0];
+
+i = 0;
+
+while i < g.size() {
+
+    j = i + 1;
+    
+    while j < g.size() {
+    
+        if g[i] > g[j] {
+        
+            g[i] <-> g[j];
+        
+        }
+        
+        j = j + 1;
+    
+    }
+    
+    i = i + 1;
+    
+}
+
+out(g);
+```
+```
+[0, 1, 2, 3, 4, 5, 6, 7]
+```
