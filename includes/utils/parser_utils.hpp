@@ -51,6 +51,7 @@
 #include "../objects/rosky_null.hpp"
 #include "../objects/rosky_string.hpp"
 #include "../objects/rosky_bool.hpp"
+#include "../objects/rosky_float.hpp"
 
 /******************************************************************************/
 
@@ -172,7 +173,8 @@ inline bool is_assignment_op(const std::string& op) noexcept {
 
 // This function determines if an operator is right associative.
 inline bool is_right_assoc(const std::string& op) noexcept {
-    return (op == "=") ||
+    return (op == "=") || (op == "+=") || (op == "-=") ||
+           (op == "*=") || (op == "%=") ||
            (op == "@") || (op == "de") ||
            (op == "!");
 }

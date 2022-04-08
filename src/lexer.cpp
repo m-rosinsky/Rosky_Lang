@@ -299,6 +299,8 @@ void tokenize_src(std::unique_ptr<Src_T>& __src) {
                         token += char(ESCCHAR);
                     } else if (__src->_data[idx] == '0') {
                         token += char(0);
+                    } else if (__src->_data[idx] == '"') {
+                        token += '"';
                     } else {
                         token = __src->_data[idx];
                         throw_error(ERR_INVALID_ESC_CHAR, token, colnum, linenum);

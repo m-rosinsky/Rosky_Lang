@@ -56,6 +56,10 @@ long RoskyInt::to_int() const noexcept {
     return _data;
 }
 
+double RoskyInt::to_float() const noexcept {
+    return (double)_data;
+}
+
 std::string RoskyInt::to_string() const noexcept {
     return std::to_string(_data);
 }
@@ -71,6 +75,8 @@ std::shared_ptr<RoskyInterface> RoskyInt::add_op(const std::shared_ptr<RoskyInte
 
     if (__r->get_type_id() == OBJ_INT) {
         return std::make_shared<RoskyInt>(_data + __r->to_int());
+    } else if (__r->get_type_id() == OBJ_FLOAT) {
+        return std::make_shared<RoskyFloat>(to_float() + __r->to_float());
     }
 
     return nullptr;
@@ -81,6 +87,8 @@ std::shared_ptr<RoskyInterface> RoskyInt::sub_op(const std::shared_ptr<RoskyInte
 
     if (__r->get_type_id() == OBJ_INT) {
         return std::make_shared<RoskyInt>(_data - __r->to_int());
+    } else if (__r->get_type_id() == OBJ_FLOAT) {
+        return std::make_shared<RoskyFloat>(to_float() - __r->to_float());
     }
 
     return nullptr;
@@ -91,6 +99,22 @@ std::shared_ptr<RoskyInterface> RoskyInt::mul_op(const std::shared_ptr<RoskyInte
 
     if (__r->get_type_id() == OBJ_INT) {
         return std::make_shared<RoskyInt>(_data * __r->to_int());
+    } else if (__r->get_type_id() == OBJ_FLOAT) {
+        return std::make_shared<RoskyFloat>(to_float() * __r->to_float());
+    } else if (__r->get_type_id() == OBJ_STRING) {
+        return __r->mul_op(std::make_shared<RoskyInt>(_data));
+    } else if (__r->get_type_id() == OBJ_GROUP) {
+        return __r->mul_op(std::make_shared<RoskyInt>(_data));
+    }
+
+    return nullptr;
+
+}
+
+std::shared_ptr<RoskyInterface> RoskyInt::div_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    if (__r->get_type_id() == OBJ_INT || __r->get_type_id() == OBJ_FLOAT) {
+        return std::make_shared<RoskyFloat>(to_float() / __r->to_float());
     }
 
     return nullptr;
@@ -133,8 +157,9 @@ std::shared_ptr<RoskyInterface> RoskyInt::eq_op(const std::shared_ptr<RoskyInter
 
     if (__r->get_type_id() == OBJ_INT) {
         return std::make_shared<RoskyBool>(_data == __r->to_int());
-    }
-    if (__r->get_type_id() == OBJ_NULL) {
+    } else if (__r->get_type_id() == OBJ_FLOAT) {
+        return std::make_shared<RoskyBool>(to_float() == __r->to_float());
+    } else if (__r->get_type_id() == OBJ_NULL) {
         return std::make_shared<RoskyBool>(false);
     }
 
@@ -146,9 +171,10 @@ std::shared_ptr<RoskyInterface> RoskyInt::neq_op(const std::shared_ptr<RoskyInte
 
     if (__r->get_type_id() == OBJ_INT) {
         return std::make_shared<RoskyBool>(_data != __r->to_int());
-    }
-    if (__r->get_type_id() == OBJ_NULL) {
-        return std::make_shared<RoskyBool>(false);
+    } else if (__r->get_type_id() == OBJ_FLOAT) {
+        return std::make_shared<RoskyBool>(to_float() != __r->to_float());
+    } else if (__r->get_type_id() == OBJ_NULL) {
+        return std::make_shared<RoskyBool>(true);
     }
 
     return nullptr;
@@ -159,6 +185,8 @@ std::shared_ptr<RoskyInterface> RoskyInt::gt_op(const std::shared_ptr<RoskyInter
 
     if (__r->get_type_id() == OBJ_INT) {
         return std::make_shared<RoskyBool>(_data > __r->to_int());
+    } else if (__r->get_type_id() == OBJ_FLOAT) {
+        return std::make_shared<RoskyBool>(to_float() > __r->to_float());
     }
 
     return nullptr;
@@ -169,6 +197,8 @@ std::shared_ptr<RoskyInterface> RoskyInt::lt_op(const std::shared_ptr<RoskyInter
 
     if (__r->get_type_id() == OBJ_INT) {
         return std::make_shared<RoskyBool>(_data < __r->to_int());
+    } else if (__r->get_type_id() == OBJ_FLOAT) {
+        return std::make_shared<RoskyBool>(to_float() < __r->to_float());
     }
 
     return nullptr;
@@ -179,6 +209,8 @@ std::shared_ptr<RoskyInterface> RoskyInt::geq_op(const std::shared_ptr<RoskyInte
 
     if (__r->get_type_id() == OBJ_INT) {
         return std::make_shared<RoskyBool>(_data >= __r->to_int());
+    } else if (__r->get_type_id() == OBJ_FLOAT) {
+        return std::make_shared<RoskyBool>(to_float() >= __r->to_float());
     }
 
     return nullptr;
@@ -189,6 +221,8 @@ std::shared_ptr<RoskyInterface> RoskyInt::leq_op(const std::shared_ptr<RoskyInte
 
     if (__r->get_type_id() == OBJ_INT) {
         return std::make_shared<RoskyBool>(_data <= __r->to_int());
+    } else if (__r->get_type_id() == OBJ_FLOAT) {
+        return std::make_shared<RoskyBool>(to_float() <= __r->to_float());
     }
 
     return nullptr;

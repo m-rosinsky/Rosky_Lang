@@ -42,6 +42,7 @@ enum OBJ_TYPES {
     OBJ_STRING,
     OBJ_BOOL,
     OBJ_GROUP,
+    OBJ_FLOAT,
 
 };
 
@@ -65,6 +66,7 @@ public:
 
     // Casting.
     virtual long to_int() const noexcept { return 0; }
+    virtual double to_float() const noexcept { return 0.0; }
     virtual std::string to_string() const noexcept = 0;
     virtual std::shared_ptr<RoskyInterface>* to_pointer() const noexcept { return nullptr; }
     virtual bool to_bool() const noexcept = 0;
@@ -74,6 +76,7 @@ public:
     virtual std::shared_ptr<RoskyInterface> add_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
     virtual std::shared_ptr<RoskyInterface> sub_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
     virtual std::shared_ptr<RoskyInterface> mul_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
+    virtual std::shared_ptr<RoskyInterface> div_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
     virtual std::shared_ptr<RoskyInterface> idiv_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
     virtual std::shared_ptr<RoskyInterface> mod_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept { return nullptr; }
 

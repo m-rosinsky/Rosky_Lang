@@ -29,7 +29,8 @@ COMMON_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
 	$(OUTDIR)/parse_for.o $(OUTDIR)/parse_func.o $(OUTDIR)/parse_group.o \
 	$(OUTDIR)/parse_if.o $(OUTDIR)/parse_while.o $(OUTDIR)/parser.o \
 	$(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_bool.o \
-	$(OUTDIR)/rosky_group.o $(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
+	$(OUTDIR)/rosky_float.o $(OUTDIR)/rosky_group.o \
+	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
 	$(OUTDIR)/rosky_pointer.o $(OUTDIR)/rosky_string.o 
 OBJ=$(COMMON_OBJ) $(CFG_OBJ)
 ALL_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
@@ -38,7 +39,8 @@ ALL_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
 	$(OUTDIR)/parse_for.o $(OUTDIR)/parse_func.o $(OUTDIR)/parse_group.o \
 	$(OUTDIR)/parse_if.o $(OUTDIR)/parse_while.o $(OUTDIR)/parser.o \
 	$(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_bool.o \
-	$(OUTDIR)/rosky_group.o $(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
+	$(OUTDIR)/rosky_float.o $(OUTDIR)/rosky_group.o \
+	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
 	$(OUTDIR)/rosky_pointer.o $(OUTDIR)/rosky_string.o 
 
 COMPILE=g++ -c    -g -o "$(OUTDIR)/$(*F).o" $(CFG_INC) "$<"
@@ -194,7 +196,8 @@ COMMON_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
 	$(OUTDIR)/parse_for.o $(OUTDIR)/parse_func.o $(OUTDIR)/parse_group.o \
 	$(OUTDIR)/parse_if.o $(OUTDIR)/parse_while.o $(OUTDIR)/parser.o \
 	$(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_bool.o \
-	$(OUTDIR)/rosky_group.o $(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
+	$(OUTDIR)/rosky_float.o $(OUTDIR)/rosky_group.o \
+	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
 	$(OUTDIR)/rosky_pointer.o $(OUTDIR)/rosky_string.o 
 OBJ=$(COMMON_OBJ) $(CFG_OBJ)
 ALL_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
@@ -203,7 +206,8 @@ ALL_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
 	$(OUTDIR)/parse_for.o $(OUTDIR)/parse_func.o $(OUTDIR)/parse_group.o \
 	$(OUTDIR)/parse_if.o $(OUTDIR)/parse_while.o $(OUTDIR)/parser.o \
 	$(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_bool.o \
-	$(OUTDIR)/rosky_group.o $(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
+	$(OUTDIR)/rosky_float.o $(OUTDIR)/rosky_group.o \
+	$(OUTDIR)/rosky_int.o $(OUTDIR)/rosky_null.o \
 	$(OUTDIR)/rosky_pointer.o $(OUTDIR)/rosky_string.o 
 
 COMPILE=g++ -c   -o "$(OUTDIR)/$(*F).o" $(CFG_INC) "$<"

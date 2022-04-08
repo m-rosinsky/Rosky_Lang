@@ -62,12 +62,44 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 /******************************************************************************/
 
 std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
+    scan_func(const std::vector<std::shared_ptr<RoskyInterface>>& __func_args,
+        size_t __colnum, size_t __linenum) {
+
+    // Check the number of arguments.
+    if (__func_args.size() > 1) {
+        throw_error(ERR_BAD_FUNC_ARGS, "'outln' expects 0-1 arguments, received " +
+                    std::to_string(__func_args.size()), __colnum, __linenum);
+    }
+
+    // Create the default arg.
+    std::string arg = "";
+
+    // Overwrite the default if supplied an arg.
+    if (__func_args.size() == 1) {
+        arg = __func_args.front()->to_string();
+    }
+
+    // Print the arg to stdout.
+    std::cout << arg;
+
+    // Prompt for stdin.
+    std::string input_string;
+    std::cin >> input_string;
+
+    // Return a string object.
+    return {nullptr, std::make_shared<RoskyString>(input_string)};
+
+}
+
+/******************************************************************************/
+
+std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     assert_func(const std::vector<std::shared_ptr<RoskyInterface>>& __func_args,
         size_t __colnum, size_t __linenum) {
 
     // Check the number of arguments.
     if (__func_args.size() != 1 && __func_args.size() != 2) {
-        throw_error(ERR_BAD_FUNC_ARGS, "'assert' expects 1 or 2 arguments, received " +
+        throw_error(ERR_BAD_FUNC_ARGS, "'assert' expects 1-2 arguments, received " +
                     std::to_string(__func_args.size()), __colnum, __linenum);
     }
 
@@ -150,6 +182,23 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
     // Return the new object.
     return {nullptr, std::make_shared<RoskyGroup>(d)};
+
+}
+
+/******************************************************************************/
+
+std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
+    type_func(const std::vector<std::shared_ptr<RoskyInterface>>& __func_args,
+                size_t __colnum, size_t __linenum) {
+
+    // Check the number of arguments.
+    if (__func_args.size() != 1) {
+        throw_error(ERR_BAD_FUNC_ARGS, "'type' expects 1 argument, received " +
+                    std::to_string(__func_args.size()), __colnum, __linenum);
+    }
+
+    // Return the stringof the type.
+    return {nullptr, std::make_shared<RoskyString>(__func_args.front()->get_type_string())};
 
 }
 

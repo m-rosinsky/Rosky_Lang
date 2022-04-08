@@ -113,6 +113,8 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
             ret_obj = {nullptr, left.second->sub_op(right.second)};
         } else if (__root->_op == "*") {
             ret_obj = {nullptr, left.second->mul_op(right.second)};
+        } else if (__root->_op == "/") {
+            ret_obj = {nullptr, left.second->div_op(right.second)};
         } else if (__root->_op == "//") {
             ret_obj = {nullptr, left.second->idiv_op(right.second)};
         } else if (__root->_op == "%") {
@@ -199,12 +201,6 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
             }
 
             ret_obj = {nullptr, std::make_shared<RoskyPointer>(right.first)};
-
-        } else {
-
-            // Should never reach here, but for safety.
-            throw_error(ERR_UNEXP_OP, __root->_op, __root->_colnum, __root->_linenum);
-            return {nullptr, nullptr};
 
         }
 

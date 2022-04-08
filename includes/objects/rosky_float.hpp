@@ -1,17 +1,17 @@
 
 /******************************************************************************/
 //
-//  Source Name:                rosky_int.hpp
+//  Source Name:                rosky_float.hpp
 //
 //  Description:                This file contains the class definition for
-//                              the built in integer type.
+//                              the built in float type.
 // 
-//                              The underlying data type is a long, rather
-//                              than an int.
+//                              The underlying data type is a double, rather
+//                              than a float.
 //
 //  Dependencies:               RoskyInterface
 //
-//  Classes:                    RoskyInt
+//  Classes:                    RoskyFloat
 //
 //  Inherited Subprograms:      get_type_id
 //                              get_type_string
@@ -22,11 +22,12 @@
 //
 //  Exported Subprograms:       ctor
 //                              ctor(long)
+//                              ctor(double)
 //                              
 /******************************************************************************/
 
-#ifndef ROSKY_INT
-#define ROSKY_INT
+#ifndef ROSKY_FLOAT
+#define ROSKY_FLOAT
 
 /******************************************************************************/
 
@@ -35,26 +36,26 @@
 #include "rosky_interface.hpp"
 #include "rosky_string.hpp"
 #include "rosky_bool.hpp"
-#include "rosky_float.hpp"
 
 /******************************************************************************/
 
-// This is the class defintion for the RoskyInt class.
-class RoskyInt : public RoskyInterface {
+// This is the class defintion for the RoskyFloat class.
+class RoskyFloat : public RoskyInterface {
 
 private:
 
-    // The underlying data type is a long.
-    long _data;
+    // The underlying data type is a double.
+    double _data;
 
 public:
 
     // Constructors.
-    RoskyInt() : _data(0) {}
-    RoskyInt(long __data) : _data(__data) {}
+    RoskyFloat() : _data(0) {}
+    RoskyFloat(long __data) : _data(__data) {}
+    RoskyFloat(double __data) : _data(__data) {}
 
     // Destrcutor.
-    ~RoskyInt() {}
+    ~RoskyFloat() {}
 
     // Type information.
     OBJ_TYPES get_type_id() const noexcept override;
@@ -75,8 +76,6 @@ public:
     std::shared_ptr<RoskyInterface> sub_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
     std::shared_ptr<RoskyInterface> mul_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
     std::shared_ptr<RoskyInterface> div_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
-    std::shared_ptr<RoskyInterface> idiv_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
-    std::shared_ptr<RoskyInterface> mod_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
 
     // String operators.
     std::shared_ptr<RoskyInterface> concat_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept override;
@@ -93,4 +92,4 @@ public:
 
 /******************************************************************************/
 
-#endif // ROSKY_INT
+#endif // ROSKY_FLOAT

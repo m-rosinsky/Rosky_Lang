@@ -16,6 +16,7 @@
 //
 //  Exported Subprograms:       out
 //                              outln
+//                              scan
 //                              assert
 //                              
 /******************************************************************************/
@@ -35,6 +36,7 @@
 #include "../objects/rosky_null.hpp"
 #include "../objects/rosky_group.hpp"
 #include "../objects/rosky_int.hpp"
+#include "../objects/rosky_string.hpp"
 
 #include "../error_handler.hpp"
 
@@ -55,6 +57,13 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
 /******************************************************************************/
 
+// This function gets a string from stdin.
+std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
+    scan_func(const std::vector<std::shared_ptr<RoskyInterface>>& __func_args,
+               size_t __colnum, size_t __linenum);
+
+/******************************************************************************/
+
 // This function takes in a boolean expression and throws an assertion error
 // if the condition is false.
 std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
@@ -63,9 +72,16 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
 /******************************************************************************/
 
-// This function generates a group of integers in a given range
+// This function generates a group of integers in a given range.
 std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     range_func(const std::vector<std::shared_ptr<RoskyInterface>>& __func_args,
+                size_t __colnum, size_t __linenum);
+
+/******************************************************************************/
+
+// This function returns a string of the provided object type.
+std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
+    type_func(const std::vector<std::shared_ptr<RoskyInterface>>& __func_args,
                 size_t __colnum, size_t __linenum);
 
 /******************************************************************************/

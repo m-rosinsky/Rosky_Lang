@@ -77,6 +77,21 @@ std::shared_ptr<RoskyInterface> RoskyString::add_op(const std::shared_ptr<RoskyI
 
 }
 
+std::shared_ptr<RoskyInterface> RoskyString::mul_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
+
+    // Strings can only be multiplied by integers.
+    if (__r->get_type_id() == OBJ_INT) {
+        std::string s = "";
+        for (long i = 0; i < __r->to_int(); i++) {
+            s += _data;
+        }
+        return std::make_shared<RoskyString>(s);
+    }
+
+    return nullptr;
+
+}
+
 /******************************************************************************/
 
 // String operators.

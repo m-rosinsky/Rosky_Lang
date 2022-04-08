@@ -239,8 +239,8 @@ size_t find_nextof(const std::deque<std::shared_ptr<Token_T>>& __tokens,
 
         }
 
-        // If the token matches, return the index.
-        if (__tokens[idx]->_token == __token) {
+        // If the token matches and not a string literal, return the index.
+        if (__tokens[idx]->_token == __token && __tokens[idx]->_type != TOKEN_LIT_STRING) {
             return idx;
         }
 
@@ -299,6 +299,9 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     // Literals
     if (__token->_type == TOKEN_LIT_INT) {
         return {nullptr, std::make_shared<RoskyInt>(std::stoi(__token->_token))};
+    }
+    if (__token->_type == TOKEN_LIT_FLOAT) {
+        return {nullptr, std::make_shared<RoskyFloat>(std::stod(__token->_token))};
     }
     if (__token->_type == TOKEN_LIT_STRING) {
         return {nullptr, std::make_shared<RoskyString>(__token->_token)};
