@@ -33,6 +33,8 @@
 
 #include "../objects/rosky_interface.hpp"
 #include "../objects/rosky_null.hpp"
+#include "../objects/rosky_group.hpp"
+#include "../objects/rosky_int.hpp"
 
 #include "../error_handler.hpp"
 
@@ -57,6 +59,13 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 // if the condition is false.
 std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     assert_func(const std::vector<std::shared_ptr<RoskyInterface>>& __func_args,
+                size_t __colnum, size_t __linenum);
+
+/******************************************************************************/
+
+// This function generates a group of integers in a given range
+std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
+    range_func(const std::vector<std::shared_ptr<RoskyInterface>>& __func_args,
                 size_t __colnum, size_t __linenum);
 
 /******************************************************************************/

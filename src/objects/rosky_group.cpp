@@ -131,6 +131,7 @@ std::shared_ptr<RoskyInterface> RoskyGroup::concat_op(const std::shared_ptr<Rosk
 
 /******************************************************************************/
 
+#include <iostream>
 // Comparison operators.
 std::shared_ptr<RoskyInterface> RoskyGroup::eq_op(const std::shared_ptr<RoskyInterface>& __r) const noexcept {
 
@@ -141,15 +142,16 @@ std::shared_ptr<RoskyInterface> RoskyGroup::eq_op(const std::shared_ptr<RoskyInt
             return std::make_shared<RoskyBool>(false);
         }
 
-        auto it1 = _data.begin();
-        auto it2 = __r->to_group().begin();
+        for (size_t group_idx = 0; group_idx < _data.size(); group_idx++) {
 
-        while (it1 != _data.end()) {
-            if (((*it1)->eq_op(*it2))->to_bool() == false) {
+            std::shared_ptr<RoskyInterface> res = _data[group_idx]->eq_op(__r->to_group()[group_idx]);
+            if (res == nullptr) {
                 return std::make_shared<RoskyBool>(false);
             }
-            it1++;
-            it2++;
+            if (res->to_bool() == false) {
+                return std::make_shared<RoskyBool>(false);
+            }
+
         }
 
         return std::make_shared<RoskyBool>(true);
@@ -166,18 +168,19 @@ std::shared_ptr<RoskyInterface> RoskyGroup::neq_op(const std::shared_ptr<RoskyIn
     if (__r->get_type_id() == OBJ_GROUP) {
         
         if (_data.size() != __r->get_size()) {
-            return std::make_shared<RoskyBool>(true);
+            return std::make_shared<RoskyBool>(false);
         }
 
-        auto it1 = _data.begin();
-        auto it2 = __r->to_group().begin();
+        for (size_t group_idx = 0; group_idx < _data.size(); group_idx++) {
 
-        while (it1 != _data.end()) {
-            if (((*it1)->eq_op(*it2))->to_bool() == false) {
+            std::shared_ptr<RoskyInterface> res = _data[group_idx]->eq_op(__r->to_group()[group_idx]);
+            if (res == nullptr) {
                 return std::make_shared<RoskyBool>(true);
             }
-            it1++;
-            it2++;
+            if (res->to_bool() == false) {
+                return std::make_shared<RoskyBool>(true);
+            }
+
         }
 
         return std::make_shared<RoskyBool>(false);

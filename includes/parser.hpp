@@ -132,6 +132,9 @@ public:
     // This function is for parsing while loops.
     void parse_while(size_t& __idx, size_t __end_idx, size_t __scope);
 
+    // This function is for parsing for loops.
+    void parse_for(size_t& __idx, size_t __end_idx, size_t __scope);
+
     // These functions (also found in the parse_while.cpp file) are
     // loop controls.
     void parse_continue(size_t& __idx, size_t __end_idx, size_t __scope);

@@ -41,6 +41,7 @@ enum ERROR_TYPE {
     // Parser errors.
     ERR_SYNTAX,
     ERR_UNEXP_EOF,
+    ERR_MISSING_TERM,
     ERR_UNCLOSED_BRACE,
     ERR_UNCLOSED_BRACKET,
     ERR_UNCLOSED_PAREN,
@@ -68,6 +69,7 @@ enum ERROR_TYPE {
     ERR_UNREC_FUNC,
     ERR_NO_FUNC_ARGS,
     ERR_ASSERT,
+    ERR_INVALID_FUNC_USE,
 
 };
 
@@ -84,6 +86,7 @@ static std::vector<std::string> ERROR_STRINGS {
 
     // Parser errors.
     "Syntax error",
+    "Unexpected EOF",
     "Missing terminator (possible missing semicolon)",
     "Unclosed curly brace",
     "Unclosed square bracket",
@@ -112,6 +115,7 @@ static std::vector<std::string> ERROR_STRINGS {
     "Unrecognized function",
     "Expected arguments for function",
     "Assertion error",
+    "Invalid function usage",
 
 };
 

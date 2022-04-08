@@ -76,3 +76,4 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 }
 
 /******************************************************************************/
+
