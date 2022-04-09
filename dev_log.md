@@ -543,3 +543,91 @@ out(g);
 ```
 [0, 1, 2, 3, 4, 5, 6, 7]
 ```
+
+## April 8, 2022
+
+Today I added the ```range``` function as well as ```range``` based ```for```loops. The ```range``` function works similarly to the ```range``` function in python, but instead of generating an iter object, it just generates a ```group```. For example:
+```python
+x = range(5);        # Start 0, End 5, Step 1
+y = range(1,3);      # Start 1, End 3, Step 1
+z = range(1,10,2);   # Start 1, End 10, Step 2
+
+outln("x: " & x);
+outln("y: " & y);
+outln("z: " & z);
+```
+```
+x: [0, 1, 2, 3, 4]
+y: [1, 2]
+z: [1, 3, 5, 7, 9]
+```
+
+The start of the ```range``` function is inclusive, but the end is not, just like in python.
+
+To complement this, we introduce ```range``` based ```for``` loops:
+```python
+for i in range(5) {
+    out(i & " ");
+}
+```
+```
+0 1 2 3 4 
+```
+
+Note that we can iterate over any ```iterable``` object, such as groups or strings:
+```python
+g = [1,2,3];
+h = "hello world!";
+
+for i in g {
+    out(i & " ");
+}
+outln("");
+for i in h {
+    out(i & " ");
+}
+```
+```
+1 2 3 
+h e l l o   w o r l d !
+```
+
+This can also be used to iterate over an ```iterable``` with its ```size()``` component:
+```python
+g = [1,2,3];
+
+for i in range(g.size()) {
+    outln("Index " & i & ": " & g[i]);
+}
+```
+```
+Index 0: 1
+Index 1: 2
+Index 2: 3
+```
+
+---
+
+I've also added the ```type``` function which will return a ```string``` with the name of the type of an object:
+```python
+x = 1;
+
+out("x is of type: " & type(x));
+```
+```
+x is of type: int
+```
+
+---
+
+I don't know why I've been putting it off for so long but I've finally added the ```float``` object type. Division will always result in a float:
+```python
+x = 20 / 4;
+
+out(x);
+```
+```
+5.0
+```
+
+The underlying data type for the ```float``` object is a double.
