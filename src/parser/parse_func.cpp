@@ -125,15 +125,82 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     // Parse the function arguments.
     func_args = parse_func_args(__idx, match_idx, __scope);
 
-    // Call the function with the args and return the value.
-     auto ret_obj = _func_table->call_function(func_name, func_args, func_col, func_lin);
+    // Create a temporary to hold the return object of the function.
+    std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> ret_obj = {nullptr, nullptr};
 
-     // If ret_obj is null, throw an error.
-     if (ret_obj.first == nullptr && ret_obj.second == nullptr) {
-         throw_error(ERR_UNREC_FUNC, "'" + func_name + "'", func_col, func_lin);
-     }
+    // Check if the function is a native function.
+    if (_func_table->is_function(func_name)) {
 
-     return ret_obj;
+        // Call the native function
+        ret_obj = _func_table->call_function(func_name, func_args, func_col, func_lin);
+
+    }
+
+    // Check if the function is user-defined.
+    if (_func_table->is_user_function(func_name)) {
+
+        // Get the user function entry.
+        std::shared_ptr<UserFunction_T> user_func_entry = _func_table->get_user_function(func_name);
+
+        if (user_func_entry != nullptr) {
+
+            // Ensure the parameter counts match.
+            if (func_args.size() != user_func_entry->_func_params.size()) {
+                throw_error(ERR_BAD_FUNC_ARGS, "'" + func_name + "' expects " +
+                            std::to_string(user_func_entry->_func_params.size()) +
+                            " arguments, received " + std::to_string(func_args.size()),
+                            func_col, func_lin);
+            }
+
+            // Assign the function parameters at a +1 scope.
+            for (size_t param_idx = 0; param_idx < func_args.size(); param_idx++) {
+
+                _var_table->set_entry(user_func_entry->_func_params[param_idx],
+                                      func_args[param_idx],
+                                      __scope + 1);
+
+            }
+
+            // Bookmark the in function flag.
+            bool func_flag = _func_flag;
+
+            // Assert the function flag.
+            _func_flag = true;
+
+            // Parse the function body.
+            parse(user_func_entry->_start_idx, user_func_entry->_end_idx, __scope + 1);
+
+            // If the return object has been set, set the return object to that.
+            // Otherwise, set the return object to a null object.
+            if (_parser_ret_obj != nullptr) {
+
+                ret_obj = {nullptr, _parser_ret_obj};
+
+            } else {
+
+                ret_obj = {nullptr, std::make_shared<RoskyNull>()};
+
+            }
+
+            // Reset the _parser_ret_obj.
+            _parser_ret_obj = nullptr;
+
+            // Reset the function flag.
+            _func_flag = func_flag;
+
+            // Reset the return flag.
+            _return_flag = false;
+
+        }
+
+    }
+
+    // If ret_obj is null, throw an error.
+    if (ret_obj.first == nullptr && ret_obj.second == nullptr) {
+        throw_error(ERR_UNREC_FUNC, "'" + func_name + "'", func_col, func_lin);
+    }
+
+    return ret_obj;
 
 }
 

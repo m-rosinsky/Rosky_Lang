@@ -116,6 +116,11 @@ void Parser_T::parse_while(size_t& __idx, size_t __end_idx, size_t __scope) {
 
 void Parser_T::parse_continue(size_t& __idx, size_t __end_idx, size_t __scope) {
 
+    // If we are not in a loop, throw error.
+    if (_loop_flag == false) {
+        throw_error(ERR_RESERVED_USE, "'continue' not in loop", _tokens[__idx-1]->_colnum, _tokens[__idx-1]->_linenum);
+    }
+
     // If the next token is not a ';', throw error.
     size_t end_token = find_nextof(_tokens, __idx, ";");
 
@@ -127,11 +132,6 @@ void Parser_T::parse_continue(size_t& __idx, size_t __end_idx, size_t __scope) {
 
     if (__idx != end_token) {
         throw_error(ERR_SYNTAX, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
-    }
-
-    // If we are not in a loop, throw error.
-    if (_loop_flag == false) {
-        throw_error(ERR_RESERVED_USE, "'continue' not in loop", _tokens[__idx-1]->_colnum, _tokens[__idx-1]->_linenum);
     }
 
     // Assert the continue flag.
@@ -143,6 +143,11 @@ void Parser_T::parse_continue(size_t& __idx, size_t __end_idx, size_t __scope) {
 
 void Parser_T::parse_break(size_t& __idx, size_t __end_idx, size_t __scope) {
 
+    // If we are not in a loop, throw error.
+    if (_loop_flag == false) {
+        throw_error(ERR_RESERVED_USE, "'break' not in loop", _tokens[__idx-1]->_colnum, _tokens[__idx-1]->_linenum);
+    }
+
     // If the next token is not a ';', throw error.
     size_t end_token = find_nextof(_tokens, __idx, ";");
 
@@ -154,11 +159,6 @@ void Parser_T::parse_break(size_t& __idx, size_t __end_idx, size_t __scope) {
 
     if (__idx != end_token) {
         throw_error(ERR_SYNTAX, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
-    }
-
-    // If we are not in a loop, throw error.
-    if (_loop_flag == false) {
-        throw_error(ERR_RESERVED_USE, "'break' not in loop", _tokens[__idx-1]->_colnum, _tokens[__idx-1]->_linenum);
     }
 
     // Assert the break flag.

@@ -71,3 +71,72 @@ FunctionTable_T::obj_pair FunctionTable_T::call_member_function
 }
 
 /******************************************************************************/
+
+void FunctionTable_T::add_user_function(const std::string& __func,
+                                        const std::vector<std::string>& __func_params,
+                                        size_t __scope, size_t __start_idx ,size_t __end_idx) noexcept {
+
+    // Create a shared_ptr to the new entry.
+    std::shared_ptr<UserFunction_T> new_func =
+        std::make_shared<UserFunction_T>(__func, __func_params, __scope, __start_idx, __end_idx);
+
+    // Push the function in the front of the user table, so it is found first.
+    _user_func_table.push_front(new_func);
+
+}
+
+/******************************************************************************/
+
+bool FunctionTable_T::is_user_function(const std::string& __func) const noexcept {
+
+    // Iterate through the user function table.
+    for (auto& func : _user_func_table) {
+
+        if (func->_func_name == __func) {
+            return true;
+        }
+
+    }
+
+    return false;
+
+}
+
+/******************************************************************************/
+
+std::shared_ptr<UserFunction_T> FunctionTable_T::get_user_function(const std::string& __func) const noexcept {
+
+    // Iterate through the function table.
+    for (auto& func : _user_func_table) {
+
+        if (func->_func_name == __func) {
+            return func;
+        }
+
+    }
+
+    return nullptr;
+
+}
+
+/******************************************************************************/
+
+void FunctionTable_T::release_above_scope(size_t __scope) noexcept {
+
+    std::deque<size_t> deletion;
+
+    size_t idx = 0;
+    for (auto& func : _user_func_table) {
+        if (func->_scope >= __scope) {
+            deletion.push_front(idx);
+        }
+        idx++;
+    }
+
+    for (auto it = deletion.begin(); it != deletion.end(); it++) {
+        _user_func_table.erase(_user_func_table.begin() + *it);
+    }
+
+}
+
+/******************************************************************************/

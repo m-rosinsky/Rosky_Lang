@@ -216,7 +216,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
             // Unary operator
             if (left.second == nullptr) {
                 err_msg += " with type: '";
-                err_msg += right.second->get_type_string();
+                err_msg += right.second->get_type_string() + "'";
             } else{
                 err_msg += " with types: '";
                 err_msg += left.second->get_type_string() + "' and '";

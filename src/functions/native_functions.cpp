@@ -84,7 +84,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
     // Prompt for stdin.
     std::string input_string;
-    std::cin >> input_string;
+    std::getline(std::cin, input_string);
 
     // Return a string object.
     return {nullptr, std::make_shared<RoskyString>(input_string)};

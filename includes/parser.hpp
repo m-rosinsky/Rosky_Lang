@@ -53,6 +53,7 @@
 #include "function_handler.hpp"
 
 #include "objects/rosky_interface.hpp"
+#include "objects/rosky_null.hpp"
 
 /******************************************************************************/
 
@@ -82,11 +83,21 @@ private:
     // This flag defines whether we have encountered a loop continue.
     bool _cont_flag;
 
+    // This flag defines whether we are currently in a function.
+    bool _func_flag;
+
+    // This flag defines whether we have encountered a function return.
+    bool _return_flag;
+
+    // This object is the return objects from functions.
+    std::shared_ptr<RoskyInterface> _parser_ret_obj;
+
 public:
 
     // Ctor.
     Parser_T(const std::deque<std::shared_ptr<Token_T>>& __tokens)
-        : _tokens(__tokens), _loop_flag(false), _break_flag(false), _cont_flag(false) {
+        : _tokens(__tokens), _loop_flag(false), _break_flag(false), _cont_flag(false),
+            _func_flag(false), _return_flag(false), _parser_ret_obj(nullptr) {
         
         // Instantiate the variable handler.
         _var_table = std::make_unique<VariableTable_T>();
@@ -126,6 +137,13 @@ public:
         parse_member_func(std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> __obj,
                           size_t& __idx, size_t __end_idx, size_t __scope);
 
+    // This function is for parsing user defined function definitions starting
+    // with the keyword 'func'.
+    void parse_func_def(size_t& __idx, size_t __end_idx, size_t __scope);
+
+    // This function is for parsing return statements (Defined in parse_func_def).
+    void parse_return(size_t& __idx, size_t __end_idx, size_t __scope);
+
     // This function is for parsing if statements.
     void parse_if(size_t& __idx, size_t __end_idx, size_t __scope);
 
@@ -143,6 +161,14 @@ public:
     // This function creates a group object.
     std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
         parse_group(size_t& __idx, size_t __end_idx, size_t __scope);
+
+private:
+
+    // This helper function determines if a string is reserved.
+    inline bool is_reserved(const std::string& n) const noexcept {
+        return _func_table->is_function(n) || _func_table->is_member_function(n) ||
+               _func_table->is_user_function(n) || is_keyword(n);
+    }
 
 };
 

@@ -26,7 +26,8 @@ CFG_OBJ=
 COMMON_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
 	$(OUTDIR)/lexer.o $(OUTDIR)/main.o $(OUTDIR)/native_functions.o \
 	$(OUTDIR)/native_member_functions.o $(OUTDIR)/parse_expr.o \
-	$(OUTDIR)/parse_for.o $(OUTDIR)/parse_func.o $(OUTDIR)/parse_group.o \
+	$(OUTDIR)/parse_for.o $(OUTDIR)/parse_func.o \
+	$(OUTDIR)/parse_func_def.o $(OUTDIR)/parse_group.o \
 	$(OUTDIR)/parse_if.o $(OUTDIR)/parse_while.o $(OUTDIR)/parser.o \
 	$(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_bool.o \
 	$(OUTDIR)/rosky_float.o $(OUTDIR)/rosky_group.o \
@@ -36,7 +37,8 @@ OBJ=$(COMMON_OBJ) $(CFG_OBJ)
 ALL_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
 	$(OUTDIR)/lexer.o $(OUTDIR)/main.o $(OUTDIR)/native_functions.o \
 	$(OUTDIR)/native_member_functions.o $(OUTDIR)/parse_expr.o \
-	$(OUTDIR)/parse_for.o $(OUTDIR)/parse_func.o $(OUTDIR)/parse_group.o \
+	$(OUTDIR)/parse_for.o $(OUTDIR)/parse_func.o \
+	$(OUTDIR)/parse_func_def.o $(OUTDIR)/parse_group.o \
 	$(OUTDIR)/parse_if.o $(OUTDIR)/parse_while.o $(OUTDIR)/parser.o \
 	$(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_bool.o \
 	$(OUTDIR)/rosky_float.o $(OUTDIR)/rosky_group.o \
@@ -193,7 +195,8 @@ CFG_OBJ=
 COMMON_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
 	$(OUTDIR)/lexer.o $(OUTDIR)/main.o $(OUTDIR)/native_functions.o \
 	$(OUTDIR)/native_member_functions.o $(OUTDIR)/parse_expr.o \
-	$(OUTDIR)/parse_for.o $(OUTDIR)/parse_func.o $(OUTDIR)/parse_group.o \
+	$(OUTDIR)/parse_for.o $(OUTDIR)/parse_func.o \
+	$(OUTDIR)/parse_func_def.o $(OUTDIR)/parse_group.o \
 	$(OUTDIR)/parse_if.o $(OUTDIR)/parse_while.o $(OUTDIR)/parser.o \
 	$(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_bool.o \
 	$(OUTDIR)/rosky_float.o $(OUTDIR)/rosky_group.o \
@@ -203,7 +206,8 @@ OBJ=$(COMMON_OBJ) $(CFG_OBJ)
 ALL_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
 	$(OUTDIR)/lexer.o $(OUTDIR)/main.o $(OUTDIR)/native_functions.o \
 	$(OUTDIR)/native_member_functions.o $(OUTDIR)/parse_expr.o \
-	$(OUTDIR)/parse_for.o $(OUTDIR)/parse_func.o $(OUTDIR)/parse_group.o \
+	$(OUTDIR)/parse_for.o $(OUTDIR)/parse_func.o \
+	$(OUTDIR)/parse_func_def.o $(OUTDIR)/parse_group.o \
 	$(OUTDIR)/parse_if.o $(OUTDIR)/parse_while.o $(OUTDIR)/parser.o \
 	$(OUTDIR)/parser_utils.o $(OUTDIR)/rosky_bool.o \
 	$(OUTDIR)/rosky_float.o $(OUTDIR)/rosky_group.o \

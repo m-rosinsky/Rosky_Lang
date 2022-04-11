@@ -35,11 +35,41 @@
 #include <vector>                           // std::vector
 #include <utility>                          // std::pair
 #include <memory>                           // std::shared_ptr
+#include <deque>                            // std::deque
 
 #include "objects/rosky_interface.hpp"
 
 #include "functions/native_functions.hpp"
 #include "functions/native_member_functions.hpp"
+
+/******************************************************************************/
+
+// This struct holds the parameters for a user defined function.
+struct UserFunction_T {
+
+    // This holds the name of the function.
+    std::string _func_name;
+
+    // This holds the symbols for the local variable args.
+    std::vector<std::string> _func_params;
+
+    // This holds the scope of the function.
+    size_t _scope;
+
+    // This holds the start and end index in the token table
+    // of the function body.
+    size_t _start_idx;
+    size_t _end_idx;
+
+    // Ctor.
+    UserFunction_T(const std::string& __func_name,
+                   const std::vector<std::string>& __func_params,
+                   size_t __scope,
+                   size_t __start_idx, size_t __end_idx)
+        : _func_name(__func_name), _func_params(__func_params),
+        _scope(__scope), _start_idx(__start_idx), _end_idx(__end_idx) {}
+
+};
 
 /******************************************************************************/
 
@@ -66,6 +96,10 @@ private:
     // function acts on.
     std::map<std::string, std::function<obj_pair(obj_pair&, const std::vector<obj>&, size_t, size_t)>> _native_member_table;
 
+    // This is the user-defined function table, which is a deque of
+    // UserFunction_T shared pointers.
+    std::deque<std::shared_ptr<UserFunction_T>> _user_func_table;
+
 public:
 
     // Ctor.
@@ -82,6 +116,8 @@ public:
         // Populate the native function table with the built-in member funciton pointers.
         _native_member_table["size"]    = size_func;
         _native_member_table["append"]  = append_func;
+
+        // The user function table is blank upon construction.
 
     }
 
@@ -103,6 +139,22 @@ public:
                                   obj_pair& __obj,
                                   const std::vector<obj>& __func_args,
                                   size_t __colnum, size_t __linenum);
+
+    // This function adds a new user function to the user function table.
+    void add_user_function(const std::string& __func,
+                           const std::vector<std::string>& __func_params,
+                           size_t __scope, size_t __start_idx, size_t __end_idx) noexcept;
+
+    // This function returns true if a specified string is in the user function
+    // table.
+    bool is_user_function(const std::string& __func) const noexcept;
+
+    // This function returns an entry in the user function table.
+    std::shared_ptr<UserFunction_T> get_user_function(const std::string& __func) const noexcept;
+
+    // This function releases all user function above and including a given
+    // scope.
+    void release_above_scope(size_t __scope) noexcept;
 
 };
 

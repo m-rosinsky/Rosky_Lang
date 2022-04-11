@@ -70,16 +70,8 @@ public:
                           const std::shared_ptr<RoskyInterface>& __val,
                           size_t __scope) noexcept {
 
-        // See if the entry already exists.
-        for (auto& var : var_table) {
-            if (var._name == __var_name) {
-                var._obj = __val;
-                return;
-            }
-        }
-
         // Create a new entry.
-        var_table.emplace_back(__var_name, __val, __scope);
+        var_table.emplace_front(__var_name, __val, __scope);
 
     }
 

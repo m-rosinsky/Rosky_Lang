@@ -93,7 +93,7 @@ static std::vector<std::string> ERROR_STRINGS {
     "Unclosed parentheses",
     "Expression terminated before closure",
     "Empty parentheses",
-    "Bad use of reserved keyword",
+    "Bad use of reserved keyword or function name",
     "Missing statement body",
     "Expected condition before body",
     "Expected a boolean condition",

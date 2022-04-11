@@ -48,8 +48,8 @@ void Parser_T::parse(size_t __start_idx, size_t __end_idx, size_t __scope) {
     // Iterate through the token table.
     for (; idx < __end_idx; idx++) {
 
-        // If the continue flag or break flag are asserted, return.
-        if (_cont_flag || _break_flag) {
+        // If any of these flags are asserted, return.
+        if (_cont_flag || _break_flag || _return_flag) {
             return;
         }
 
@@ -81,6 +81,16 @@ void Parser_T::parse(size_t __start_idx, size_t __end_idx, size_t __scope) {
             if (_tokens[idx]->_token == "for") {
                 parse_for(idx, __end_idx, __scope+1);
                 continue;
+            }
+
+            // Func keywords.
+            if (_tokens[idx]->_token == "func") {
+                parse_func_def(idx, __end_idx, __scope);
+                continue;
+            }
+            if (_tokens[idx]->_token == "return") {
+                parse_return(idx, __end_idx, __scope);
+                return;
             }
 
             // Loop keywords.

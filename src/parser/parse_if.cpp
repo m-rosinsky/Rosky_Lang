@@ -25,8 +25,6 @@
 
 #include "../../includes/parser.hpp"
 
-#include <iostream>
-
 /******************************************************************************/
 
 void Parser_T::parse_if(size_t& __idx, size_t __end_idx, size_t __scope) {
