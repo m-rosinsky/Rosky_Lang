@@ -631,3 +631,113 @@ out(x);
 ```
 
 The underlying data type for the ```float``` object is a double.
+
+## April 13, 2022
+
+After a couple days of break, and a couple more days of work, I've finally implemented user defined functions. This feature came with a lot of hidden nuances that caught me slightly off-guard. The biggest hurdle was simulating stack frames. For example in this piece of code:
+```python
+x = 2;
+
+func dummy_func() {
+    x = 3;
+}
+
+dummy_func();
+
+outln(x);
+```
+What should be printed out? Should the ```x``` within the function modify the ```x``` outside the function? My thought was no, and python works the same way. When we call the ```dummy_func```, we have to simulate a new stack frame, meaning variables defined outside the frame shouldn't be referenced when we assign. So the ```x = 3;``` line in the above code actually creates another entry in the table. But that leaves the issue shown here:
+```python
+x = 2;
+
+func dummy_func() {
+    outln(x);
+}
+
+dummy_func();
+```
+Should this program run, or throw an error. Is the ```x``` within the function allowed to reference the outside ```x```? I think yes! So variables within a lower stack frame can be read, but not assigned to. And we will always look at the variable with the highest stack frame, so for example:
+```python
+x = 2;
+
+func dummy_func() {
+    x = 3;
+    
+    outln(x);
+}
+
+dummy_func();
+
+outln(x);
+```
+This program should print ```3``` during the function call, because the new ```x``` defined within the function overshadows the outside ```x```. But after the function call is executed, the outside ```x``` was not assigned to, so it should print ```2```.
+
+Making this behvaior work involved refactoring the variable table to include a field called the ```recursive index``` which tracks the stack frame, and we can shape rules for setting and getting variables based off the variables recursive index, and the recursive index we are currently at.
+
+This allows for recursion to work as it would in other languages. Here is a merge sort program i wrote in ```Rosky```:
+```python
+func merge(lhs, rhs) {
+
+    fin = [];
+    it1 = 0;
+    it2 = 0;
+
+    while it1 < lhs.size() and it2 < rhs.size() {
+        if lhs[it1] < rhs[it2] {
+            fin.append(lhs[it1]);
+            it1 = it1 + 1;
+        } else {
+            fin.append(rhs[it2]);
+            it2 = it2 + 1;
+        }
+    }
+
+    while it1 < lhs.size() {
+        fin.append(lhs[it1]);
+        it1 = it1 + 1;
+    }
+
+    while it2 < rhs.size() {
+        fin.append(rhs[it2]);
+        it2 = it2 + 1;
+    }
+
+    return fin;
+
+}
+
+func mergesort(g) {
+
+    if g.size() <= 1 { return g; }
+
+    mid = g.size() // 2;
+    lhs = [];
+    rhs = [];
+
+    for i in range(g.size()) {
+        if i < mid {
+            lhs.append(g[i]);
+        } else {
+            rhs.append(g[i]);
+        }
+    }
+
+    lhs = mergesort(lhs);
+    rhs = mergesort(rhs);
+
+    return merge(lhs, rhs);
+
+}
+
+g = [9,6,8,2,4,7,5,3,0,1];
+
+g = mergesort(g);
+
+outln(g);
+```
+```
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
+We can see a few interesting things at play here. First, the parameter for the ```mergesort``` function is named ```g``` as well as the original list ```g``` that's being passed into it. The parameter has a higher recursive index, so the original ```g``` is not clobbered. Also, when ```lhs``` is recursively resolving, it doesn't clobber itself when it is reassigned, instead, creating new entries for each recursive call, which is the behavior we want.
+
+This was a big feature and I'm very happy to see it working. I haven't really exhaustively tested it yet, so that's the next thing I'll do.
