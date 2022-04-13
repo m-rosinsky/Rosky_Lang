@@ -57,11 +57,11 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
             }
 
             // Form the object.
-            auto obj_pair = form_object(_tokens[__idx], _var_table, __scope);
+            auto obj_form = form_object(_tokens[__idx], _var_table, __scope, _recursive_index);
 
             // Continue down the right side of the tree until right child is null,
             // then insert self as right child.
-            insert_right(root, obj_pair.first, obj_pair.second, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+            insert_right(root, obj_form->_obj_adr, obj_form->_obj, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum, obj_form->_recursive_index);
 
             // Now expecting an operator.
             expecting_op = true;
@@ -79,6 +79,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
             // Create a temporary for the object pair
             std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> obj_pair = {nullptr, nullptr};
+            size_t _r_index = 0;
 
             // If the next token is a left paren, pass as function, otherwise
             // pass as symbol.
@@ -86,16 +87,20 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
                 // Parse the function and get the result.
                 obj_pair = parse_func(__idx, __end_idx, __scope);
+                _r_index = _recursive_index;
 
             } else {
                 
                 // symbol is treated as a variable name.
-                obj_pair = form_object(_tokens[__idx], _var_table, __scope);
-                
+                auto obj_form = form_object(_tokens[__idx], _var_table, __scope, _recursive_index);
+                obj_pair.first = obj_form->_obj_adr;
+                obj_pair.second = obj_form->_obj;
+                _r_index = obj_form->_recursive_index;
+
             }
 
             // Insert the object pair right.
-            insert_right(root, obj_pair.first, obj_pair.second, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+            insert_right(root, obj_pair.first, obj_pair.second, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum, _r_index);
 
             // Now expecting an operator.
             expecting_op = true;
@@ -125,15 +130,15 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
             }
 
             // Form the object.
-            auto obj_pair = form_object(_tokens[__idx], _var_table, __scope);
+            auto obj_form = form_object(_tokens[__idx], _var_table, __scope, _recursive_index);
 
             // If the object is null, the keyword is an illegal use.
-            if (obj_pair.first == nullptr && obj_pair.second == nullptr) {
+            if (obj_form->_obj_adr == nullptr && obj_form->_obj == nullptr) {
                 throw_error(ERR_RESERVED_USE, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
             }
 
             // Insert right.
-            insert_right(root, obj_pair.first, obj_pair.second, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum);
+            insert_right(root, obj_form->_obj_adr, obj_form->_obj, _tokens[__idx]->_token, _tokens[__idx]->_colnum, _tokens[__idx]->_linenum, obj_form->_recursive_index);
 
             // Now expecting an operator.
             expecting_op = true;
@@ -171,7 +176,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
                 // Insert the result to the right.
                 // The token metadata doesn't matter because errors pertaining
                 // to evaluation of this object would have been caught already.
-                insert_right(root, obj_pair.first, obj_pair.second, "", 0, 0);
+                insert_right(root, obj_pair.first, obj_pair.second, "", 0, 0, _recursive_index);
 
                 // Now expecting an operator.
                 expecting_op = true;
@@ -211,7 +216,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
                     auto obj_pair = parse_group(__idx, match_idx, __scope);
 
                     // Insert the group object.
-                    insert_right(root, obj_pair.first, obj_pair.second, "", 0, 0);
+                    insert_right(root, obj_pair.first, obj_pair.second, "", 0, 0, _recursive_index);
 
                     // Now expecting op.
                     expecting_op = true;
@@ -263,7 +268,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
                     auto obj_pair = parse_expr(++__idx, match_idx, __scope);
 
                     // Push the result into the tree.
-                    insert_right(root, obj_pair.first, obj_pair.second, "", 0, 0);
+                    insert_right(root, obj_pair.first, obj_pair.second, "", 0, 0, _recursive_index);
 
                     // Now expecting operator.
                     expecting_op = true;
@@ -342,7 +347,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     // print_inorder(root);
 
     // Send parse tree to evaluator.
-    return evaluate(root, _var_table, true, __scope);
+    return evaluate(root, _var_table, true, __scope, _recursive_index);
 
 }
 

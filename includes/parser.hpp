@@ -74,6 +74,10 @@ private:
     // The function table handler instance.
     std::unique_ptr<FunctionTable_T> _func_table;
 
+    // This tracks the recursive index we are currently parsing at.
+    // This is the depth of recursive function calls.
+    size_t _recursive_index;
+
     // This flag defines whether we are currently in a loop.
     bool _loop_flag;
 
@@ -96,8 +100,9 @@ public:
 
     // Ctor.
     Parser_T(const std::deque<std::shared_ptr<Token_T>>& __tokens)
-        : _tokens(__tokens), _loop_flag(false), _break_flag(false), _cont_flag(false),
-            _func_flag(false), _return_flag(false), _parser_ret_obj(nullptr) {
+        : _tokens(__tokens), _recursive_index(0),
+        _loop_flag(false), _break_flag(false), _cont_flag(false),
+        _func_flag(false), _return_flag(false), _parser_ret_obj(nullptr) {
         
         // Instantiate the variable handler.
         _var_table = std::make_unique<VariableTable_T>();

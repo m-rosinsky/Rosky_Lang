@@ -70,6 +70,7 @@ enum ERROR_TYPE {
     ERR_NO_FUNC_ARGS,
     ERR_ASSERT,
     ERR_INVALID_FUNC_USE,
+    ERR_MAX_RECURSION_DEPTH,
 
 };
 
@@ -116,6 +117,7 @@ static std::vector<std::string> ERROR_STRINGS {
     "Expected arguments for function",
     "Assertion error",
     "Invalid function usage",
+    "Maximum recursion depth exceeded (999)",
 
 };
 

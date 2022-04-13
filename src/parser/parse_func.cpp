@@ -152,12 +152,13 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
                             func_col, func_lin);
             }
 
-            // Assign the function parameters at a +1 scope.
+            // Assign the function parameters at a +1 scope and +1 recursive
+            // index.
             for (size_t param_idx = 0; param_idx < func_args.size(); param_idx++) {
 
                 _var_table->set_entry(user_func_entry->_func_params[param_idx],
                                       func_args[param_idx],
-                                      __scope + 1);
+                                      __scope + 1, _recursive_index + 1);
 
             }
 
@@ -166,6 +167,17 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
             // Assert the function flag.
             _func_flag = true;
+
+            // Bookmark the recursive index.
+            size_t recursive_index = _recursive_index;
+
+            // Increment the recursive index.
+            _recursive_index++;
+
+            // Check if the maximum recursion depth has been exceeded.
+            if (_recursive_index > 999) {
+                throw_error(ERR_MAX_RECURSION_DEPTH, "", func_col, func_lin);
+            }
 
             // Parse the function body.
             parse(user_func_entry->_start_idx, user_func_entry->_end_idx, __scope + 1);
@@ -190,6 +202,12 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
 
             // Reset the return flag.
             _return_flag = false;
+
+            // Reset the recursive index.
+            _recursive_index = recursive_index;
+
+            // Release above scope.
+            _var_table->release_above_scope(__scope + 1);
 
         }
 

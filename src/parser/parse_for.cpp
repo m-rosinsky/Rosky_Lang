@@ -106,7 +106,7 @@ void Parser_T::parse_for(size_t& __idx, size_t __end_idx, size_t __scope) {
         // Assign the symbol.
         _var_table->set_entry(symbol_name,
                               iter_obj_pair.second->index_op(index_obj).second,
-                              __scope);
+                              __scope, _recursive_index);
 
         // Increment the index.
         iter_index++;

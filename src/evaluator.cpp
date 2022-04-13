@@ -28,7 +28,7 @@
 std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     evaluate(const std::shared_ptr<ParseNode>& __root,
              std::unique_ptr<VariableTable_T>& __var_table, bool __top,
-             size_t __scope) {
+             size_t __scope, size_t __r_index) {
     
     // Operands
     
@@ -51,12 +51,12 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
         // Create a temp storage for the return value and the left and right operands.
         std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> ret_obj = {nullptr, nullptr};
 
-        auto right = evaluate(__root->_right, __var_table, false, __scope);
+        auto right = evaluate(__root->_right, __var_table, false, __scope, __r_index);
         std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>> left = {nullptr, nullptr};
 
         // If the operator is not unary, evaluate the left side.
         if (!is_unary_eval_op(__root->_op)) {
-            left = evaluate(__root->_left, __var_table, false, __scope);
+            left = evaluate(__root->_left, __var_table, false, __scope, __r_index);
         }
 
         // The right side of an op is never allowed to be nullptr. This means
@@ -78,12 +78,15 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
             // Simple Assignment.
             if (__root->_op == "=") {
 
-                // If the left has an addressable object, simply overwrite it.
-                // Otherwise, set an entry.
-                if (left.first != nullptr) {
+                // If the left has an addressable object, and its recursive
+                // index is greater than or equal to the parser recursive index,
+                // simply overwrite it.
+                // Otherwise, create a new entry.
+
+                if (left.first != nullptr && __root->_left->_recrusive_index >= __r_index) {
                     *(left.first) = right.second;
                 } else {
-                    __var_table->set_entry(__root->_left->_op, right.second, __scope);
+                    __var_table->set_entry(__root->_left->_op, right.second, __scope, __r_index);
                 }
 
             }

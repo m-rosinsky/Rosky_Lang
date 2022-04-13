@@ -95,6 +95,7 @@ struct ParseNode {
     PARSE_NODE_TYPE _type;
     size_t _colnum;
     size_t _linenum;
+    size_t _recrusive_index;
 
     std::shared_ptr<ParseNode> _left;
     std::shared_ptr<ParseNode> _right;
@@ -104,9 +105,10 @@ struct ParseNode {
     ParseNode(std::shared_ptr<RoskyInterface>* __obj_adr,
               const std::shared_ptr<RoskyInterface>& __obj,
               const std::string __op, PARSE_NODE_TYPE __type,
-              size_t __col, size_t __lin)
+              size_t __col, size_t __lin, size_t __r_index)
         : _obj_adr(__obj_adr), _obj(__obj), _op(__op),
-          _type(__type), _colnum(__col), _linenum(__lin) {}
+          _type(__type), _colnum(__col), _linenum(__lin),
+          _recrusive_index(__r_index) {}
 
     // Compare to nullptr
     inline bool is_nullptr() const noexcept {
@@ -123,7 +125,8 @@ void insert_right(std::shared_ptr<ParseNode>& __root,
                   std::shared_ptr<RoskyInterface>* __obj_adr,
                   const std::shared_ptr<RoskyInterface>& __obj,
                   const std::string& __sym_string,
-                  size_t __col, size_t __lin);
+                  size_t __col, size_t __lin,
+                  size_t __r_index);
 
 // This function is a tree helper function for inserting operators
 // into the tree.
@@ -204,11 +207,28 @@ size_t find_matching_ctrl(const std::deque<std::shared_ptr<Token_T>>& __tokens,
 
 /******************************************************************************/
 
+// This struct contains information based on the new objects we form
+// which includes an addressable object, a non-addressable object, and
+// a recursive index.
+struct ObjectForm_T {
+
+    std::shared_ptr<RoskyInterface>* _obj_adr;
+    std::shared_ptr<RoskyInterface> _obj;
+    size_t _recursive_index;
+
+    ObjectForm_T(std::shared_ptr<RoskyInterface>* __obj_adr,
+                 const std::shared_ptr<RoskyInterface>& __obj,
+                 size_t __r_index)
+                 : _obj_adr(__obj_adr), _obj(__obj), _recursive_index(__r_index) {}
+
+};
+
+/******************************************************************************/
+
 // This function forms objects out of a token.
-std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
-    form_object(const std::shared_ptr<Token_T>& __token,
+std::shared_ptr<ObjectForm_T> form_object(const std::shared_ptr<Token_T>& __token,
                 std::unique_ptr<VariableTable_T>& __var_table,
-                size_t __scope);
+                size_t __scope, size_t __r_index);
 
 /******************************************************************************/
 

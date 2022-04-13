@@ -123,6 +123,7 @@ void Parser_T::parse(size_t __start_idx, size_t __end_idx, size_t __scope) {
                 throw_error(ERR_MISSING_TERM, "", _tokens[__end_idx - 1]->_colnum, _tokens[__end_idx - 1]->_linenum);
             }
             auto ignore = parse_expr(idx, end_idx, __scope);
+
             continue;
 
         }

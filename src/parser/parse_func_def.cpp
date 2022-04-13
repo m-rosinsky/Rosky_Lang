@@ -191,15 +191,18 @@ void Parser_T::parse_return(size_t& __idx, size_t __end_idx, size_t __scope) {
 
     // If the end index is the next index, set the return object to a null type.
     if (__idx == end_token) {
+
         _parser_ret_obj = std::make_shared<RoskyNull>();
-        return;
+        
+    } else {
+
+        // Parse the expression.
+        auto ret_obj = parse_expr(__idx, end_token, __scope);
+
+        // Set the return object to the ret_obj.
+        _parser_ret_obj = ret_obj.second;
+
     }
-
-    // Parse the expression.
-    auto ret_obj = parse_expr(__idx, end_token, __scope);
-
-    // Set the return object to the ret_obj.
-    _parser_ret_obj = ret_obj.second;
 
     // Assert the return flag.
     _return_flag = true;

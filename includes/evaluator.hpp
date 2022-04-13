@@ -50,7 +50,7 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     evaluate(const std::shared_ptr<ParseNode>& __root,
              std::unique_ptr<VariableTable_T>& __var_table,
              bool __top,
-             size_t __scope);
+             size_t __scope, size_t __r_index);
 
 /******************************************************************************/
 

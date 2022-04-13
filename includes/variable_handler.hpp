@@ -28,10 +28,11 @@
 
 /******************************************************************************/
 
-#include <deque>                    // std::deque
 #include <memory>                   // std::shared_ptr
 #include <string>                   // std::string
 #include <utility>                  // std::pair
+#include <list>                     // std::list
+#include <iterator>                 // std::next
 
 #include <iostream>
 
@@ -46,10 +47,15 @@ struct VariableEntry_T {
     std::shared_ptr<RoskyInterface> _obj;
     size_t _scope;
 
+    // The recursive index allows us to know the recursion depth
+    // of a variable to dictate overwrite rules.
+    size_t _recurisve_index;
+
     VariableEntry_T(const std::string& __name,
                     const std::shared_ptr<RoskyInterface>& __obj,
-                    size_t __scope)
-                    : _name(__name), _obj(__obj), _scope(__scope) {}
+                    size_t __scope, size_t __r_index)
+                    : _name(__name), _obj(__obj),
+                    _scope(__scope), _recurisve_index(__r_index) {}
 
 };
 
@@ -58,7 +64,10 @@ struct VariableEntry_T {
 // This class manages the variable table.
 class VariableTable_T {
 
-    std::deque<VariableEntry_T> var_table;
+    // The variable table is saved as a linked list so
+    // if the table grows or shrinks during evaluation,
+    // it won't reallocate when addresses are sensitive.
+    std::list<VariableEntry_T> var_table;
 
 public:
 
@@ -66,49 +75,19 @@ public:
     
     // This function sets an entry within the variable table, overwriting
     // the previous entry.
-    inline void set_entry(const std::string& __var_name,
+    void set_entry(const std::string& __var_name,
                           const std::shared_ptr<RoskyInterface>& __val,
-                          size_t __scope) noexcept {
-
-        // Create a new entry.
-        var_table.emplace_front(__var_name, __val, __scope);
-
-    }
+                          size_t __scope, size_t __r_index) noexcept;
 
     // This function returns a pointer to the object of the entry
     // with a given name, or nullptr if the entry does not exist.
-    inline std::shared_ptr<RoskyInterface>* get_entry(const std::string& __var_name,
-                                                      size_t __scope) noexcept {
-
-        for (auto& var : var_table) {
-            if (var._name == __var_name) {
-                return &(var._obj);
-            }
-        }
-
-        return nullptr;
-
-    }
+    // It also returns the entries recursion depth.
+    std::pair<std::shared_ptr<RoskyInterface>*, size_t>
+        get_entry(const std::string& __var_name) noexcept;
 
     // This function releases all variables above and including a given
     // scope.
-    inline void release_above_scope(size_t __scope) noexcept {
-
-        std::deque<size_t> deletion;
-
-        size_t idx = 0;
-        for (auto& var : var_table) {
-            if (var._scope >= __scope) {
-                deletion.push_front(idx);
-            }
-            idx++;
-        }
-
-        for (auto it = deletion.begin(); it != deletion.end(); it++) {
-            var_table.erase(var_table.begin() + *it);
-        }
-
-    }
+    void release_above_scope(size_t __scope) noexcept;
 
 };
 

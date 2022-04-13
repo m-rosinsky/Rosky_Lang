@@ -38,10 +38,11 @@ void insert_right(std::shared_ptr<ParseNode>& __root,
                   std::shared_ptr<RoskyInterface>* __obj_adr,
                   const std::shared_ptr<RoskyInterface>& __obj,
                   const std::string& __sym_string,
-                  size_t __col, size_t __lin) {
+                  size_t __col, size_t __lin,
+                  size_t __r_index) {
 
     // Create the new node.
-    std::shared_ptr<ParseNode> new_node = std::make_shared<ParseNode>(__obj_adr, __obj, __sym_string, PARSE_OPERAND, __col, __lin);
+    std::shared_ptr<ParseNode> new_node = std::make_shared<ParseNode>(__obj_adr, __obj, __sym_string, PARSE_OPERAND, __col, __lin, __r_index);
 
     // If the root node is null, replace it with the new node.
     if (__root == nullptr) {
@@ -72,7 +73,7 @@ void insert_op(std::shared_ptr<ParseNode>& __root,
                size_t __col, size_t __lin) {
 
     // Create the new node.
-    std::shared_ptr<ParseNode> new_node = std::make_shared<ParseNode>(nullptr, nullptr, __op, PARSE_OPERATOR, __col, __lin);
+    std::shared_ptr<ParseNode> new_node = std::make_shared<ParseNode>(nullptr, nullptr, __op, PARSE_OPERATOR, __col, __lin, 0);
 
     // Create a pointer to navigate the tree.
     std::shared_ptr<ParseNode> cur = __root;
@@ -291,28 +292,31 @@ size_t find_matching_ctrl(const std::deque<std::shared_ptr<Token_T>>& __tokens,
 
 /******************************************************************************/
 
-std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
-    form_object(const std::shared_ptr<Token_T>& __token,
+std::shared_ptr<ObjectForm_T> form_object(const std::shared_ptr<Token_T>& __token,
                 std::unique_ptr<VariableTable_T>& __var_table,
-                size_t __scope) {
+                size_t __scope, size_t __r_index) {
 
     // Literals
     if (__token->_type == TOKEN_LIT_INT) {
-        return {nullptr, std::make_shared<RoskyInt>(std::stoi(__token->_token))};
+        return std::make_shared<ObjectForm_T>
+            (nullptr, std::make_shared<RoskyInt>(std::stoi(__token->_token)), __r_index);
     }
     if (__token->_type == TOKEN_LIT_FLOAT) {
-        return {nullptr, std::make_shared<RoskyFloat>(std::stod(__token->_token))};
+        return std::make_shared<ObjectForm_T>
+            (nullptr, std::make_shared<RoskyFloat>(std::stod(__token->_token)), __r_index);
     }
     if (__token->_type == TOKEN_LIT_STRING) {
-        return {nullptr, std::make_shared<RoskyString>(__token->_token)};
+        return std::make_shared<ObjectForm_T>
+            (nullptr, std::make_shared<RoskyString>(__token->_token), __r_index);
     }
 
     // Symbols
     if (__token->_type == TOKEN_SYMBOL) {
 
-        auto ret = __var_table->get_entry(__token->_token, __scope);
-        if (ret != nullptr) {
-            return {ret, *ret};
+        auto ret = __var_table->get_entry(__token->_token);
+        if (ret.first != nullptr) {
+            return std::make_shared<ObjectForm_T>
+                (ret.first, *ret.first, ret.second);
         }
     }
 
@@ -320,21 +324,26 @@ std::pair<std::shared_ptr<RoskyInterface>*, std::shared_ptr<RoskyInterface>>
     if (__token->_type == TOKEN_KW) {
 
         if (__token->_token == "null") {
-            return {nullptr, std::make_shared<RoskyNull>()};
+            return std::make_shared<ObjectForm_T>
+                (nullptr, std::make_shared<RoskyNull>(), __r_index);
         }
         if (__token->_token == "nullptr") {
-            return {nullptr, std::make_shared<RoskyPointer>(nullptr)};
+            return std::make_shared<ObjectForm_T>
+                (nullptr, std::make_shared<RoskyPointer>(nullptr), __r_index);
         }
         if (__token->_token == "true") {
-            return {nullptr, std::make_shared<RoskyBool>(true)};
+            return std::make_shared<ObjectForm_T>
+                (nullptr, std::make_shared<RoskyBool>(true), __r_index);
         }
         if (__token->_token == "false") {
-            return {nullptr, std::make_shared<RoskyBool>(false)};
+            return std::make_shared<ObjectForm_T>
+                (nullptr, std::make_shared<RoskyBool>(false), __r_index);
         }
 
     }
 
-    return {nullptr, nullptr};
+    return std::make_shared<ObjectForm_T>
+        (nullptr, nullptr, 0);
 
 }
 
