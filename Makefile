@@ -47,8 +47,8 @@ ALL_OBJ=$(OUTDIR)/evaluator.o $(OUTDIR)/function_handler.o \
 	$(OUTDIR)/rosky_pointer.o $(OUTDIR)/rosky_string.o \
 	$(OUTDIR)/variable_handler.o
 
-COMPILE=g++ -c -std=c++17   -g -o "$(OUTDIR)/$(*F).o" $(CFG_INC) "$<"
-LINK=g++ -std=c++17 -g -o "$(OUTFILE)" $(OBJ) $(CFG_LIB)
+COMPILE=g++ -c -std=c++14   -g -o "$(OUTDIR)/$(*F).o" $(CFG_INC) "$<"
+LINK=g++ -std=c++14 -g -o "$(OUTFILE)" $(OBJ) $(CFG_LIB)
 COMPILE_ADA=gnat -g -c -o "$(OUTDIR)/$(*F).o" "$<"
 COMPILE_ADB=gnat -g -c -o "$(OUTDIR)/$(*F).o" "$<"
 COMPILE_F=gfortran -c -g -o "$(OUTDIR)/$(*F).o" "$<"
